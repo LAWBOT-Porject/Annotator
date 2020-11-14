@@ -1,3 +1,3 @@
-annotator_venv/
+annotator-venv/
 *__pycache__/
 *files_uploaded/
