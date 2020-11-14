@@ -1,2 +1,3 @@
 annotator_venv/
 *__pycache__/
+*files_uploaded/
