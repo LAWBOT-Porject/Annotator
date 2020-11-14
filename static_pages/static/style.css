@@ -1,0 +1,40 @@
+.home-container {
+    background-image: url('https://media.giphy.com/media/PjaTjG8ct5cNOtjjZg/giphy.gif');
+    height: 40vh;
+    width: fit-content;
+    background-size: contain;
+    margin: 0 auto;
+}
+.about-container {
+    background-color: #caace7;
+    height: 40vh;
+    width: fit-content;
+    margin: 0 auto;
+    /* display: inline-block; */
+}
+#navbar {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    width: 50vh;
+    margin: .9rem auto;
+    background-color: aquamarine;
+}
+
+#navbar a {
+    color: #100;
+    text-decoration: none;
+    font-size: 1.4rem;
+}
+
+p.home-paragraph {
+    color: rgb(27, 56, 23);
+    text-align: center;
+}
+
+h1.h1-about {
+    text-align: center;
+    
+}
+
+
