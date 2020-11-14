@@ -1,1 +1,2 @@
 annotator_venv/
+*__pycache__/
