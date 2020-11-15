@@ -1,0 +1,5 @@
+# ==============================
+#           Upload app
+# ==============================
+upload:
+  folder: 'upload/files_uploaded/'
