@@ -16,7 +16,7 @@
     list-style-type: none;
     display: flex;
     justify-content: space-between;
-    width: 50vh;
+    width: 80vh;
     margin: .9rem auto;
     background-color: aquamarine;
 }
