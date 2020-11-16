@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+
 from django.shortcuts import render
 
-# Create your views here.
+def annotate_view(request, *args, **kwargs):
+    return HttpResponse('Annotateur sera bien tot disponible')

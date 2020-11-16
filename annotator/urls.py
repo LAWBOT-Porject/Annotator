@@ -25,6 +25,8 @@ urlpatterns = [
 
     # upload routing
     path('upload/', include('upload.urls')),
+    # annotate routing
+    path('annotate/', include('annotate.urls')),
     
     path('admin/', admin.site.urls),
 ]
