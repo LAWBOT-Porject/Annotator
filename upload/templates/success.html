@@ -2,9 +2,16 @@
 
 {% block content %}
 <div class="success-container">
+    {% if number_files > 1 %}
     <p>
         Les {{number_files}} fichiers sont bien uploadés au serveur!
     </p>
+    {% else %}
+    <p>
+        Le fichier est bien uploadé au serveur!
+    </p>
+
+    {% endif %}
 </div>
 
 {% endblock %}
