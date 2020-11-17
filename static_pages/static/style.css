@@ -1,3 +1,10 @@
+/* Reset properties */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .home-container {
     background-image: url('https://media.giphy.com/media/PjaTjG8ct5cNOtjjZg/giphy.gif');
     height: 40vh;
