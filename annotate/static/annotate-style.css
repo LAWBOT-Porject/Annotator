@@ -9,3 +9,16 @@
     border: 2px solid green;
     background-color: rgb(141, 188, 197);
 }
+
+.tools-bar {
+    grid-area: tools-bar;
+}
+.annotate-navigation {
+    grid-area: annotate-navigation;
+}
+.decision-container {
+    grid-area: decision-container;
+}
+.annotation-container {
+    grid-area: annotation-container;
+}
