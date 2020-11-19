@@ -47,3 +47,9 @@ li.file-link {
 h3.navigation {
     margin-bottom: 1vh;
 }
+
+/* Specific class for the selected file name */
+li.selected_file {
+    font-weight: 700;
+    color: green;
+}
