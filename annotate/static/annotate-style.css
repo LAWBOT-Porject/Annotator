@@ -38,3 +38,12 @@
 .annotation-container {
     grid-area: annotation-container;
 }
+
+li.file-link {
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+
+h3.navigation {
+    margin-bottom: 1vh;
+}
