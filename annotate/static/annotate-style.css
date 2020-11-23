@@ -42,6 +42,7 @@
 li.file-link {
     cursor: pointer;
     margin-bottom: 4px;
+    padding: 0 1vh;
 }
 
 h3.navigation {
