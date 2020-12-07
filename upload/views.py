@@ -1,7 +1,7 @@
 #from django.http.response import HttpResponse, HttpResponseRedirect
 from .forms import UploadFileForm
 from django.shortcuts import render
-from config.hparam import hparam as hp
+from helpers.upload_utilities import handle_uploaded_file
 
 # Upload view
 def upload_view(request, *args, **kwargs):
@@ -18,7 +18,4 @@ def upload_view(request, *args, **kwargs):
         form = UploadFileForm()
     return render(request, 'upload.html', {'form': form})
 
-def handle_uploaded_file(f, name):
-    with open( hp.upload.folder + name, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+
