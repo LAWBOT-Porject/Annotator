@@ -6,6 +6,7 @@ from helpers.upload_utilities import handle_uploaded_file
 # Upload view
 def upload_view(request, *args, **kwargs):
     form = UploadFileForm()
+    
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         files = request.FILES.getlist('file')

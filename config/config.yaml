@@ -3,3 +3,4 @@
 # ==============================
 upload:
   folder: 'upload/files_uploaded/'
+  allowed_file_types: ['.txt', '.pdf', '.doc', '.docx', '.rtf']
