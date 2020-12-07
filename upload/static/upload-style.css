@@ -20,6 +20,8 @@
     color: green;
     font-weight: 700;
     font-size: 1.2rem;
-    
+}
 
+#unallowed-types {
+    color: red;
 }
