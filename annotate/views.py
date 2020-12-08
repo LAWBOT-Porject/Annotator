@@ -7,13 +7,13 @@ from config.hparam import hparam as hp
 def annotate_view(request, *args, **kwargs):
     #return HttpResponse('Annotateur sera bien tot disponible')
     files = []
-    for (dirpath, dirnames, filenames) in walk(hp.upload.folder):
+    for (dirpath, dirnames, filenames) in walk(hp.files.uploaded_files_folder):
         files.extend(filenames)
     return render(request, 'annotate.html', {'files' : files, 
-                                            'root_path': hp.upload.folder})
+                                            'root_path': hp.files.uploaded_files_folder})
 
 def read_file(request , file):
-    f = open(hp.upload.folder + file, 'r')
+    f = open(hp.files.uploaded_files_folder + file, 'r')
     file_content = f.read()
     f.close()
     #context = {'file_content': file_content}

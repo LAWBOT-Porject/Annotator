@@ -12,12 +12,12 @@ from config.hparam import hparam as hp
 
 
 def handle_uploaded_file(f, name):
-    with open( hp.upload.folder + name, 'wb+') as destination:
+    with open( hp.files.uploaded_files_folder + name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
 def allow_file_types():
-    return ','.join(hp.upload.allowed_file_types)
+    return ','.join(hp.files.allowed_file_types)
 
 def verify_file_type(file_name):
-    return '.' + file_name.split('.')[-1] in hp.upload.allowed_file_types
+    return '.' + file_name.split('.')[-1] in hp.files.allowed_file_types
