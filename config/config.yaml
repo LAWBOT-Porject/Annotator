@@ -2,5 +2,5 @@
 #           Upload app
 # ==============================
 upload:
-  folder: 'upload/files_uploaded/'
+  folder: '/home/sidali-dev/phd/FMS/uploaded_files/'
   allowed_file_types: ['.txt', '.pdf', '.doc', '.docx', '.rtf']
