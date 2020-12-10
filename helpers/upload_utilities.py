@@ -26,10 +26,12 @@ def verify_file_type(file_name):
 
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
-        text = textract.process(hp.files.uploaded_files_folder + file_name)
+        text = textract.process(hp.files.uploaded_files_folder + 
+                                file_name)
+        text = text.decode("utf-8")
         file = open(hp.files.treated_files_folder + 
                     file_name.split('.')[0] + 
-                    hp.files.standard_file_type, "w") 
+                    hp.files.standard_file_type, "w")
         file.write(str(text)) 
         file.close()
     else :
