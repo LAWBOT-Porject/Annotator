@@ -12,7 +12,8 @@
         <div class="files-list">
             <ul>
                 {% for file in files %}
-                <li data-link="{{root_path}}{{file}}" class="file-link">
+                <li data-link="read/{{file}}" class="file-link">
+                    <!-- <li data-link="{{root_path}}/{{file}}" class="file-link"> -->
                     {{file}}
                 </li>
                 {% endfor %}

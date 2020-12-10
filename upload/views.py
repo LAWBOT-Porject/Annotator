@@ -3,7 +3,8 @@ from .forms import UploadFileForm
 from django.shortcuts import render
 from helpers.upload_utilities import (
     handle_uploaded_file,
-    verify_file_type
+    verify_file_type,
+    convert_to_txt
     )
 
 # Upload view
@@ -19,6 +20,7 @@ def upload_view(request, *args, **kwargs):
                 if verify_file_type(f.name):
                     # Save the file only if its extention is allowed
                     handle_uploaded_file(f, f.name)
+                    convert_to_txt(f.name)
                 else :
                     # Otherwise remove it from the uploaded files list
                     unallowed_files += 1

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from static_pages.views import home_view, about_view
+from annotate.views import read_file
 
 urlpatterns = [
     # main pages routing
@@ -29,4 +30,5 @@ urlpatterns = [
     path('annotate/', include('annotate.urls')),
     
     path('admin/', admin.site.urls),
+    # path('<path:file>', read_file,name="file_display"),
 ]

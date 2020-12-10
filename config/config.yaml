@@ -5,3 +5,4 @@ files:
   uploaded_files_folder: '/home/sidali-dev/phd/FMS/uploaded_files/'
   treated_files_folder: '/home/sidali-dev/phd/FMS/treated_files/'
   allowed_file_types: ['.txt', '.pdf', '.doc', '.docx', '.rtf']
+  standard_file_type: '.txt'
