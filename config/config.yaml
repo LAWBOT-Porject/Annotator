@@ -6,3 +6,5 @@ files:
   treated_files_folder: '/home/sidali-dev/phd/FMS/treated_files/'
   allowed_file_types: ['.txt', '.pdf', '.doc', '.docx', '.rtf']
   standard_file_type: '.txt'
+  fr_accented_letters: 'éèêëàâîïôùûüÿç'
+  equivalant_letters: 'eeeeaaiiouuuyc'

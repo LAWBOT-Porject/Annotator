@@ -27,7 +27,7 @@ def verify_file_type(file_name):
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(hp.files.uploaded_files_folder + 
-                                file_name)
+                                file_name, errors="ignore")
         text = text.decode("utf-8")
         file = open(hp.files.treated_files_folder + 
                     file_name.split('.')[0] + 
@@ -35,4 +35,19 @@ def convert_to_txt(file_name):
         file.write(str(text)) 
         file.close()
     else :
-        copyfile(hp.files.uploaded_files_folder + file_name, hp.files.treated_files_folder + file_name)
+        copyfile(hp.files.uploaded_files_folder + 
+        file_name, hp.files.treated_files_folder + 
+        file_name)
+
+def transform_to_standard_chars(raw_text):
+    translation_table = str.maketrans(hp.files.fr_accented_letters,
+                                    hp.files.equivalant_letters)
+    raw_text = raw_text.translate(translation_table)
+    raw_text = raw_text.replace('æ', 'ae')
+    raw_text = raw_text.replace('œ', 'oe')
+    raw_text = raw_text.lower()
+    #Second translation to convert Captial accented letters
+    raw_text = raw_text.translate(translation_table)
+    raw_text = raw_text.replace('æ', 'ae')
+    transformed_text = raw_text.replace('œ', 'oe')
+    return transformed_text
