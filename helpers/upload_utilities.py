@@ -24,6 +24,28 @@ def allow_file_types():
 def verify_file_type(file_name):
     return '.' + file_name.split('.')[-1] in hp.files.allowed_file_types
 
+def transform_to_standard_chars(raw_text):
+    translation_table = str.maketrans(hp.files.fr_accented_letters,
+                                    hp.files.equivalant_letters)
+    raw_text = raw_text.translate(translation_table)
+    raw_text = raw_text.replace('æ', 'ae')
+    raw_text = raw_text.replace('œ', 'oe')
+    raw_text = raw_text.lower()
+    #Second translation to convert Captial accented letters
+    raw_text = raw_text.translate(translation_table)
+    raw_text = raw_text.replace('æ', 'ae')
+    transformed_text = raw_text.replace('œ', 'oe')
+    return transformed_text
+
+def search_city(raw_text, cities_file_path):
+    raw_text = transform_to_standard_chars(raw_text)
+    with open(cities_file_path, 'r') as f:
+        for line in f:
+            city = raw_text.find(line)
+            if (city != -1):
+                return line.replace('\n', '')
+        return "city_not_found"
+
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(hp.files.uploaded_files_folder + 
@@ -38,16 +60,3 @@ def convert_to_txt(file_name):
         copyfile(hp.files.uploaded_files_folder + 
         file_name, hp.files.treated_files_folder + 
         file_name)
-
-def transform_to_standard_chars(raw_text):
-    translation_table = str.maketrans(hp.files.fr_accented_letters,
-                                    hp.files.equivalant_letters)
-    raw_text = raw_text.translate(translation_table)
-    raw_text = raw_text.replace('æ', 'ae')
-    raw_text = raw_text.replace('œ', 'oe')
-    raw_text = raw_text.lower()
-    #Second translation to convert Captial accented letters
-    raw_text = raw_text.translate(translation_table)
-    raw_text = raw_text.replace('æ', 'ae')
-    transformed_text = raw_text.replace('œ', 'oe')
-    return transformed_text

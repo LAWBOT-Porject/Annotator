@@ -6,5 +6,8 @@ files:
   treated_files_folder: '/home/sidali-dev/phd/FMS/treated_files/'
   allowed_file_types: ['.txt', '.pdf', '.doc', '.docx', '.rtf']
   standard_file_type: '.txt'
+  static_data_folder: '/home/sidali-dev/phd/FMS/static_data/'
+  cities_file_name: 'fr_cities_tranformed.txt'
+  juridictions_file_name: 'juridictions.txt'
   fr_accented_letters: 'éèêëàâîïôùûüÿç'
   equivalant_letters: 'eeeeaaiiouuuyc'
