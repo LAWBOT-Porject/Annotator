@@ -46,6 +46,15 @@ def search_city(raw_text, cities_file_path):
                 return line.replace('\n', '')
         return "city_not_found"
 
+def search_juridiction(raw_text, juridictions_file_path):
+    raw_text = transform_to_standard_chars(raw_text)
+    with open(juridictions_file_path, 'r') as f:
+        for line in f:
+            city = raw_text.find(line)
+            if (city != -1):
+                return line.replace('\n', '')
+        return "juridiction_not_found"
+
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(hp.files.uploaded_files_folder + 
