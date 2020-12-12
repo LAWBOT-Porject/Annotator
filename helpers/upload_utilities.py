@@ -10,6 +10,7 @@ This file can also be imported as a module and contains the following functions:
 
 from config.hparam import hparam as hp
 import textract
+import re
 from shutil import copyfile
 
 
@@ -44,7 +45,7 @@ def search_city(raw_text, cities_file_path):
             city = raw_text.find(line)
             if (city != -1):
                 return line.replace('\n', '')
-        return "city_not_found"
+        return 'city_not_found'
 
 def search_juridiction(raw_text, juridictions_file_path):
     raw_text = transform_to_standard_chars(raw_text)
@@ -53,7 +54,19 @@ def search_juridiction(raw_text, juridictions_file_path):
             city = raw_text.find(line)
             if (city != -1):
                 return line.replace('\n', '')
-        return "juridiction_not_found"
+        return 'juridiction_not_found'
+
+def search_reference(raw_text):
+    raw_text = transform_to_standard_chars(raw_text)
+    try:
+        reference = re.findall(r'\b[0-9]{2}[\/]?[0-9]{5}[\.]?',
+							raw_text)[0]
+    except: reference = ''
+
+    if reference != '':
+       return str(int(''.join(reference.split('/'))[:7]))
+    else :
+        return 'reference_not_found'
 
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
