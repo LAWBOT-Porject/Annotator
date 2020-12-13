@@ -44,17 +44,24 @@ def search_city(raw_text, cities_file_path):
         for line in f:
             city = raw_text.find(line)
             if (city != -1):
-                return line.replace('\n', '')
+                return line.replace('\n', '')[:3].upper()
         return 'city_not_found'
 
 def search_juridiction(raw_text, juridictions_file_path):
     raw_text = transform_to_standard_chars(raw_text)
     with open(juridictions_file_path, 'r') as f:
         for line in f:
-            city = raw_text.find(line)
-            if (city != -1):
-                return line.replace('\n', '')
+            juridiction = raw_text.find(line)
+            if (juridiction != -1):
+                return abbreviate_juridiction(line.replace('\n', ''))
         return 'juridiction_not_found'
+
+def abbreviate_juridiction(in_juridiction):
+    for dic in hp.files.juridictions_abbreviations :
+        for key in dic:
+            if (in_juridiction == key):
+                return dic[key]
+    return 'juridiction_abbreviation_not_found'
 
 def search_reference(raw_text):
     raw_text = transform_to_standard_chars(raw_text)
@@ -73,12 +80,36 @@ def convert_to_txt(file_name):
         text = textract.process(hp.files.uploaded_files_folder + 
                                 file_name, errors="ignore")
         text = text.decode("utf-8")
+        search_text = str(text)[:200]
+        print('######## 1')
+        juridiction = search_juridiction(search_text, hp.files.static_data_folder 
+                                                    + hp.files.juridictions_file_name)
+        print('######## 2')
+        city = search_city(search_text, hp.files.static_data_folder 
+                                                    + hp.files.cities_file_name)
+        print('######## 3')
+        reference = search_reference(search_text)
+        print('######## 4')
+        new_file_name = juridiction + city + reference
         file = open(hp.files.treated_files_folder + 
-                    file_name.split('.')[0] + 
+                    #file_name.split('.')[0] +
+                    new_file_name + 
                     hp.files.standard_file_type, "w")
         file.write(str(text)) 
         file.close()
     else :
-        copyfile(hp.files.uploaded_files_folder + 
-        file_name, hp.files.treated_files_folder + 
-        file_name)
+        with open(hp.files.uploaded_files_folder + file_name, 'r') as file:
+            text = file.read()
+            search_text = str(text)[:200]
+            print('######## 1')
+            juridiction = search_juridiction(search_text, hp.files.static_data_folder 
+                                                        + hp.files.juridictions_file_name)
+            print('######## 2')
+            city = search_city(search_text, hp.files.static_data_folder 
+                                                        + hp.files.cities_file_name)
+            print('######## 3')
+            reference = search_reference(search_text)
+            print('######## 4')
+            new_file_name = juridiction + city + reference + hp.files.standard_file_type
+            copyfile(hp.files.uploaded_files_folder + 
+            file_name, hp.files.treated_files_folder + new_file_name)

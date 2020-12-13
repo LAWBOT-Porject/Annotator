@@ -11,3 +11,13 @@ files:
   juridictions_file_name: 'juridictions.txt'
   fr_accented_letters: 'éèêëàâîïôùûüÿç'
   equivalant_letters: 'eeeeaaiiouuuyc'
+  juridictions_abbreviations: [
+                               {"cour d'appel": "CAPP"}, 
+                               {"cour de cassation": "CCAS"},
+                               {"tribunal de grande instance": "TGIN"},
+                               {"tribunal de commerce": "TCOM"},
+                               {"tribunal administratif": "TADM"},
+                               {"cour administrative d'appel": "CADM"},
+                               {"tribunal d'instance": "TINS"},
+                               {"conseil constitutionnel": "CONS"}
+                               ]
