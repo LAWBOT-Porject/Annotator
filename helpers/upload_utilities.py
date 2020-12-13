@@ -45,18 +45,20 @@ def search_city(raw_text, cities_file_path):
     raw_text = transform_to_standard_chars(raw_text)
     with open(cities_file_path, 'r') as f:
         for line in f:
+            line = line.replace('\n', '')
             city = raw_text.find(line)
             if (city != -1):
-                return line.replace('\n', '')[:3].upper()
+                return line[:3].upper()
         return 'city404'
 
 def search_juridiction(raw_text, juridictions_file_path):
     raw_text = transform_to_standard_chars(raw_text)
     with open(juridictions_file_path, 'r') as f:
         for line in f:
+            line = line.replace('\n', '')
             juridiction = raw_text.find(line)
             if (juridiction != -1):
-                return abbreviate_juridiction(line.replace('\n', ''))
+                return abbreviate_juridiction(line)
         return 'jurid404'
 
 def abbreviate_juridiction(in_juridiction):
