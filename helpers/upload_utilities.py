@@ -29,17 +29,13 @@ def verify_file_type(file_name):
                                             
 
 def transform_to_standard_chars(raw_text):
+    raw_text = raw_text.lower()
     translation_table = str.maketrans(hp.files.fr_accented_letters,
                                     hp.files.equivalant_letters)
     raw_text = raw_text.translate(translation_table)
     raw_text = raw_text.replace('æ', 'ae')
     raw_text = raw_text.replace('œ', 'oe')
-    raw_text = raw_text.lower()
-    #Second translation to convert Captial accented letters
-    raw_text = raw_text.translate(translation_table)
-    raw_text = raw_text.replace('æ', 'ae')
-    transformed_text = raw_text.replace('œ', 'oe').lower()
-    return transformed_text
+    return raw_text
 
 def search_city(raw_text, cities_file_path):
     raw_text = transform_to_standard_chars(raw_text)
