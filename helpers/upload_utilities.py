@@ -11,6 +11,7 @@ This file can also be imported as a module and contains the following functions:
 from config.hparam import hparam as hp
 import textract
 import re
+from fuzzywuzzy import fuzz
 from shutil import copyfile
 
 
@@ -38,24 +39,32 @@ def transform_to_standard_chars(raw_text):
     return raw_text
 
 def search_city(raw_text, cities_file_path):
+    token_set_ratio = 0
+    selected_city = ''
     raw_text = transform_to_standard_chars(raw_text)
     with open(cities_file_path, 'r') as f:
         for line in f:
             line = line.replace('\n', '')
-            city = raw_text.find(line)
-            if (city != -1):
-                return line[:3].upper()
-        return 'city404'
+            temp_ratio = fuzz.partial_ratio(line.lower(), raw_text.lower())
+            if (temp_ratio > token_set_ratio):
+                token_set_ratio = temp_ratio
+                selected_city = line
+        print(selected_city)
+        return selected_city[:3].upper()
 
 def search_juridiction(raw_text, juridictions_file_path):
+    token_set_ratio = 0
+    selected_juri = ''
     raw_text = transform_to_standard_chars(raw_text)
     with open(juridictions_file_path, 'r') as f:
         for line in f:
             line = line.replace('\n', '')
-            juridiction = raw_text.find(line)
-            if (juridiction != -1):
-                return abbreviate_juridiction(line)
-        return 'jurid404'
+            temp_ratio = fuzz.token_set_ratio(line, raw_text)
+            if (temp_ratio > token_set_ratio):
+                token_set_ratio = temp_ratio
+                selected_juri = line
+        print(selected_juri)
+        return abbreviate_juridiction(selected_juri)
 
 def abbreviate_juridiction(in_juridiction):
     for dic in hp.files.juridictions_abbreviations :
@@ -74,14 +83,14 @@ def search_reference(raw_text):
     if reference != '':
        return str(int(''.join(reference.split('/'))[:7]))
     else :
-        return 'reference_404'
+        return 'ref404'
 
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(hp.files.uploaded_files_folder + 
                                 file_name, errors="ignore")
         text = text.decode("utf-8")
-        search_text = str(text)[:200]
+        search_text = str(text)[:170]
         juridiction = search_juridiction(search_text, hp.files.static_data_folder 
                                                     + hp.files.juridictions_file_name)
         city = search_city(search_text, hp.files.static_data_folder 
