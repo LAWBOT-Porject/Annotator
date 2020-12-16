@@ -74,23 +74,25 @@ def abbreviate_juridiction(in_juridiction):
     return 'juridabbr404'
 
 def search_reference(raw_text):
-    raw_text = transform_to_standard_chars(raw_text)
-    try:
-        reference = re.findall(r'\b[0-9]{2}[\/]?[0-9]{5}[\.]?',
-							raw_text)[0]
-    except: reference = ''
+    try: # Case 1 : reference is 10 digits
+        reference = re.findall(r'[0-9]{10}', raw_text)[0]
+    except:
+        try : # Case 2 : reference is 8 digits
+            reference = re.findall(r'[0-9]{8}', raw_text)[0]
+        except:
+            try : # Case 3 : reference is 7 digits separated or not by forwarded slach '/'
+                reference = re.findall(r'[0-9]{2}[\/]?[0-9]{5}',raw_text)[0]
+                return ''.join(reference.split('/'))[:7]
+            except : return ''
+    return reference
 
-    if reference != '':
-       return str(int(''.join(reference.split('/'))[:7]))
-    else :
-        return 'ref404'
 
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(hp.files.uploaded_files_folder + 
                                 file_name, errors="ignore")
         text = text.decode("utf-8")
-        search_text = str(text)[:170]
+        search_text = str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
         juridiction = search_juridiction(search_text, hp.files.static_data_folder 
                                                     + hp.files.juridictions_file_name)
         city = search_city(search_text, hp.files.static_data_folder 
