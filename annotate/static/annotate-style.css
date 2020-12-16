@@ -54,3 +54,15 @@ li.selected_file {
     font-weight: 700;
     color: green;
 }
+
+.tools-bar {
+    display: grid;
+    grid-template-columns: 1fr 5fr 4fr;
+    gap: 3px;
+    align-items: center;
+}
+
+.tool-col {
+    border: 1px solid red;
+    height: 95%;
+}
