@@ -1,13 +1,30 @@
 /* Author : Sid Ali MAHMOUDI @ 20/11/2020 */
 
-//Array of list items
+// Array of list items
 const li_tags = document.querySelectorAll('li.file-link');
 
 // File index span
 const file_index = document.getElementById('file-index');
+// Previous icon
+const previous = document.querySelector('.previous');
+// Next icon
+const next = document.querySelector('.next');
+// Index of the current file
+let index = -1;
 
 // Paragraph where to put decision file content
 const p_decision = document.getElementById('file-contents');
+
+const goToNext = () => {
+  index = (index + 1) % lis.length;
+  lis[index].click();
+}
+
+const goToPrevious = () => {
+  index = (index - 1) % lis.length;
+  if (index < 0 ) index = lis.length -1;
+  lis[index].click();
+}
 
 const displyTextFile = (evt) => {
   // Change the index of the current file in the tool pane
@@ -32,9 +49,11 @@ const displyTextFile = (evt) => {
 }
 // Convert Node list (of li) to an Array
 lis = [...li_tags]
-// Constructing the lis content array
+// Construct the lis content array
 let lis_content = []
 lis.forEach( li => lis_content.push(li.innerHTML));
 
 // Attach every li with displayTextFile function
 li_tags.forEach( li => li.addEventListener('click', displyTextFile));
+previous.addEventListener('click', goToPrevious);
+next.addEventListener('click', goToNext);
