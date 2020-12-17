@@ -3,10 +3,15 @@
 //Array of list items
 const li_tags = document.querySelectorAll('li.file-link');
 
+// File index span
+const file_index = document.getElementById('file-index');
+
 // Paragraph where to put decision file content
 const p_decision = document.getElementById('file-contents');
 
 const displyTextFile = (evt) => {
+  // Change the index of the current file in the tool pane
+  file_index.innerText = lis_content.indexOf(evt.target.innerHTML) + 1;
   // Get selected decision file link
   let link = evt.target.getAttribute("data-link");
   // Style the selected file
@@ -25,6 +30,11 @@ const displyTextFile = (evt) => {
     p_decision.innerText = data;
   });  
 }
+// Convert Node list (of li) to an Array
+lis = [...li_tags]
+// Constructing the lis content array
+let lis_content = []
+lis.forEach( li => lis_content.push(li.innerHTML));
 
 // Attach every li with displayTextFile function
 li_tags.forEach( li => li.addEventListener('click', displyTextFile));

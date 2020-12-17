@@ -4,7 +4,15 @@
 <div class="grid-container">
 
     <div class="tools-bar grid-item">
-        <div class="file-ctrl-cl tool-col"></div>
+        <div class="file-ctrl-cl tool-col">
+            <!-- <div class="file-ctrl-ln"> -->
+            <iframe src="../static/Left-chevron-25px.svg" width="25px" height="25px" frameborder="0">
+            </iframe>
+            <p class="file-index-p"> <span id="file-index">0</span> sur {{file_list_len}}</p>
+            <iframe src="../static/Right-chevron-25px.svg" width="25px" height="25px" frameborder="0">
+            </iframe>
+            <!-- </div> -->
+        </div>
         <div class="text-ctrl-cl tool-col"></div>
         <div class="annotation-cl tool-col"></div>
     </div>
@@ -12,7 +20,7 @@
 
         <h3 class="navigation"> Navigation</h3>
         <div class="files-list">
-            <ul>
+            <ul class="files-list">
                 {% for file in files %}
                 <li data-link="read/{{file}}" class="file-link">
                     <!-- <li data-link="{{root_path}}/{{file}}" class="file-link"> -->
