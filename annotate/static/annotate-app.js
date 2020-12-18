@@ -14,6 +14,12 @@ let index = -1;
 
 // Paragraph where to put decision file content
 const p_decision = document.getElementById('file-contents');
+// Zoom out button
+const zoom_out_btn = document.getElementsByClassName('zoom-out');
+// Zoom in button
+const zoom_in_btn = document.getElementsByClassName('zoom-in');
+// Text size input field
+const text_size = document.getElementById('text-size');
 
 const goToNext = () => {
   index = (index + 1) % lis.length;
@@ -45,8 +51,30 @@ const displyTextFile = (evt) => {
   .then(data => {
     // Populate the decision file content to the appropriate p tag
     p_decision.innerText = data;
+    p_decision.style.fontSize = "20px";
   });  
 }
+
+const zoom_out = () => {
+  let a = parseInt(p_decision.style.fontSize.split('p')[0]) -1;
+  p_decision.style.fontSize = String(a) + 'px';
+}
+const zoom_in = () => {
+  let a = parseInt(p_decision.style.fontSize.split('p')[0]) +1;
+  p_decision.style.fontSize = String(a) + 'px';
+}
+const set_size = (evt) => {
+  let value = evt.target.value;
+  if(value < 0) {
+    value = -value;
+    evt.target.value = value;
+  }
+  p_decision.style.fontSize = String(value) + 'px';
+}
+
+text_size.addEventListener('keyup', set_size);
+text_size.addEventListener('change', set_size);
+
 // Convert Node list (of li) to an Array
 lis = [...li_tags]
 // Construct the lis content array

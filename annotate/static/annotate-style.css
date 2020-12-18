@@ -71,9 +71,14 @@ li.selected_file {
     justify-content: center;
 }
 
-/* .file-ctrl-ln {
-} */
+#text-size {
+    margin: 0 .75rem;
+}
 
-/* iframe {
-    border: 1px solid green;
-} */
+button {
+    cursor: pointer;
+}
+
+input#text-size {
+    height: 1.5rem;
+}

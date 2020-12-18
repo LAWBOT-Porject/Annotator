@@ -9,7 +9,16 @@
             <p class="file-index-p"> <span id="file-index">0</span> sur {{file_list_len}}</p>
             <img class="next" src="../static/Right-chevron-25px.svg" width="25px" height="25px">
         </div>
-        <div class="text-ctrl-cl tool-col"></div>
+
+        <div class="text-ctrl-cl tool-col">
+            <button onclick="zoom_out()">
+                <h2 class="zoom-out">T-</h2>
+            </button>
+            <input type="number" min="1" max="60" name="text-size" id="text-size">
+            <button onclick="zoom_in()">
+                <h2 class="zoom-in">T+</h2>
+            </button>
+        </div>
         <div class="annotation-cl tool-col"></div>
     </div>
     <div class="annotate-navigation grid-item">
