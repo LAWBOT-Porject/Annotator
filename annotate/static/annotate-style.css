@@ -1,84 +1,92 @@
-.grid-container{
-    height: 90vh;
-    /* border: 4px solid red; */
-    width: 99%;
-    margin: 0 auto;
-    overflow: hidden;
-    display: grid;
-    grid-template-areas:    "tools-bar tools-bar tools-bar "
+.grid-container {
+  height: 90vh;
+  /* border: 4px solid red; */
+  width: 99%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: grid;
+  grid-template-areas:
+    "tools-bar tools-bar tools-bar "
     "annotate-navigation decision-container annotation-container";
-    grid-template-columns: 1fr 5fr 4fr;
-    grid-template-rows: 1fr 10fr;
-    gap: 1px;
-    
+  grid-template-columns: 1fr 5fr 4fr;
+  grid-template-rows: 1fr 10fr;
+  gap: 1px;
 }
 
 .grid-item {
-    /* place-self: space-evenly center; */
-    /* align-self: stretch; */
-    /* padding: 20px; */
-    text-align: center;
-    border: 2px solid green;
-    background-color: rgb(197, 211, 214);
+  /* place-self: space-evenly center; */
+  /* align-self: stretch; */
+  /* padding: 20px; */
+  text-align: center;
+  border: 2px solid green;
+  background-color: rgb(197, 211, 214);
 }
 
 .tools-bar {
-    grid-area: tools-bar;
+  grid-area: tools-bar;
 }
 .annotate-navigation {
-    grid-area: annotate-navigation;
+  grid-area: annotate-navigation;
 }
 .decision-container {
-    grid-area: decision-container;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    
-    /* overflow: hidden; */
+  grid-area: decision-container;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+
+  /* overflow: hidden; */
 }
 .annotation-container {
-    grid-area: annotation-container;
+  grid-area: annotation-container;
 }
 
 li.file-link {
-    cursor: pointer;
-    margin-bottom: 4px;
-    padding: 0 1vh;
+  cursor: pointer;
+  margin-bottom: 4px;
+  padding: 0 1vh;
 }
 
 h3.navigation {
-    margin-bottom: 1vh;
+  margin-bottom: 1vh;
 }
 
 /* Specific class for the selected file name */
 li.selected_file {
-    font-weight: 700;
-    color: green;
+  font-weight: 700;
+  color: green;
 }
 
 .tools-bar {
-    display: grid;
-    grid-template-columns: 1fr 5fr 4fr;
-    gap: 3px;
-    align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 5fr 4fr;
+  gap: 3px;
+  align-items: center;
 }
 
 .tool-col {
-    border: 1px solid red;
-    height: 95%;
-    display: flex;
-    /* flex-direction: column; */
-    align-items: center;
-    justify-content: center;
+  border: 1px solid red;
+  height: 95%;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
 }
 
 #text-size {
-    margin: 0 .75rem;
+  margin: 0 0.75rem;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
+input {
+  height: 1.75rem;
+  font-size: 1.5rem;
+}
+
+input#text-search {
+  margin-left: 11vh;
+}
 input#text-size {
-    height: 1.5rem;
+  width: 7vh;
 }
