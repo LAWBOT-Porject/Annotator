@@ -14,12 +14,15 @@ let index = -1;
 
 // Paragraph where to put decision file content
 const p_decision = document.getElementById("file-contents");
+let text = "";
 // Zoom out button
 const zoom_out_btn = document.getElementsByClassName("zoom-out");
 // Zoom in button
 const zoom_in_btn = document.getElementsByClassName("zoom-in");
 // Text size input field
 const text_size = document.getElementById("text-size");
+// Search input field
+const searchBar = document.getElementById("text-search");
 
 const goToNext = () => {
   index = (index + 1) % lis.length;
@@ -52,7 +55,21 @@ const displyTextFile = (evt) => {
       // Populate the decision file content to the appropriate p tag
       p_decision.innerText = data;
       p_decision.style.fontSize = "20px";
+      text = data;
     });
+};
+
+const highlightSearch = (evt) => {
+  let regex = evt.target.value;
+  console.log(text);
+  // Erase all previous highlights if clear is clicked
+  if (regex == "") {
+    p_decision.innerText = text;
+  }
+  p_decision.innerHTML = text.replaceAll(
+    regex,
+    '<span class = "highlighted">' + evt.target.value + "</span>"
+  );
 };
 
 const zoom_out = () => {
@@ -74,6 +91,8 @@ const set_size = (evt) => {
 
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
+// searchBar.addEventListener("keyup", highlightSearch);
+searchBar.addEventListener("search", highlightSearch);
 
 // Convert Node list (of li) to an Array
 lis = [...li_tags];

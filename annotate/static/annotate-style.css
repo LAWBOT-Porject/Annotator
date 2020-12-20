@@ -90,3 +90,7 @@ input#text-search {
 input#text-size {
   width: 7vh;
 }
+
+.highlighted {
+  background-color: yellow;
+}
