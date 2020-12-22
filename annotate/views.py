@@ -10,7 +10,8 @@ def annotate_view(request, *args, **kwargs):
     files = []
     for (dirpath, dirnames, filenames) in walk(hp.files.treated_files_folder):
         files.extend(filenames)
-    return render(request, 'annotate.html', {'files' : files, 
+    return render(request, 'annotate.html', {'files' : sorted(files), 
+                                              'file_list_len': len(files),
                                             # 'root_path': settings.FILES_DIR})
                                              'root_path': hp.files.treated_files_folder})
 

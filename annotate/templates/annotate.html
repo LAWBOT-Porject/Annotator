@@ -4,13 +4,32 @@
 <div class="grid-container">
 
     <div class="tools-bar grid-item">
-        <p>tools : zoom in/out, copy text parts ...</p>
+        <div class="file-ctrl-cl tool-col">
+            <img class="previous" src="../static/Left-chevron-25px.svg" width="25px" height="25px" alt="Précédent">
+            <p class="file-index-p"> <span id="file-index">0</span> sur {{file_list_len}}</p>
+            <img class="next" src="../static/Right-chevron-25px.svg" width="25px" height="25px" alt="Suivant">
+        </div>
+
+        <div class="text-ctrl-cl tool-col">
+            <button onclick="zoom_out()">
+                <h2 class="zoom-out">T-</h2>
+            </button>
+            <input type="number" min="1" max="60" name="text-size" id="text-size">
+            <button onclick="zoom_in()">
+                <h2 class="zoom-in">T+</h2>
+            </button>
+            <input type="search" name="text-search" id="text-search" placeholder="Rechercher un terme" incremental>
+        </div>
+        <div class="annotation-cl tool-col">
+            <img src="../static/add_circle-24px.svg" alt="Ajouter demande">
+            <img src="../static/remove_circle-24px.svg" alt="Supprimer demande">
+        </div>
     </div>
     <div class="annotate-navigation grid-item">
 
         <h3 class="navigation"> Navigation</h3>
         <div class="files-list">
-            <ul>
+            <ul class="files-list">
                 {% for file in files %}
                 <li data-link="read/{{file}}" class="file-link">
                     <!-- <li data-link="{{root_path}}/{{file}}" class="file-link"> -->
