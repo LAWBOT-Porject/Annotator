@@ -1,4 +1,5 @@
-annotator-venv/
+*venv*/
 *__pycache__/
 *files_uploaded/
 config/
+.gitignore
