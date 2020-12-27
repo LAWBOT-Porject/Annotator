@@ -3,3 +3,4 @@
 *files_uploaded/
 config/
 .gitignore
+static/
