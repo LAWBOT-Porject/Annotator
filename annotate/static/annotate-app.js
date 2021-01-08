@@ -89,6 +89,43 @@ const set_size = (evt) => {
   p_decision.style.fontSize = String(value) + "px";
 };
 
+function selectTab(evt) {
+  // Declare all variables
+  let i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  /* tablinks = document.getElementsByClassName("tab-item");
+  for (i = 0; i < tablinks.length; i++) {
+    console.log(tablinks[i].className);
+    tablinks[i].classList.remove('active');
+  } */
+  
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  let li = evt.target.closest('li');
+  // Delete any previous highlited tabs
+  let tabs_ul = document.getElementById('tabs-items');
+  // nodes are the li items
+  let nodes = Array.from( tabs_ul.children );
+  for (i = 0; i < nodes.length; i++) {
+    // for each li item we remove active class from the included button
+    nodes[i].children[0].classList.remove('active');
+  }
+  // Make the clicked button highlited
+  li.children[0].classList.add('active');
+  
+  // Get the index of the clicked item
+  let index = nodes.indexOf( li );
+  let content_div = document.getElementById('tabs-contents');
+  // Display the correspandant tab content
+  content_div.children[index].style.display = "block";
+}
+
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);

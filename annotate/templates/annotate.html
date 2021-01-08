@@ -21,8 +21,26 @@
             <input type="search" name="text-search" id="text-search" placeholder="Rechercher un terme" incremental>
         </div>
         <div class="annotation-cl tool-col">
-            <img src="../static/add_circle-24px.svg" alt="Ajouter demande">
-            <img src="../static/remove_circle-24px.svg" alt="Supprimer demande">
+            <div class="add-remove-tab">
+                <img src="../static/add_circle-24px.svg" alt="Ajouter demande">
+                <img src="../static/remove_circle-24px.svg" alt="Supprimer demande">
+            </div>
+            <div class="tab">
+                <ul id="tabs-items">
+                    <li class="tab-item">
+                        <button onclick="selectTab(event)">
+                            Infos générales</button>
+                    </li>
+                    <li class="tab-item">
+                        <button onclick="selectTab(event)">décision
+                            1</button>
+                    </li>
+                    <li class="tab-item">
+                        <button onclick="selectTab(event)">décision
+                            2</button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="annotate-navigation grid-item">
@@ -43,7 +61,18 @@
         <p id="file-contents">Aucun fichier n'est sélectionné</p>
     </div>
     <div class="annotation-container grid-item">
-        <p>annotator fields</p>
+
+        <div id="tabs-contents">
+            <div class="tab-content">
+                <p id="infos-gene-content">Infos générales content</p>
+            </div>
+            <div class="tab-content">
+                <p id="dec1">décision 1 content</p>
+            </div>
+            <div class="tab-content">
+                <p id="dec2">décision 2 content</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
