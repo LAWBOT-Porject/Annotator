@@ -23,7 +23,7 @@
         <div class="annotation-cl tool-col">
             <div class="add-remove-tab">
                 <img onclick="addDemande()" src="../static/add_circle-24px.svg" alt="Ajouter demande">
-                <img src="../static/remove_circle-24px.svg" alt="Supprimer demande">
+                <img onclick="removeDemande()" src="../static/remove_circle-24px.svg" alt="Supprimer demande">
             </div>
             <div class="tab">
                 <ul id="tabs-items">
@@ -31,7 +31,6 @@
                         <button onclick="selectTab(event)">
                             Infos générales</button>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -56,8 +55,8 @@
     <div class="annotation-container grid-item">
 
         <div id="tabs-contents">
-            <div class="tab-content">
-                <p id="infos-gene-content">Infos générales content</p>
+            <div id="infos" class="tab-content">
+                <p>Infos générales content</p>
             </div>
 
         </div>

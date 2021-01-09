@@ -11,6 +11,8 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 // Tabs items ul container
 const tabs_ul = document.getElementById('tabs-items');
+
+
 // Tabs contents div container
 const content_div = document.getElementById('tabs-contents');
 
@@ -110,8 +112,9 @@ const selectTab = evt => {
   let li = evt.target.closest('li');
 
   // Delete any previous highlited tabs
-  // nodes are the li items
-  let nodes = Array.from( tabs_ul.children );
+  // nodes are the li items of tabs
+  let nodes = Array.from(tabs_ul.children);
+
   for (i = 0; i < nodes.length; i++) {
     // for each li item we remove active class from the included button
     nodes[i].children[0].classList.remove('active');
@@ -123,6 +126,7 @@ const selectTab = evt => {
   let index = nodes.indexOf( li );
   
   // Display the correspandant tab content
+  //console.log(index);
   content_div.children[index].style.display = "block";
 }
 // convert html string to HTML node
@@ -143,7 +147,7 @@ const addDemande = () => {
   tabs_ul.appendChild(tabLi);
 
   let contentDiv = htmlToElement('<div class="tab-content"></div>');
-  let contentP = htmlToElement('<p> contenu de demande' + idx + '</p>');
+  let contentP = htmlToElement('<p>contenu de demande ' + idx + '</p>');
   contentDiv.appendChild(contentP);
   contentDiv.style.display = 'none';
   content_div.appendChild(contentDiv);
@@ -151,6 +155,46 @@ const addDemande = () => {
   tabBtn.click();
 }
 
+const removeDemande = () => {
+  // Get the index of the selected tab
+  index = -1;
+  // nodes are the li items of tabs
+  let nodes = Array.from(tabs_ul.children);
+  for (i = 0; i < nodes.length; i++) {
+    // for each li item we remove active class from the included button
+  if(nodes[i].children[0].classList.contains('active')){
+      index = i;
+      break;
+    }
+  }
+  if (index == -1 || index == 0) {
+    alert('Séléctionnes une demande pour pouvoir supprimer!');
+    return;
+  }
+  //console.log(tabs_ul.childNodes[0]);
+  tabs_ul.removeChild(tabs_ul.children[index]);
+  content_div.removeChild(content_div.children[index]);
+  tabs_index --;
+  // tab nodes must be updated
+  nodes = Array.from(tabs_ul.children);
+  for (let index = 0; index < nodes.length; index++) {
+    const tab_btn = nodes[index].children[0];
+    if (tab_btn.hasAttribute('id')) {
+      tab_btn.id = parseInt(index);
+      tab_btn.innerText = 'demande ' + tab_btn.id;
+    }
+  }
+
+  // content nodes can be updated eventually
+  content_nodes = Array.from(content_div.children);
+  for (let index = 0; index < content_nodes.length; index++) {
+    if (!content_nodes[index].hasAttribute('id')) {
+      const content = content_nodes[index].children[0];
+      content.innerText = 'contenu de demande ' + parseInt(index);
+    }
+  }
+  
+}
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);
