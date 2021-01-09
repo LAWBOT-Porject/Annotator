@@ -9,8 +9,15 @@ const file_index = document.getElementById("file-index");
 const previous = document.querySelector(".previous");
 // Next icon
 const next = document.querySelector(".next");
+// Tabs items ul container
+const tabs_ul = document.getElementById('tabs-items');
+// Tabs contents div container
+const content_div = document.getElementById('tabs-contents');
+
 // Index of the current file
 let index = -1;
+// Size of decision tabs
+let tabs_index = 0;
 
 // Paragraph where to put decision file content
 const p_decision = document.getElementById("file-contents");
@@ -89,27 +96,20 @@ const set_size = (evt) => {
   p_decision.style.fontSize = String(value) + "px";
 };
 
-function selectTab(evt) {
+const selectTab = evt => {
   // Declare all variables
-  let i, tabcontent, tablinks;
+  let i, tabcontent;
 
   // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tab-content");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
-
-  // Get all elements with class="tablinks" and remove the class "active"
-  /* tablinks = document.getElementsByClassName("tab-item");
-  for (i = 0; i < tablinks.length; i++) {
-    console.log(tablinks[i].className);
-    tablinks[i].classList.remove('active');
-  } */
   
   // Show the current tab, and add an "active" class to the button that opened the tab
   let li = evt.target.closest('li');
+
   // Delete any previous highlited tabs
-  let tabs_ul = document.getElementById('tabs-items');
   // nodes are the li items
   let nodes = Array.from( tabs_ul.children );
   for (i = 0; i < nodes.length; i++) {
@@ -121,9 +121,34 @@ function selectTab(evt) {
   
   // Get the index of the clicked item
   let index = nodes.indexOf( li );
-  let content_div = document.getElementById('tabs-contents');
+  
   // Display the correspandant tab content
   content_div.children[index].style.display = "block";
+}
+// convert html string to HTML node
+const htmlToElement = html =>  {
+  let template = document.createElement('template');
+  html = html.trim(); // Never return a text node of whitespace as the result
+  template.innerHTML = html;
+  return template.content.firstChild;
+}
+// create a new demande tab
+const addDemande = () => {
+  tabs_index ++;
+  idx = parseInt(tabs_index);
+  let decisionTabTxt = 'demande ' + idx;
+  let tabBtn = htmlToElement('<button id="'+idx+'"  onclick="selectTab(event)">'+ decisionTabTxt+'</button>');
+  let tabLi  = htmlToElement('<li class="tab-item"></li>');
+  tabLi.appendChild(tabBtn);
+  tabs_ul.appendChild(tabLi);
+
+  let contentDiv = htmlToElement('<div class="tab-content"></div>');
+  let contentP = htmlToElement('<p> contenu de demande' + idx + '</p>');
+  contentDiv.appendChild(contentP);
+  contentDiv.style.display = 'none';
+  content_div.appendChild(contentDiv);
+  
+  tabBtn.click();
 }
 
 text_size.addEventListener("keyup", set_size);
