@@ -3,7 +3,7 @@
   /* border: 4px solid red; */
   width: 99%;
   margin: 0 auto;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: grid;
   grid-template-areas:
     "tools-bar tools-bar tools-bar "
@@ -57,18 +57,29 @@ li.selected_file {
 
 .tools-bar {
   display: grid;
-  grid-template-columns: 1fr 5fr 4fr;
+  grid-template-columns: 1fr 2fr 8fr;
   gap: 3px;
   align-items: center;
 }
 
 .tool-col {
-  border: 1px solid rgb(255, 157, 0);
+  /* border: 1px solid rgb(72, 255, 0); */
   height: 95%;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
-  justify-content: center;
+  justify-content: right;
+  
+  overflow-y: hidden;
+}
+
+.file-ctrl-cl.tool-col {
+overflow: hidden;
+margin: 0 auto;
+}
+.text-ctrl-cl.tool-col {
+overflow: hidden;
+margin: 0 auto;
 }
 
 #text-size {
@@ -81,14 +92,14 @@ button {
 
 input {
   height: 1.75rem;
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
 }
 
 input#text-search {
-  margin-left: 11vh;
+  margin-left: 2vh;
 }
 input#text-size {
-  width: 7vh;
+  width: 5vh;
 }
 
 .highlighted {
@@ -97,11 +108,11 @@ input#text-size {
 
 .tab {
   display: flex;
-  width: 95%;
-  overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
+  overflow-x: scroll;
 }
+
 
 .tab button {
   background-color: inherit;
