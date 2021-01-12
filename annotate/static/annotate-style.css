@@ -155,3 +155,6 @@ input#text-size {
   flex-direction: column;
   justify-content: space-around;
 }
+ .cached {
+   display: none;
+ }

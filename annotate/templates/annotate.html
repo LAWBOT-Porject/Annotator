@@ -56,7 +56,22 @@
 
         <div id="tabs-contents">
             <div id="infos" class="tab-content">
-                <p>Infos générales content</p>
+
+                <form action="/annotate/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{infos.as_p}}
+                    <button type="submit"
+                        style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Sauvgarder</button>
+                </form>
+                <div class="cached t">
+                    <form action="/annotate/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{decision.as_p}}
+                        <p>hrrrr</p>
+                        <button type="submit"
+                            style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Save</button>
+                    </form>
+                </div>
             </div>
 
         </div>

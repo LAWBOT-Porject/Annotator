@@ -2,16 +2,21 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
 from os import walk
+from .forms import decisionInfo,decisionForm
 from config.hparam import hparam as hp
 #from django.conf import settings
 
 
 def annotate_view(request, *args, **kwargs):
     files = []
+    infos = decisionInfo()#auto_id=False)
+    decision= decisionForm()
     for (dirpath, dirnames, filenames) in walk(hp.files.treated_files_folder):
         files.extend(filenames)
     return render(request, 'annotate.html', {'files' : sorted(files), 
                                               'file_list_len': len(files),
+                                               'infos': infos,
+                                               'decision': decision,
                                             # 'root_path': settings.FILES_DIR})
                                              'root_path': hp.files.treated_files_folder})
 

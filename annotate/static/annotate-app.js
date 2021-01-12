@@ -11,7 +11,7 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 // Tabs items ul container
 const tabs_ul = document.getElementById('tabs-items');
-
+const decisionForm = document.querySelector('.cached');
 
 // Tabs contents div container
 const content_div = document.getElementById('tabs-contents');
@@ -101,12 +101,12 @@ const set_size = (evt) => {
 const selectTab = evt => {
   // Declare all variables
   let i, tabcontent;
-
-  // Get all elements with class="tabcontent" and hide them
+  
+  // Get all elements with class="tab-content" and hide them
   tabcontent = document.getElementsByClassName("tab-content");
-  for (i = 0; i < tabcontent.length; i++) {
+  /* for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
-  }
+  } */
   
   // Show the current tab, and add an "active" class to the button that opened the tab
   let li = evt.target.closest('li');
@@ -128,6 +128,7 @@ const selectTab = evt => {
   // Display the correspandant tab content
   //console.log(index);
   content_div.children[index].style.display = "block";
+  console.log(content_div.children[index]);
 }
 // convert html string to HTML node
 const htmlToElement = html =>  {
@@ -136,23 +137,40 @@ const htmlToElement = html =>  {
   template.innerHTML = html;
   return template.content.firstChild;
 }
+
+const htmlToElements = html => {
+  let template = document.createElement('template');
+  template.innerHTML = html;
+  return template.content.childNodes;
+
+}
 // create a new demande tab
 const addDemande = () => {
   tabs_index ++;
+  // Add a new tab
   idx = parseInt(tabs_index);
   let decisionTabTxt = 'demande ' + idx;
   let tabBtn = htmlToElement('<button id="'+idx+'"  onclick="selectTab(event)">'+ decisionTabTxt+'</button>');
   let tabLi  = htmlToElement('<li class="tab-item"></li>');
   tabLi.appendChild(tabBtn);
   tabs_ul.appendChild(tabLi);
-
+  // Add the tab content
   let contentDiv = htmlToElement('<div class="tab-content"></div>');
-  let contentP = htmlToElement('<p>contenu de demande ' + idx + '</p>');
-  contentDiv.appendChild(contentP);
-  contentDiv.style.display = 'none';
+  /* let contentP = htmlToElement('<p>contenu de demande ' + idx + '</p>');
+  contentDiv.appendChild(contentP); */
+  let decision = htmlToElements(decisionForm);
+  //contentDiv.append(Array.from(decision));
+  decisionForm.classList.remove('cached');
+  //console.log(decisionForm);
+  //content_div.append(decisionForm);
+  contentDiv.append(decisionForm);
+  //console.log('here6');
+  //contentDiv.style.display = 'none';
+  console.log('fin')
   content_div.appendChild(contentDiv);
   
   tabBtn.click();
+  //console.log(decisionForm);
 }
 
 const removeDemande = () => {
