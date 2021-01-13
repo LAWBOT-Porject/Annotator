@@ -104,9 +104,9 @@ const selectTab = evt => {
   
   // Get all elements with class="tab-content" and hide them
   tabcontent = document.getElementsByClassName("tab-content");
-  /* for (i = 0; i < tabcontent.length; i++) {
+  for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
-  } */
+  }
   
   // Show the current tab, and add an "active" class to the button that opened the tab
   let li = evt.target.closest('li');
@@ -123,12 +123,14 @@ const selectTab = evt => {
   li.children[0].classList.add('active');
   
   // Get the index of the clicked item
-  let index = nodes.indexOf( li );
+  let index = parseInt(nodes.indexOf( li ));
   
   // Display the correspandant tab content
   //console.log(index);
-  content_div.children[index].style.display = "block";
-  console.log(content_div.children[index]);
+  let selectedTab = document.getElementById('decision-'+ index) || document.getElementById('infos');
+
+  selectedTab.style.display = "block";
+ // console.log(content_div.children[index]);
 }
 // convert html string to HTML node
 const htmlToElement = html =>  {
@@ -155,18 +157,32 @@ const addDemande = () => {
   tabLi.appendChild(tabBtn);
   tabs_ul.appendChild(tabLi);
   // Add the tab content
-  let contentDiv = htmlToElement('<div class="tab-content"></div>');
+  let contentDiv = htmlToElement('<div id="decision-'+idx+'"  class="tab-content"></div>');
+  let decisionForm = htmlToElement('<form action="/annotate/" method="POST" enctype="multipart/form-data">{{% csrf_token %}}</form>');
+  //let form = '';
+  fetch('new_decision_form')
+    .then((response) => response.text())
+    .then((data) => {
+      // Populate the decision file content to the appropriate p tag
+      decisionForm.append(htmlToElement(data));
+      //form = data;
+    });
+    //decisionForm.appendChild(form);
   /* let contentP = htmlToElement('<p>contenu de demande ' + idx + '</p>');
   contentDiv.appendChild(contentP); */
-  let decision = htmlToElements(decisionForm);
+  
   //contentDiv.append(Array.from(decision));
-  decisionForm.classList.remove('cached');
+  //decisionForm.classList.remove('cached');
   //console.log(decisionForm);
   //content_div.append(decisionForm);
   contentDiv.append(decisionForm);
+  
   //console.log('here6');
   //contentDiv.style.display = 'none';
-  console.log('fin')
+  for (let index = 0; index < contentDiv.length; index++) {
+    console.log(contentDiv[index]);
+}
+console.log('hhh');
   content_div.appendChild(contentDiv);
   
   tabBtn.click();

@@ -63,7 +63,7 @@
                     <button type="submit"
                         style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Sauvgarder</button>
                 </form>
-                <div class="cached t">
+                <!-- <div class="cached t">
                     <form action="/annotate/" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{decision.as_p}}
@@ -71,19 +71,7 @@
                         <button type="submit"
                             style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Save</button>
                     </form>
-                </div>
-            </div>
-            <div id="tab_navigation">
-                <ul>
-                    {% for tab in tabs %}
-                    <li class="{{ tab.tab_classes|join:' ' }}{% if tab.tab_id == current_tab_id %} active{% endif %}">
-                        <a href="/templates/{{ tab.tab_id }}/" {%if tab.tab_rel %}rel="{{ tab.tab_rel }}" {% endif %}>
-                            {% if tab.tab_counter %}<em>{{ tab.tab_counter }}</em>{% endif %}
-                            {{ tab.tab_label }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
+                </div> -->
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from os import walk
 from .forms import decisionInfo,decisionForm
 from config.hparam import hparam as hp
-from tabination.views import TabView
+
 #from django.conf import settings
 
 
@@ -28,10 +28,6 @@ def read_file(request , file):
     return HttpResponse(file_content)
     #context = {'file_content': file_content}
     #return render(request, "annotate.html", context)
-
-class SpamTab(TabView):
-    _is_tab = True
-    tab_id = 'spam'
-    tab_group = 'main_navigation'
-    tab_label = 'Spam'
-    template_name = 'templates/annotate.html'
+def return_new_decision_form(request):
+    decision= decisionForm()
+    return HttpResponse(decision)

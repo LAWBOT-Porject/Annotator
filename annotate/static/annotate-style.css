@@ -82,6 +82,11 @@ overflow: hidden;
 margin: 0 auto;
 }
 
+.annotation-cl.tool-col {
+  margin-left: 4vh;
+  height: fit-content;
+}
+
 #text-size {
   margin: 0 0.75rem;
 }
