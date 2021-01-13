@@ -158,35 +158,18 @@ const addDemande = () => {
   tabs_ul.appendChild(tabLi);
   // Add the tab content
   let contentDiv = htmlToElement('<div id="decision-'+idx+'"  class="tab-content"></div>');
-  let decisionForm = htmlToElement('<form action="/annotate/" method="POST" enctype="multipart/form-data">{{% csrf_token %}}</form>');
-  //let form = '';
+  let decisionForm = htmlToElement
+  ('<form action="/annotate/" method="POST" enctype="multipart/form-data"></form>');
+  //let csrf = htmlToElement('<input type="hidden" name="_csrf" value="{{% csrf_token %}}" />');
   fetch('new_decision_form')
     .then((response) => response.text())
     .then((data) => {
       // Populate the decision file content to the appropriate p tag
       decisionForm.append(htmlToElement(data));
-      //form = data;
     });
-    //decisionForm.appendChild(form);
-  /* let contentP = htmlToElement('<p>contenu de demande ' + idx + '</p>');
-  contentDiv.appendChild(contentP); */
-  
-  //contentDiv.append(Array.from(decision));
-  //decisionForm.classList.remove('cached');
-  //console.log(decisionForm);
-  //content_div.append(decisionForm);
   contentDiv.append(decisionForm);
-  
-  //console.log('here6');
-  //contentDiv.style.display = 'none';
-  for (let index = 0; index < contentDiv.length; index++) {
-    console.log(contentDiv[index]);
-}
-console.log('hhh');
   content_div.appendChild(contentDiv);
-  
   tabBtn.click();
-  //console.log(decisionForm);
 }
 
 const removeDemande = () => {
@@ -219,13 +202,13 @@ const removeDemande = () => {
     }
   }
 
-  // content nodes can be updated eventually
+  // content node IDs must be updated
   content_nodes = Array.from(content_div.children);
-  for (let index = 0; index < content_nodes.length; index++) {
-    if (!content_nodes[index].hasAttribute('id')) {
-      const content = content_nodes[index].children[0];
-      content.innerText = 'contenu de demande ' + parseInt(index);
+  for (let i = 0; i < content_nodes.length; i++) {
+    if (i !== 0 ) {
+      content_nodes[i].id = 'decision-'+parseInt(i);
     }
+
   }
   
 }
