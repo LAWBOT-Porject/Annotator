@@ -57,9 +57,10 @@
         <div id="tabs-contents">
             <div id="infos" class="tab-content">
 
-                <form action="/annotate/" method="POST" enctype="multipart/form-data">
+                <form action="/annotate/" method="POST">
                     {% csrf_token %}
                     {{infos.as_p}}
+
                     <button type="submit"
                         style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Sauvgarder</button>
                 </form>
