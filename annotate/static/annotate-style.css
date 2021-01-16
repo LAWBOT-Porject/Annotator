@@ -38,6 +38,7 @@
 }
 .annotation-container {
   grid-area: annotation-container;
+  overflow-x: hidden;
 }
 
 li.file-link {
