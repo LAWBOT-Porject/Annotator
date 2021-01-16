@@ -1,7 +1,7 @@
 from django.db import models
 
 class PersonnePhysique(models.Model):
-    nom_personne_ph = models.CharField(max_length=50)
+    nom_personne_ph = models.CharField(max_length=50) #, help_text='Nom')
     position_nom_personne_ph = models.IntegerField()
     prenom_personne_ph = models.CharField(max_length=50)
     position_prenom_personne_ph = models.IntegerField()
@@ -17,6 +17,10 @@ class PersonnePhysique(models.Model):
     pseudo_personne_ph = models.CharField(max_length=50, blank=True)
     sexe_personne_ph = models.BooleanField()
     fonction = models.ForeignKey('Fonction', on_delete=models.CASCADE,)
+    def __str__(self):
+        return ' '.join([self.titre_personne_ph, 
+                        self.nom_personne_ph, 
+                        self.prenom_personne_ph])
 
 class PersonneMorale(models.Model):
     nom_entreprise = models.CharField(max_length=50)
@@ -26,7 +30,6 @@ class PersonneMorale(models.Model):
     numero_NAF = models.CharField(max_length=50, blank=True)
     position_numero_NAF = models.IntegerField()
     pseudo_entreprise = models.CharField(max_length=50, blank=True)
-    sexe_personne_ph = models.BooleanField()
     adresse_entreprise = models.CharField(max_length=255, blank=True)
     position_adresse_entreprise = models.IntegerField()
     code_postale_entreprise = models.ForeignKey('Ville', on_delete=models.CASCADE)
@@ -36,14 +39,14 @@ class Fonction(models.Model):
     nom_fonction = models.CharField(max_length=50)
 
 class Decision(models.Model):
-    texte_decision = models.TextInput()
+    texte_decision = models.TextField()
     numero_rg = models.CharField(max_length=30)
     position_numero_rg = models.IntegerField()
     date_decision = models.DateField(blank=True)
     position_date_decision = models.IntegerField(blank=True)
     chambre = models.CharField(max_length=100, blank=True)
     position_chambre = models.IntegerField()
-    chemin_fichier = models.TextInput(blank=True)
+    chemin_fichier = models.TextField(blank=True)
     juridiction = models.ForeignKey('Juridiction', on_delete=models.CASCADE)
 
 class Juridiction(models.Model):
@@ -54,11 +57,11 @@ class Juridiction(models.Model):
 
 class Demande(models.Model):
     # Pretention, Motifs and dispos
-    pretention = models.TextInput(blank=True)
+    pretention = models.TextField(blank=True)
     position_pretention = models.IntegerField(blank=True)
-    motifs = models.TextInput(blank=True)
+    motifs = models.TextField(blank=True)
     position_motifs = models.IntegerField(blank=True)
-    dispositifs = models.TextInput(blank=True)
+    dispositifs = models.TextField(blank=True)
     position_dispositifs = models.IntegerField(blank=True)
     # Demande
     montant_demande = models.CharField(max_length=50, blank=True)
@@ -82,13 +85,13 @@ class Demande(models.Model):
 
 class CategorieDemande(models.Model):
     noppac = models.CharField(primary_key=True, max_length=255)
-    descriptif_categorie = models.TextInput(blank=True)
-    objet_categorie = models.TextInput(blank=True)
-    normes = models.ManyToManyField(Norme)
+    descriptif_categorie = models.TextField(blank=True)
+    objet_categorie = models.TextField(blank=True)
+    normes = models.ManyToManyField('Norme')
     
 class Norme(models.Model):
-    fondement = models.TextInput(blank=True)
-    texte_norme = models.TextInput(blank=True)
+    fondement = models.TextField(blank=True)
+    texte_norme = models.TextField(blank=True)
     date_debut = models.DateField(blank=True)
     date_fin = models.DateField(blank=True)
     
@@ -117,10 +120,14 @@ class PersonneDecision(models.Model):
 
     position_fonction = models.IntegerField(blank=True)
 
-class DemandePartie(models.Model):
+class PartieDemande(models.Model):
+    class Meta:
+        unique_together = [
+                            ['id_demande', 'id_demandeur']
+                        ]
     id_demande = models.ForeignKey('Demande', on_delete=models.CASCADE)
     id_demandeur = models.ForeignKey('PersonnePhysique', on_delete=models.CASCADE)
-    id_defendeur = models.ForeignKey('PersonnePhysique', on_delete=models.CASCADE)
+    #id_defendeur = models.ForeignKey('PersonnePhysique', on_delete=models.CASCADE)
 
 class Annotateur(models.Model):
     pass

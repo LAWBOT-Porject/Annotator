@@ -59,10 +59,34 @@
 
                 <form action="/annotate/" method="POST">
                     {% csrf_token %}
-                    {{infos.as_p}}
-
-                    <button type="submit"
-                        style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Sauvgarder</button>
+                    <div class="infos-form-content">
+                        <h3>Informations sur l'arrêt</h3>
+                        <div class="infos-row-1">
+                            <input placeholder="Numéro RG" type="text" size="30" required>
+                            <input placeholder="Ville" type="text" size="40" required>
+                        </div>
+                        <div class="infos-row-2">
+                            <input placeholder="Juridiction" size="30" type="text" required>
+                            <input placeholder="Chambre" type="text" required>
+                            <input placeholder="Date" type="date" required>
+                        </div>
+                        <h3>Juge</h3>
+                        <div class="infos-row-3">
+                            <div class="juge-1 juge">
+                                <h4>1.</h4>
+                                <input placeholder="Titre" type="text" size="10" required>
+                                <input placeholder="Nom" type="text" size="25" required>
+                                <input placeholder="Prénom" type="text" size="25" required>
+                                <img id="add-juge-1" onclick="addJuge()" src="../static/add_circle-24px.svg"
+                                    alt="Ajouter juge">
+                                <img id="remove-juge-1" onclick="removeJuge(this)"
+                                    src="../static/remove_circle-24px.svg" alt="Supprimer juge">
+                            </div>
+                        </div>
+                        <!-- {{infos.as_p}}
+                        {{personne.as_p}} -->
+                        <button type="submit">Sauvgarder</button>
+                    </div>
                 </form>
                 <!-- <div class="cached t">
                     <form action="/annotate/" method="POST" enctype="multipart/form-data">

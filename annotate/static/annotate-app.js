@@ -212,6 +212,38 @@ const removeDemande = () => {
   }
   
 }
+let juges = 1;
+const addJuge = () => {
+  let index_juge = parseInt(juges);
+  document.querySelector('#add-juge-'+index_juge).style.display = 'none';
+  document.querySelector('#remove-juge-'+index_juge).style.display = 'none';
+  juges++;
+  index_juge = parseInt(juges);
+  let h3 = htmlToElement('<h4>'+index_juge+'.</h4>');
+  let titre = htmlToElement('<input placeholder="Titre" type="text" size="10" required>');
+  let nom = htmlToElement('<input placeholder="Nom" type="text" size="25" required>');
+  let prenom = htmlToElement('<input placeholder="Prénom" type="text" size="25" required>');
+  let add = htmlToElement('<img id="add-juge-'+index_juge+'" onclick="addJuge()" src="../static/add_circle-24px.svg" alt="Ajouter juge">');
+  let remove = htmlToElement('<img id="remove-juge-'+index_juge+'" onclick="removeJuge(this)" src="../static/remove_circle-24px.svg" alt="Supprimer juge">');
+  let jugeDiv = htmlToElement('<div class="juge-'+index_juge+' juge"></div>');
+  jugeDiv.appendChild(h3);
+  jugeDiv.appendChild(titre);
+  jugeDiv.appendChild(nom);
+  jugeDiv.appendChild(prenom);
+  jugeDiv.appendChild(add);
+  jugeDiv.appendChild(remove);
+  document.querySelector('.infos-row-3').appendChild(jugeDiv);
+}
+
+function removeJuge (e) {
+  if (e.id == 'remove-juge-1') return;
+  let index = parseInt(juges);
+  document.querySelector('.infos-row-3').removeChild(document.querySelector('.juge-'+index));
+  juges--;
+  index = parseInt(juges);
+  document.querySelector('#add-juge-'+index).style.display = 'inline';
+  document.querySelector('#remove-juge-'+index).style.display = 'inline';
+}
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);
