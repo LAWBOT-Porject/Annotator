@@ -214,6 +214,8 @@ const removeDemande = () => {
 }
 let juges = 1;
 const addJuge = () => {
+  // No more than 10 judjes
+  if (juges == 13) return;
   let index_juge = parseInt(juges);
   document.querySelector('#add-juge-'+index_juge).style.display = 'none';
   document.querySelector('#remove-juge-'+index_juge).style.display = 'none';
@@ -244,6 +246,72 @@ function removeJuge (e) {
   document.querySelector('#add-juge-'+index).style.display = 'inline';
   document.querySelector('#remove-juge-'+index).style.display = 'inline';
 }
+
+let parties =1;
+function addPerson() {
+  if (parties == 21) return;
+  let index_parties = parseInt(parties);
+  document.querySelector('.parties-btns-'+index_parties).style.display = 'none';
+  parties++;
+  index_parties = parseInt(parties);
+  let h4 = htmlToElement('<h4>'+index_parties+'.</h4>');
+  let r1 = htmlToElement('<input type="radio" name="physique-morale" id="physique-'+index_parties+'">');
+  let physiqueLabel = htmlToElement('<label for="physique">Personne Physique</label>');
+  let r2 = htmlToElement('<input type="radio" name="physique-morale" id="morale-'+index_parties+'">');
+  let moraleLabel = htmlToElement('<label for="morale">Personne Morale</label>');
+  let add = htmlToElement('<img id="add-person-'+index_parties+'" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne">');
+  let remove = htmlToElement('<img id="remove-person-'+index_parties+'" onclick="removePerson(this)" src="../static/remove_circle-24px.svg" alt="Supprimer personne">');
+  let btnDiv = htmlToElement('<div class="parties-btns-'+index_parties+'"></div>');
+  btnDiv.appendChild(add);
+  btnDiv.appendChild(remove);
+  let typeDiv = htmlToElement('<div class="person-type infos-row"></div>');
+  typeDiv.appendChild(h4);
+  typeDiv.appendChild(r1);
+  typeDiv.appendChild(physiqueLabel);
+  typeDiv.appendChild(r2);
+  typeDiv.appendChild(moraleLabel);
+  typeDiv.appendChild(btnDiv);
+
+  let titre = htmlToElement('<input placeholder="Titre" type="text" size="10" required>');
+  let nom = htmlToElement('<input placeholder="Nom" type="text" size="25" required>');
+  let prenom = htmlToElement('<input placeholder="Prénom" type="text" size="25" required>');
+  let infr1 = htmlToElement('<div class="infos-row"></div>');
+  infr1.appendChild(titre);
+  infr1.appendChild(nom);
+  infr1.appendChild(prenom);
+  
+  let ddn = htmlToElement('<input placeholder="Date de naissance" type="date" required>');
+  let adr1 = htmlToElement('<input placeholder="Adresse" type="text" size="45" required>');
+  let infr2 = htmlToElement('<div class="infos-row"></div>');
+  infr2.appendChild(ddn);
+  infr2.appendChild(adr1);
+  
+  let personPhysique = htmlToElement('<div class="person-physique-'+index_parties+'">');
+  personPhysique.appendChild(infr1);
+  personPhysique.appendChild(infr2);
+  
+  
+  let entrepriseName = htmlToElement('<input placeholder="Nom d\'entreprise" type="text" size="35" required>');
+  let siret = htmlToElement('<input placeholder="Numéro SIRET" type="text" size="35" required>');
+  let naf = htmlToElement('<input placeholder="Numéro NAF" type="text" size="25" required>');
+  let adr2 = htmlToElement('<input placeholder="Adresse" type="text" size="45" required>');
+  let infr3 = htmlToElement('<div class="infos-row"></div>');
+  let infr4 = htmlToElement('<div class="infos-row"></div>');
+  infr3.appendChild(entrepriseName);
+  infr3.appendChild(siret);
+  infr4.appendChild(naf);
+  infr4.appendChild(adr2);
+  let personMorale = htmlToElement('<div class="person-morale-'+index_parties+'">');
+  personMorale.appendChild(infr3);
+  personMorale.appendChild(infr4);
+  
+  let partie = htmlToElement('<div class="partie-'+index_parties+' partie"></div>');
+  partie.appendChild(typeDiv);
+  partie.appendChild(personPhysique);
+  partie.appendChild(personMorale);
+  document.querySelector('.infos-row-4').appendChild(partie);
+}
+
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);

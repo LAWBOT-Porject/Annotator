@@ -93,7 +93,7 @@ margin: 0 auto;
   margin: 0 0.75rem;
 }
 
-button {
+button, input[submit] {
   cursor: pointer;
 }
 
@@ -180,10 +180,11 @@ input#text-size {
  .infos-row-1, .infos-row-3 {
    margin-top:1vh ;
  }
- .infos-row-2 {
-   margin: 3vh 0;
+ .infos-row, .infos-row-1, .infos-row-2, .infos-row-3, .infos-row-4 {
+   margin: 2vh 0;
+   /* border:2px solid #564caf; */
  }
- .infos-row-3 {
+ .infos-row-3, .infos-row-4 {
   width: 100%;
 }
 .juge {
@@ -205,4 +206,17 @@ input#text-size {
   font-weight: 500; 
   font-size: 1.1rem; 
   margin-top: 2vh; 
+}
+
+/* , .sexe-radios */
+.person-type{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  border:2px solid #19e434;
+}
+
+.person-physique, .person-morale {
+  display: none;
 }
