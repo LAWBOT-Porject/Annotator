@@ -4,3 +4,4 @@
 config/
 .gitignore
 static/
+annotate/migrations/

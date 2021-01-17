@@ -255,13 +255,15 @@ function addPerson() {
   parties++;
   index_parties = parseInt(parties);
   let h4 = htmlToElement('<h4>'+index_parties+'.</h4>');
-  let r1 = htmlToElement('<input type="radio" name="physique-morale" id="physique-'+index_parties+'">');
-  let physiqueLabel = htmlToElement('<label for="physique">Personne Physique</label>');
-  let r2 = htmlToElement('<input type="radio" name="physique-morale" id="morale-'+index_parties+'">');
-  let moraleLabel = htmlToElement('<label for="morale">Personne Morale</label>');
+  let r1 = htmlToElement('<input type="radio" name="physique-morale" value="physique" id="physique-'+index_parties+'">');
+  let physiqueLabel = htmlToElement('<label for="physique-'+index_parties+'">Personne Physique</label>');
+  let r2 = htmlToElement('<input type="radio" name="physique-morale" value="morale" id="morale-'+index_parties+'">');
+  let moraleLabel = htmlToElement('<label for="morale-'+index_parties+'">Personne Morale</label>');
   let add = htmlToElement('<img id="add-person-'+index_parties+'" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne">');
   let remove = htmlToElement('<img id="remove-person-'+index_parties+'" onclick="removePerson(this)" src="../static/remove_circle-24px.svg" alt="Supprimer personne">');
   let btnDiv = htmlToElement('<div class="parties-btns-'+index_parties+'"></div>');
+  r1.addEventListener('change', displayPartieForm);
+  r2.addEventListener('change', displayPartieForm);
   btnDiv.appendChild(add);
   btnDiv.appendChild(remove);
   let typeDiv = htmlToElement('<div class="person-type infos-row"></div>');
@@ -312,6 +314,23 @@ function addPerson() {
   document.querySelector('.infos-row-4').appendChild(partie);
 }
 
+const displayPartieForm = function() {
+  let formType = '.';
+  let otherForm = '.';
+  if(this.id.startsWith('physique-')){
+    formType += 'person-physique-';
+    otherForm += 'person-morale-';
+  }
+  if(this.id.startsWith('morale-')){
+    formType += 'person-morale-';
+    otherForm += 'person-physique-';
+  }
+  formType += this.id.split('-')[1];
+  otherForm += this.id.split('-')[1];
+  document.querySelector(formType).style.display = 'block';
+  document.querySelector(otherForm).style.display = 'none';
+}
+
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);
@@ -327,3 +346,5 @@ lis.forEach((li) => lis_content.push(li.innerHTML));
 li_tags.forEach((li) => li.addEventListener("click", displyTextFile));
 previous.addEventListener("click", goToPrevious);
 next.addEventListener("click", goToNext);
+document.getElementById('physique-1').addEventListener('change', displayPartieForm);
+document.getElementById('morale-1').addEventListener('change', displayPartieForm);

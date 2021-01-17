@@ -214,9 +214,9 @@ input#text-size {
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
-  border:2px solid #19e434;
+  /* border:2px solid #19e434; */
 }
 
-.person-physique, .person-morale {
+div[class^="person-physique-"], div[class^="person-morale-"] {
   display: none;
 }
