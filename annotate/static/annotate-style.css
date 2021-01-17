@@ -180,14 +180,15 @@ input#text-size {
  .infos-row-1, .infos-row-3 {
    margin-top:1vh ;
  }
- .infos-row, .infos-row-1, .infos-row-2, .infos-row-3, .infos-row-4 {
+.infos-row-1, .infos-row-2, .infos-row-3, .infos-row-4 {
    margin: 2vh 0;
    /* border:2px solid #564caf; */
  }
  .infos-row-3, .infos-row-4 {
   width: 100%;
 }
-.juge {
+
+.juge, .infos-row {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
