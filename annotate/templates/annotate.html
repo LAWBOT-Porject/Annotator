@@ -79,8 +79,8 @@
                                 <input placeholder="Prénom" type="text" size="25" required>
                                 <img id="add-juge-1" onclick="addJuge()" src="../static/add_circle-24px.svg"
                                     alt="Ajouter juge">
-                                <img id="remove-juge-1" onclick="removeJuge(this)"
-                                    src="../static/remove_circle-24px.svg" alt="Supprimer juge">
+                                <!-- <img id="remove-juge-1" onclick="removeJuge(this)"
+                                    src="../static/remove_circle-24px.svg" alt="Supprimer juge"> -->
                             </div>
                         </div>
                         <h3>Parties</h3>
@@ -92,12 +92,12 @@
                                     <label for="physique-1">Personne Physique</label>
                                     <input type="radio" name="physique-morale" value="morale" id="morale-1">
                                     <label for="morale-1">Personne Morale</label>
-                                    <div class="parties-btns-1">
+                                    <!-- <div class="parties-btns-1">
                                         <img id="add-person-1" onclick="addPerson()" src="../static/add_circle-24px.svg"
                                             alt="Ajouter personne">
                                         <img id="remove-person-1" onclick="removePerson(this)"
                                             src="../static/remove_circle-24px.svg" alt="Supprimer personne">
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="person-physique-1">
                                     <div class="infos-row">
@@ -117,6 +117,48 @@
                                     </div> -->
                                 </div>
                                 <div class="person-morale-1">
+                                    <div class="infos-row">
+                                        <input placeholder="Nom d'entreprise" type="text" size="35" required>
+                                        <input placeholder="Numéro SIRET" type="text" size="35" required>
+                                    </div>
+                                    <div class="infos-row">
+                                        <input placeholder="Numéro NAF" type="text" size="25" required>
+                                        <input placeholder="Adresse" type="text" size="45" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="partie-2 partie">
+                                <div class="person-type infos-row">
+                                    <h4>2.</h4>
+                                    <input type="radio" name="physique-morale" value="physique" id="physique-2">
+                                    <label for="physique-2">Personne Physique</label>
+                                    <input type="radio" name="physique-morale" value="morale" id="morale-2">
+                                    <label for="morale-2">Personne Morale</label>
+                                    <div class="parties-btns-2">
+                                        <img id="add-person-2" onclick="addPerson()" src="../static/add_circle-24px.svg"
+                                            alt="Ajouter personne">
+                                        <!-- <img id="remove-person-2" onclick="removePerson()"
+                                            src="../static/remove_circle-24px.svg" alt="Supprimer personne"> -->
+                                    </div>
+                                </div>
+                                <div class="person-physique-2">
+                                    <div class="infos-row">
+                                        <input placeholder="Titre" type="text" size="10" required>
+                                        <input placeholder="Nom" type="text" size="25" required>
+                                        <input placeholder="Prénom" type="text" size="25" required>
+                                    </div>
+                                    <div class="infos-row">
+                                        <input placeholder="Date de naissance" type="date" required>
+                                        <input placeholder="Adresse" type="text" size="45" required>
+                                    </div>
+                                    <!-- <div class="sexe-radios infos-row">
+                                        <input type="radio" name="homme-femme" id="homme">
+                                        <label for="homme">Homme</label>
+                                        <input type="radio" name="homme-femme" id="femme">
+                                        <label for="femme">Femme</label>
+                                    </div> -->
+                                </div>
+                                <div class="person-morale-2">
                                     <div class="infos-row">
                                         <input placeholder="Nom d'entreprise" type="text" size="35" required>
                                         <input placeholder="Numéro SIRET" type="text" size="35" required>

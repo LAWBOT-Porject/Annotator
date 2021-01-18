@@ -217,8 +217,12 @@ const addJuge = () => {
   // No more than 10 judjes
   if (juges == 13) return;
   let index_juge = parseInt(juges);
-  document.querySelector('#add-juge-'+index_juge).style.display = 'none';
-  document.querySelector('#remove-juge-'+index_juge).style.display = 'none';
+  document.querySelector('#add-juge-'+index_juge).
+                style.display = 'none';
+  if (!(index_juge === 1)) {
+    document.querySelector('#remove-juge-'+index_juge).
+                style.display = 'none';
+  }
   juges++;
   index_juge = parseInt(juges);
   let h3 = htmlToElement('<h4>'+index_juge+'.</h4>');
@@ -238,16 +242,18 @@ const addJuge = () => {
 }
 
 function removeJuge (e) {
-  if (e.id == 'remove-juge-1') return;
+  if (juges == 1) return;
   let index = parseInt(juges);
   document.querySelector('.infos-row-3').removeChild(document.querySelector('.juge-'+index));
   juges--;
   index = parseInt(juges);
   document.querySelector('#add-juge-'+index).style.display = 'inline';
+  if (!(index === 1)) {
   document.querySelector('#remove-juge-'+index).style.display = 'inline';
 }
+}
 
-let parties =1;
+let parties =2;
 function addPerson() {
   if (parties == 21) return;
   let index_parties = parseInt(parties);
@@ -260,7 +266,7 @@ function addPerson() {
   let r2 = htmlToElement('<input type="radio" name="physique-morale" value="morale" id="morale-'+index_parties+'">');
   let moraleLabel = htmlToElement('<label for="morale-'+index_parties+'">Personne Morale</label>');
   let add = htmlToElement('<img id="add-person-'+index_parties+'" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne">');
-  let remove = htmlToElement('<img id="remove-person-'+index_parties+'" onclick="removePerson(this)" src="../static/remove_circle-24px.svg" alt="Supprimer personne">');
+  let remove = htmlToElement('<img id="remove-person-'+index_parties+'" onclick="removePerson()" src="../static/remove_circle-24px.svg" alt="Supprimer personne">');
   let btnDiv = htmlToElement('<div class="parties-btns-'+index_parties+'"></div>');
   r1.addEventListener('change', displayPartieForm);
   r2.addEventListener('change', displayPartieForm);
@@ -331,6 +337,16 @@ const displayPartieForm = function() {
   document.querySelector(otherForm).style.display = 'none';
 }
 
+const removePerson = () =>  {
+  if (parties == 2) return;
+  let index = parseInt(parties);
+  document.querySelector('.infos-row-4').removeChild(document.querySelector('.partie-'+index));
+  parties--;
+  index = parseInt(parties);
+  document.querySelector('.parties-btns-'+index).style.display = 'inline';
+  console.log('Mohamed');
+  
+}
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);
@@ -348,3 +364,5 @@ previous.addEventListener("click", goToPrevious);
 next.addEventListener("click", goToNext);
 document.getElementById('physique-1').addEventListener('change', displayPartieForm);
 document.getElementById('morale-1').addEventListener('change', displayPartieForm);
+document.getElementById('physique-2').addEventListener('change', displayPartieForm);
+document.getElementById('morale-2').addEventListener('change', displayPartieForm);
