@@ -261,9 +261,9 @@ function addPerson() {
   parties++;
   index_parties = parseInt(parties);
   let h4 = htmlToElement('<h4>'+index_parties+'.</h4>');
-  let r1 = htmlToElement('<input type="radio" name="physique-morale" value="physique" id="physique-'+index_parties+'">');
+  let r1 = htmlToElement('<input type="radio" name="physique-morale-'+index_parties+'" value="physique" id="physique-'+index_parties+'">');
   let physiqueLabel = htmlToElement('<label for="physique-'+index_parties+'">Personne Physique</label>');
-  let r2 = htmlToElement('<input type="radio" name="physique-morale" value="morale" id="morale-'+index_parties+'">');
+  let r2 = htmlToElement('<input type="radio" name="physique-morale-'+index_parties+'" value="morale" id="morale-'+index_parties+'">');
   let moraleLabel = htmlToElement('<label for="morale-'+index_parties+'">Personne Morale</label>');
   let add = htmlToElement('<img id="add-person-'+index_parties+'" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne">');
   let remove = htmlToElement('<img id="remove-person-'+index_parties+'" onclick="removePerson()" src="../static/remove_circle-24px.svg" alt="Supprimer personne">');
@@ -326,10 +326,12 @@ const displayPartieForm = function() {
   if(this.id.startsWith('physique-')){
     formType += 'person-physique-';
     otherForm += 'person-morale-';
+    this.checked = true;
   }
   if(this.id.startsWith('morale-')){
     formType += 'person-morale-';
     otherForm += 'person-physique-';
+    this.checked = true;
   }
   formType += this.id.split('-')[1];
   otherForm += this.id.split('-')[1];
