@@ -160,12 +160,12 @@ const addDemande = () => {
   let contentDiv = htmlToElement('<div id="decision-'+idx+'"  class="tab-content"></div>');
   let decisionForm = htmlToElement
   ('<form action="/annotate/" method="POST" enctype="multipart/form-data" class="form-decision"></form>');
-  let line1 = htmlToElement('<h2 class="infos-row-1">'+decisionTabTxt+'</h2>');
+  let line1 = htmlToElement('<h2>'+decisionTabTxt+'</h2>');
   decisionForm.appendChild(line1);
+  // Demandeur
   let demandeurs = htmlToElement('<h3>Demandeur(s)</h3>');
   decisionForm.appendChild(demandeurs);
-
-
+  // Add Parties into demandeur
   let partiesRows = [];
   for (let i = 0; i < parties; i++) {
     let partieContainer = htmlToElement('<div class="avocat-partie infos-row demande-'+idx+'"></div>');
@@ -183,11 +183,10 @@ const addDemande = () => {
       partiesRows = [];
     }    
   }
-
-
+  // Defandeur
   let defendeurs = htmlToElement('<h3>Défendeur(s)</h3>');
   decisionForm.appendChild(defendeurs);
-
+  // Add Parties into defandeur
   partiesRows = [];
   for (let i = 0; i < parties; i++) {
     let partieContainer = htmlToElement('<div class="avocat-partie infos-row demande-'+idx+'"></div>');
@@ -205,14 +204,14 @@ const addDemande = () => {
       partiesRows = [];
     }    
   }
-
+  // Objet + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
   let objet = htmlToElement('<input type="text" size="25" name="objet" id="objet-'+idx+'" placeholder="Objet">');
   let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   infos1.appendChild(objet);
   infos1.appendChild(fondement);
   decisionForm.appendChild(infos1);
-
+  // Chercher classe de demande + resultat recherche
   let infos = htmlToElement('<div class="infos-row-class"> </div>');
   infos1 = htmlToElement('<div class="classe-container"> </div>');
   let r1C1 = htmlToElement('<input type="radio" name="classe" value="classe-1" id="classe-1">');
@@ -227,7 +226,7 @@ const addDemande = () => {
   infos1.appendChild(r2C2);
   infos.appendChild(infos1);
   decisionForm.appendChild(infos);
-  
+  // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantDemande = htmlToElement('<input type="number" name="motant-demande" id="montant-demande-'+idx+'" placeholder="Montant demandé">');
   let uniteDemande = htmlToElement('<input placeholder="Unité" type="text" size="10" id="unite-demande-'+idx+'" required>');
@@ -236,7 +235,7 @@ const addDemande = () => {
   infos1.appendChild(uniteDemande);
   infos1.appendChild(quantiteDemande);
   decisionForm.appendChild(infos1);
-
+  // Pretention, Motifs + Dispositifs
   infos1 = htmlToElement('<div class="demande-txtareas"> </div>');
   let pretention = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
   let motifs = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
@@ -245,9 +244,7 @@ const addDemande = () => {
   infos1.appendChild(motifs);
   infos1.appendChild(dispositifs);
   decisionForm.appendChild(infos1);
-  
-  
-  
+  // Montant resultat
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantResultat = htmlToElement('<input type="number" name="motant-resultat" id="montant-resultat-'+idx+'" placeholder="Montant Résultat">');
   let uniteResultat = htmlToElement('<input placeholder="Unité" type="text" size="10" id="unite-resultat-'+idx+'" required>');
@@ -256,7 +253,7 @@ const addDemande = () => {
   infos1.appendChild(uniteResultat);
   infos1.appendChild(quantiteResultat);
   decisionForm.appendChild(infos1);
-  
+  // Resultat
   let resultat = htmlToElement('<h3 class="infos-row-2">Résultat</h3>');
   infos1 = htmlToElement('<div class="resultat-container"> </div>');
   let r1Acc = htmlToElement('<input type="radio" name="resultat-'+idx+'" value="accept" id="accept-'+idx+'">');
@@ -303,13 +300,13 @@ const removeDemande = () => {
   tabs_ul.removeChild(tabs_ul.children[index]);
   content_div.removeChild(content_div.children[index]);
   tabs_index --;
-  // tab nodes must be updated
+  // tab nodes (tab btns) must be updated
   nodes = Array.from(tabs_ul.children);
   for (let index = 0; index < nodes.length; index++) {
     const tab_btn = nodes[index].children[0];
     if (tab_btn.hasAttribute('id')) {
       tab_btn.id = parseInt(index);
-      tab_btn.innerText = 'demande ' + tab_btn.id;
+      tab_btn.innerText = 'Demande ' + tab_btn.id;
     }
   }
 
@@ -318,10 +315,10 @@ const removeDemande = () => {
   for (let i = 0; i < content_nodes.length; i++) {
     if (i !== 0 ) {
       content_nodes[i].id = 'decision-'+parseInt(i);
+      Array.from(Array.from(content_nodes[i].children)[0].children)[0].innerText = 'Demande ' + parseInt(i);
+      console.log(Array.from(Array.from(content_nodes[i].children)[0].children)[0]);
     }
-
   }
-  
 }
 let juges = 1;
 const addJuge = () => {

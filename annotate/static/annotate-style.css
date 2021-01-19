@@ -118,6 +118,7 @@ input#text-size {
   border: 1px solid #ccc;
   background-color: #f1f1f1;
   overflow-x: scroll;
+  width: 99%;
 }
 
 
@@ -137,6 +138,18 @@ input#text-size {
 
 .tab button.active {
   background-color: #ccc;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tab button {
+  font-size: 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.tab {
+  background-color: #d9e7eb;
 }
 
 .tab-content {
@@ -198,6 +211,13 @@ input#text-size {
  }
  .infos-row-3, .infos-row-4, .infos-row-5 {
   width: 100%;
+}
+
+form h2 {
+  text-decoration: underline;
+  font-weight: bold;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
 }
 
 .juge, .infos-row{
