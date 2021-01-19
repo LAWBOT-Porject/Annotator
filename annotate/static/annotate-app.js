@@ -362,7 +362,7 @@ function addAvocat () {
   infos1.appendChild(titre);
   infos1.appendChild(prenom);
   infos1.appendChild(nom);
-  let avocat = htmlToElement('<div classe="avocat-'+avocats+' avocat"></div>');
+  let avocat = htmlToElement('<div class="avocat-'+avocats+' avocat"></div>');
   avocat.appendChild(infos1);
   let partiesRows = [];
   for (let i = 0; i < parties; i++) {
@@ -384,6 +384,19 @@ function addAvocat () {
   }
   document.querySelector('.infos-row-5').appendChild(avocat);
 
+}
+
+function removeAvocat(e) {
+  if (avocats == 0) return;
+  let toDelete = document.querySelector('.avocat-'+avocats);
+  toDelete.parentNode.removeChild(toDelete);
+  // let parent = document.querySelector('.infos-row-5');
+  // let nodes = Array(parent.children);
+  // let selected = nodes[0].children;
+  // console.log(selected);
+  // console.log('kfdl');
+  //parent.remove(parent.children[avocats + 2]);
+  avocats--;
 }
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
