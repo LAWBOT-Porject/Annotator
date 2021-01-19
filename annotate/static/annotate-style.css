@@ -184,18 +184,41 @@ input#text-size {
    margin: 2vh 0;
    /* border:2px solid #564caf; */
  }
- .infos-row-3, .infos-row-4 {
+ .infos-row-3, .infos-row-4, .infos-row-5 {
   width: 100%;
 }
 
-.juge, .infos-row {
+.juge, .infos-row{
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
   margin: 2vh 0;
  }
+.infos-row-avocat{
+  display: flex;
+  align-items: center;
+  /* border: 2px solid #4CAF50; */
+  justify-content: space-evenly;
+  /* width: 100%; */
+  margin: 1vh 0;
+ }
 
+.avocat-partie{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+ }
+
+.avocat-partie input, .avocats-btns-1{
+  margin-left: 2vh;
+}
+
+ .avocats-btns-1, .avocat-partie h3{
+  margin-bottom: 2vh;
+  /* border: 2px solid #4CAF50; */
+}
  button[type="submit"] {
   cursor: pointer;
   width: 40%;

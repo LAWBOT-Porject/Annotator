@@ -349,6 +349,42 @@ const removePerson = () =>  {
   console.log('Mohamed');
   
 }
+
+let avocats = 0;
+function addAvocat () {
+  avocats++;
+  let h4 = htmlToElement('<h4>'+avocats+'.</h4>');
+  let titre = htmlToElement('<input placeholder="Titre" type="text" size="10" required>');
+  let prenom = htmlToElement('<input placeholder="Nom" type="text" size="25" required>');
+  let nom = htmlToElement('<input placeholder="Prénom" type="text" size="25" required>');
+  let infos1 = htmlToElement('<div class="infos-row-avocat"></div>');
+  infos1.appendChild(h4);
+  infos1.appendChild(titre);
+  infos1.appendChild(prenom);
+  infos1.appendChild(nom);
+  let avocat = htmlToElement('<div classe="avocat-'+avocats+' avocat"></div>');
+  avocat.appendChild(infos1);
+  let partiesRows = [];
+  for (let i = 0; i < parties; i++) {
+    let partieContainer = htmlToElement('<div class="avocat-partie"></div>');
+    let partieLbl = htmlToElement('<label for="partie-'+(i+1)+'">Partie '+(i+1)+'</label>');
+    let partieChkbx = htmlToElement('<input type="checkbox" name="partie-'+(i+1)+'" id="partie-'+(i+1)+'">');
+    partieContainer.appendChild(partieLbl);
+    partieContainer.appendChild(partieChkbx);
+    partiesRows.push(partieContainer);
+    if ((i % 5 == 0 && i != 0) || i == parties -1) {
+      let infos = htmlToElement('<div class="infos-row-avocat"></div>');
+      for (let j = 0; j < partiesRows.length; j++) {
+        infos.appendChild(partiesRows[j]);
+      }
+      avocat.appendChild(infos);
+      partiesRows = [];
+    }
+    
+  }
+  document.querySelector('.infos-row-5').appendChild(avocat);
+
+}
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);

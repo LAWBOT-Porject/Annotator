@@ -15,10 +15,10 @@ def annotate_view(request, *args, **kwargs):
     personnePhysiqueForm = PartiePhysiqueForm()
     for (dirpath, dirnames, filenames) in walk(hp.files.treated_files_folder):
         files.extend(filenames)
-    if (request.method == 'POST'):
+    """ if (request.method == 'POST'):
         print('hello')
     if (request.method == 'GET'):
-        print('hello1')
+        print('hello1') """
     return render(request, 'annotate.html', {'files' : sorted(files), 
                                               'file_list_len': len(files),
                                                'infos': infos,
