@@ -151,7 +151,7 @@ const addDemande = () => {
   tabs_index ++;
   // Add a new tab
   idx = parseInt(tabs_index);
-  let decisionTabTxt = 'demande ' + idx;
+  let decisionTabTxt = 'Demande ' + idx;
   let tabBtn = htmlToElement('<button id="'+idx+'"  onclick="selectTab(event)">'+ decisionTabTxt+'</button>');
   let tabLi  = htmlToElement('<li class="tab-item"></li>');
   tabLi.appendChild(tabBtn);
@@ -159,14 +159,125 @@ const addDemande = () => {
   // Add the tab content
   let contentDiv = htmlToElement('<div id="decision-'+idx+'"  class="tab-content"></div>');
   let decisionForm = htmlToElement
-  ('<form action="/annotate/" method="POST" enctype="multipart/form-data"></form>');
+  ('<form action="/annotate/" method="POST" enctype="multipart/form-data" class="form-decision"></form>');
+  let line1 = htmlToElement('<h2 class="infos-row-1">'+decisionTabTxt+'</h2>');
+  decisionForm.appendChild(line1);
+  let demandeurs = htmlToElement('<h3>Demandeur(s)</h3>');
+  decisionForm.appendChild(demandeurs);
+
+
+  let partiesRows = [];
+  for (let i = 0; i < parties; i++) {
+    let partieContainer = htmlToElement('<div class="avocat-partie infos-row demande-'+idx+'"></div>');
+    let partieLbl = htmlToElement('<label for="partie-'+(i+1)+'">Partie '+(i+1)+'</label>');
+    let partieChkbx = htmlToElement('<input type="checkbox" name="partie-'+(i+1)+'" id="demande-'+idx+'-partie-'+(i+1)+'">');
+    partieContainer.appendChild(partieLbl);
+    partieContainer.appendChild(partieChkbx);
+    partiesRows.push(partieContainer);
+    if ((i % 5 == 0 && i != 0) || i == parties -1) {
+      let temp = htmlToElement('<div class="infos-row-avocat"></div>');
+      for (let j = 0; j < partiesRows.length; j++) {
+        temp.appendChild(partiesRows[j]);
+      }
+      decisionForm.appendChild(temp);
+      partiesRows = [];
+    }    
+  }
+
+
+  let defendeurs = htmlToElement('<h3>Défendeur(s)</h3>');
+  decisionForm.appendChild(defendeurs);
+
+  partiesRows = [];
+  for (let i = 0; i < parties; i++) {
+    let partieContainer = htmlToElement('<div class="avocat-partie infos-row demande-'+idx+'"></div>');
+    let partieLbl = htmlToElement('<label for="partie-'+(i+1)+'">Partie '+(i+1)+'</label>');
+    let partieChkbx = htmlToElement('<input type="checkbox" name="partie-'+(i+1)+'" id="defendeur-demande-'+idx+'-partie-'+(i+1)+'">');
+    partieContainer.appendChild(partieLbl);
+    partieContainer.appendChild(partieChkbx);
+    partiesRows.push(partieContainer);
+    if ((i % 5 == 0 && i != 0) || i == parties -1) {
+      let temp = htmlToElement('<div class="infos-row-avocat"></div>');
+      for (let j = 0; j < partiesRows.length; j++) {
+        temp.appendChild(partiesRows[j]);
+      }
+      decisionForm.appendChild(temp);
+      partiesRows = [];
+    }    
+  }
+
+  let infos1 = htmlToElement('<div class="infos-row"> </div>');
+  let objet = htmlToElement('<input type="text" size="25" name="objet" id="objet-'+idx+'" placeholder="Objet">');
+  let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
+  infos1.appendChild(objet);
+  infos1.appendChild(fondement);
+  decisionForm.appendChild(infos1);
+
+  let infos = htmlToElement('<div class="infos-row-class"> </div>');
+  infos1 = htmlToElement('<div class="classe-container"> </div>');
+  let r1C1 = htmlToElement('<input type="radio" name="classe" value="classe-1" id="classe-1">');
+  let c1 = htmlToElement('<label for="classe-1">Classe 1</label>');
+  let r2C2 = htmlToElement('<input type="radio" name="classe" value="classe-2" id="classe-2">');
+  let c2 = htmlToElement('<label for="classe-2">Classe 2</label>');
+  infos1.appendChild(c1);
+  infos1.appendChild(r1C1);
+  infos.appendChild(infos1);
+  infos1 = htmlToElement('<div class="classe-container"> </div>');
+  infos1.appendChild(c2);
+  infos1.appendChild(r2C2);
+  infos.appendChild(infos1);
+  decisionForm.appendChild(infos);
+  
+  infos1 = htmlToElement('<div class="infos-row"> </div>');
+  let montantDemande = htmlToElement('<input type="number" name="motant-demande" id="montant-demande-'+idx+'" placeholder="Montant demandé">');
+  let uniteDemande = htmlToElement('<input placeholder="Unité" type="text" size="10" id="unite-demande-'+idx+'" required>');
+  let quantiteDemande = htmlToElement('<input placeholder="Quantité Demande" type="text" size="30" id="quantite-demande-'+idx+'" required>');
+  infos1.appendChild(montantDemande);
+  infos1.appendChild(uniteDemande);
+  infos1.appendChild(quantiteDemande);
+  decisionForm.appendChild(infos1);
+
+  infos1 = htmlToElement('<div class="demande-txtareas"> </div>');
+  let pretention = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
+  let motifs = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
+  let dispositifs = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="dispositifs-'+idx+'" placeholder="Dispositifs"></textarea>');
+  infos1.appendChild(pretention);
+  infos1.appendChild(motifs);
+  infos1.appendChild(dispositifs);
+  decisionForm.appendChild(infos1);
+  
+  
+  
+  infos1 = htmlToElement('<div class="infos-row"> </div>');
+  let montantResultat = htmlToElement('<input type="number" name="motant-resultat" id="montant-resultat-'+idx+'" placeholder="Montant Résultat">');
+  let uniteResultat = htmlToElement('<input placeholder="Unité" type="text" size="10" id="unite-resultat-'+idx+'" required>');
+  let quantiteResultat = htmlToElement('<input placeholder="Quantité Résultat" type="text" size="30" id="quantite-resultat-'+idx+'" required>');
+  infos1.appendChild(montantResultat);
+  infos1.appendChild(uniteResultat);
+  infos1.appendChild(quantiteResultat);
+  decisionForm.appendChild(infos1);
+  
+  let resultat = htmlToElement('<h3 class="infos-row-2">Résultat</h3>');
+  infos1 = htmlToElement('<div class="resultat-container"> </div>');
+  let r1Acc = htmlToElement('<input type="radio" name="resultat-'+idx+'" value="accept" id="accept-'+idx+'">');
+  let accept = htmlToElement('<label for="accept-'+idx+'">Acceptée</label>');
+  let r2Reject = htmlToElement('<input type="radio" name="resultat-'+idx+'" value="reject" id="reject-'+idx+'">');
+  let reject = htmlToElement('<label for="reject-'+idx+'">Rejetée</label>');
+  decisionForm.appendChild(resultat);
+  infos1.appendChild(accept);
+  infos1.appendChild(r1Acc);
+  infos1.appendChild(reject);
+  infos1.appendChild(r2Reject);
+  decisionForm.appendChild(infos1);
+  let submit = htmlToElement('<button type="submit" id="submit-decision-'+idx+'">Sauvgarder</button>');
+  decisionForm.appendChild(submit);
   //let csrf = htmlToElement('<input type="hidden" name="_csrf" value="{{% csrf_token %}}" />');
-  fetch('new_decision_form')
-    .then((response) => response.text())
-    .then((data) => {
-      // Populate the decision file content to the appropriate p tag
-      decisionForm.append(htmlToElement(data));
-    });
+  // fetch('new_decision_form')
+  //   .then((response) => response.text())
+  //   .then((data) => {
+  //    Populate the decision file content to the appropriate p tag
+  //     decisionForm.append(htmlToElement(data));
+  //   });
   contentDiv.append(decisionForm);
   content_div.appendChild(contentDiv);
   tabBtn.click();
@@ -390,12 +501,6 @@ function removeAvocat(e) {
   if (avocats == 0) return;
   let toDelete = document.querySelector('.avocat-'+avocats);
   toDelete.parentNode.removeChild(toDelete);
-  // let parent = document.querySelector('.infos-row-5');
-  // let nodes = Array(parent.children);
-  // let selected = nodes[0].children;
-  // console.log(selected);
-  // console.log('kfdl');
-  //parent.remove(parent.children[avocats + 2]);
   avocats--;
 }
 text_size.addEventListener("keyup", set_size);

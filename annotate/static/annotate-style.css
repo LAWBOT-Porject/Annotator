@@ -166,18 +166,30 @@ input#text-size {
    display: none;
  }
 
- form input, form button, form h3 {
+ form input, form button, form h2, form h3, form h4 {
   font-family:  "Roboto", Helvetica, Arial, sans-serif;
  }
 
- .infos-form-content{
+ .infos-form-content, .form-decision{
    display: flex;
    flex-direction: column;
    justify-content: stretch;
-   /* border: 2px solid rebeccapurple; */
    align-items: center;
- }
- .infos-row-1, .infos-row-3 {
+   /* border: 2px solid rebeccapurple; */
+  }
+
+ .demande-txtareas{
+   display: flex;
+   flex-direction: column;
+   justify-content: space-around;
+   align-items: center;
+   /* border: 2px solid rebeccapurple; */
+  }
+  .demande-txtareas textarea {
+    margin: 3vh 0;
+  }
+
+  .infos-row-1, .infos-row-3 {
    margin-top:1vh ;
  }
 .infos-row-1, .infos-row-2, .infos-row-3, .infos-row-4 {
@@ -195,26 +207,47 @@ input#text-size {
   width: 100%;
   margin: 2vh 0;
  }
+
+.infos-row-class{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 2vh;
+ }
 .infos-row-avocat{
   display: flex;
   align-items: center;
   /* border: 2px solid #4CAF50; */
   justify-content: space-evenly;
-  /* width: 100%; */
+  width: 100%;
   margin: 1vh 0;
  }
 
-.avocat-partie{
+.avocat-partie, 
+.resultat-container, 
+.classe-container{
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
  }
 
-.avocat-partie input, .avocats-btns-1{
+.avocat-partie input, 
+.resultat-container input, 
+.classe-container input, 
+.avocats-btns-1{
   margin-left: 2vh;
 }
 
+form input[value="accept"] {
+  margin-right: 6vh;
+}
+
+form label[for^="reject"] {
+  margin-left: 6vh;
+}
  .avocats-btns-1, .avocat-partie h3{
   margin-bottom: 2vh;
   /* border: 2px solid #4CAF50; */
@@ -229,8 +262,22 @@ input#text-size {
   font-family: "Roboto", Helvetica, Arial, sans-serif;
   font-weight: 500; 
   font-size: 1.1rem; 
-  margin-top: 2vh; 
+  margin-top: 6vh;
+  margin-bottom: 2vh;
+  border-radius: 6px;
 }
+
+::placeholder {
+  text-align: center;
+  font-size: 1.19em;
+  font-style: italic;
+}
+textarea::placeholder {
+  text-align: center;
+  font-size: 1.5em;
+  font-style: italic;
+}
+
 
 /* , .sexe-radios */
 .person-type{
