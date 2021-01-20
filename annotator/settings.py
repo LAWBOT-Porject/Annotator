@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'static_pages',
     'upload',
     'annotate',
+    'visualize',
 ]
 
 MIDDLEWARE = [

@@ -28,6 +28,7 @@ urlpatterns = [
     path('upload/', include('upload.urls')),
     # annotate routing
     path('annotate/', include('annotate.urls')),
+    path('visualize/', include('visualize.urls')),
     
     path('admin/', admin.site.urls),
     # path('<path:file>', read_file,name="file_display"),
