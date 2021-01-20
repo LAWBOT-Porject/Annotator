@@ -43,9 +43,7 @@ def read_file(request , file):
                                                     + hp.files.cities_file_name)
     juridiction = full_juridiction(file[:4]).capitalize()
     rg = file[7:]
-    print(rg)
     context = {
-        'a': 'Mohamed',
         'city': city,
         'juridiction': juridiction,
         'rg': rg,

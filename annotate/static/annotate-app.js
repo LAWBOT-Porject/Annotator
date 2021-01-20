@@ -44,6 +44,7 @@ const goToPrevious = () => {
   lis[index].click();
 };
 
+let selected_text = '';
 const displyTextFile = (evt) => {
   // Change the index of the current file in the tool pane
   file_index.innerText = lis_content.indexOf(evt.target.innerHTML) + 1;
@@ -70,13 +71,13 @@ const displyTextFile = (evt) => {
       p_decision.style.fontSize = "20px";
       p_decision.style['overflow-y'] = 'scroll';
       p_decision.style['overflow-x'] = 'hidden';
-      console.log(`Mohamed ${parsed.rg} ${parsed.city} ${parsed.juridiction}`);
       document.addEventListener('select', function(event){
         const selection = event.target.
                           value.substring(
                           event.target.selectionStart, 
                           event.target.selectionEnd);
-        console.log(`${selection}`);
+        //console.log(`${selection}`);
+        selected_text = selection;
       });
       text = data;//['1st'];
     });
@@ -221,6 +222,7 @@ const addDemande = () => {
   // Objet + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
   let objet = htmlToElement('<input type="text" size="25" name="objet" id="objet-'+idx+'" placeholder="Objet">');
+
   let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   infos1.appendChild(objet);
   infos1.appendChild(fondement);
@@ -289,9 +291,21 @@ const addDemande = () => {
   //    Populate the decision file content to the appropriate p tag
   //     decisionForm.append(htmlToElement(data));
   //   });
+
   contentDiv.append(decisionForm);
   content_div.appendChild(contentDiv);
+  selectText();
   tabBtn.click();
+}
+
+const selectText = () => {
+  document.querySelectorAll('form input, form textarea').
+                          forEach(i => i.addEventListener('click', function(evt) {
+                            console.log('Mohamed 123');
+                            //console.log(evt.target);
+                            evt.target.value = selected_text;
+                            // this.value = selected_text;
+                          } ));
 }
 
 const removeDemande = () => {
@@ -361,6 +375,7 @@ const addJuge = () => {
   jugeDiv.appendChild(add);
   jugeDiv.appendChild(remove);
   document.querySelector('.infos-row-3').appendChild(jugeDiv);
+  selectText();
 }
 
 function removeJuge (e) {
@@ -440,8 +455,10 @@ function addPerson() {
   partie.appendChild(personPhysique);
   partie.appendChild(personMorale);
   document.querySelector('.infos-row-4').appendChild(partie);
-}
 
+  selectText();
+}
+// To display either person or entreprise
 const displayPartieForm = function() {
   let formType = '.';
   let otherForm = '.';
@@ -505,6 +522,7 @@ function addAvocat () {
     
   }
   document.querySelector('.infos-row-5').appendChild(avocat);
+  selectText();
 
 }
 
@@ -533,3 +551,4 @@ document.getElementById('physique-1').addEventListener('change', displayPartieFo
 document.getElementById('morale-1').addEventListener('change', displayPartieForm);
 document.getElementById('physique-2').addEventListener('change', displayPartieForm);
 document.getElementById('morale-2').addEventListener('change', displayPartieForm);
+selectText();
