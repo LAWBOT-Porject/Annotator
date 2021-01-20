@@ -100,6 +100,13 @@ def abbreviate_juridiction(in_juridiction):
                 return dic[key]
     return 'juridabbr404'
 
+def full_juridiction(juridiction_abbr):
+    for dic in hp.files.juridictions_abbreviations :
+        for key, value in dic.items():
+            if (juridiction_abbr == value):
+                return key
+    return 'jurid404'
+
 def search_reference(raw_text):
     try: # Case 1 : reference is 10 digits
         reference = re.findall(r'[0-9]{10}', raw_text)[0]

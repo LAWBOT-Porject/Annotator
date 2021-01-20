@@ -66,8 +66,18 @@ const displyTextFile = (evt) => {
       document.getElementById('rg').value = parsed.rg;
       document.getElementById('ville').value = parsed.city;
       document.getElementById('juridiction').value = parsed.juridiction;
-      p_decision.innerText = parsed.file;
+      p_decision.value = parsed.file;
       p_decision.style.fontSize = "20px";
+      p_decision.style['overflow-y'] = 'scroll';
+      p_decision.style['overflow-x'] = 'hidden';
+      console.log(`Mohamed ${parsed.rg} ${parsed.city} ${parsed.juridiction}`);
+      document.addEventListener('select', function(event){
+        const selection = event.target.
+                          value.substring(
+                          event.target.selectionStart, 
+                          event.target.selectionEnd);
+        console.log(`${selection}`);
+      });
       text = data;//['1st'];
     });
 };
@@ -241,9 +251,9 @@ const addDemande = () => {
   decisionForm.appendChild(infos1);
   // Pretention, Motifs + Dispositifs
   infos1 = htmlToElement('<div class="demande-txtareas"> </div>');
-  let pretention = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
-  let motifs = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
-  let dispositifs = htmlToElement('<textarea rows="15" cols="75" name="pretention-'+idx+'" id="dispositifs-'+idx+'" placeholder="Dispositifs"></textarea>');
+  let pretention = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
+  let motifs = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
+  let dispositifs = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="dispositifs-'+idx+'" placeholder="Dispositifs"></textarea>');
   infos1.appendChild(pretention);
   infos1.appendChild(motifs);
   infos1.appendChild(dispositifs);

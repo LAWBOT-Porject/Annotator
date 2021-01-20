@@ -7,7 +7,9 @@ from config.hparam import hparam as hp
 from helpers.upload_utilities import (
             search_city_asraw, 
             search_juridiction_asraw,
-            search_reference)
+            search_reference,
+            full_juridiction
+            )
 import json
 #from django.conf import settings
 
@@ -36,11 +38,12 @@ def read_file(request , file):
     file_content = f.read()
     f.close()
     ## TO CHANGE (more optimised) ##
+    file = file.split('.')[0]
     city = search_city_asraw(file_content, hp.files.static_data_folder 
                                                     + hp.files.cities_file_name)
-    juridiction = search_juridiction_asraw(file_content, hp.files.static_data_folder 
-                                                    + hp.files.juridictions_file_name)
-    rg = search_reference(file_content)
+    juridiction = full_juridiction(file[:4]).capitalize()
+    rg = file[7:]
+    print(rg)
     context = {
         'a': 'Mohamed',
         'city': city,

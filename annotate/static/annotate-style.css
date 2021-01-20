@@ -31,7 +31,7 @@
 }
 .decision-container {
   grid-area: decision-container;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   text-overflow: ellipsis;
 
   /* overflow: hidden; */
@@ -100,6 +100,21 @@ button, input[submit] {
 input {
   height: 1.75rem;
   /* font-size: 1.3rem; */
+}
+
+#file-contents {
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: rgb(197, 211, 214);
+  overflow: hidden;
+}
+
+.demande-txtareas textarea {
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 input#text-search {
