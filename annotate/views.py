@@ -4,7 +4,11 @@ from django.shortcuts import render
 from os import walk
 from .forms import decisionInfo,decisionForm, PartiePhysiqueForm
 from config.hparam import hparam as hp
-
+from helpers.upload_utilities import (
+            search_city_asraw, 
+            search_juridiction_asraw,
+            search_reference)
+import json
 #from django.conf import settings
 
 
@@ -31,7 +35,21 @@ def read_file(request , file):
     f = open(hp.files.treated_files_folder + file, 'r')
     file_content = f.read()
     f.close()
-    return HttpResponse(file_content)
+    ## TO CHANGE (more optimised) ##
+    city = search_city_asraw(file_content, hp.files.static_data_folder 
+                                                    + hp.files.cities_file_name)
+    juridiction = search_juridiction_asraw(file_content, hp.files.static_data_folder 
+                                                    + hp.files.juridictions_file_name)
+    rg = search_reference(file_content)
+    context = {
+        'a': 'Mohamed',
+        'city': city,
+        'juridiction': juridiction,
+        'rg': rg,
+        'file': file_content
+    }
+    data = json.dumps(context)#, indent=4, sort_keys=True, default=str)
+    return HttpResponse(data, content_type='application/json')
     #context = {'file_content': file_content}
     #return render(request, "annotate.html", context)
 def return_new_decision_form(request):

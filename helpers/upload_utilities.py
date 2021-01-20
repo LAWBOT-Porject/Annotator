@@ -52,6 +52,20 @@ def search_city(raw_text, cities_file_path):
         print(selected_city)
         return selected_city[:3].upper()
 
+def search_city_asraw(raw_text, cities_file_path):
+    token_set_ratio = 0
+    selected_city = ''
+    raw_text = transform_to_standard_chars(raw_text)
+    with open(cities_file_path, 'r') as f:
+        for line in f:
+            line = line.replace('\n', '')
+            temp_ratio = fuzz.partial_ratio(line.lower(), raw_text.lower())
+            if (temp_ratio > token_set_ratio):
+                token_set_ratio = temp_ratio
+                selected_city = line
+        #print(selected_city)
+        return selected_city.capitalize()
+
 def search_juridiction(raw_text, juridictions_file_path):
     token_set_ratio = 0
     selected_juri = ''
@@ -65,6 +79,19 @@ def search_juridiction(raw_text, juridictions_file_path):
                 selected_juri = line
         print(selected_juri)
         return abbreviate_juridiction(selected_juri)
+
+def search_juridiction_asraw(raw_text, juridictions_file_path):
+    token_set_ratio = 0
+    selected_juri = ''
+    raw_text = transform_to_standard_chars(raw_text)
+    with open(juridictions_file_path, 'r') as f:
+        for line in f:
+            line = line.replace('\n', '')
+            temp_ratio = fuzz.token_set_ratio(line, raw_text)
+            if (temp_ratio > token_set_ratio):
+                token_set_ratio = temp_ratio
+                selected_juri = line
+        return selected_juri.capitalize()
 
 def abbreviate_juridiction(in_juridiction):
     for dic in hp.files.juridictions_abbreviations :

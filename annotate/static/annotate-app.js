@@ -62,15 +62,19 @@ const displyTextFile = (evt) => {
     .then((response) => response.text())
     .then((data) => {
       // Populate the decision file content to the appropriate p tag
-      p_decision.innerText = data;
+      parsed = JSON.parse(data);
+      document.getElementById('rg').value = parsed.rg;
+      document.getElementById('ville').value = parsed.city;
+      document.getElementById('juridiction').value = parsed.juridiction;
+      p_decision.innerText = parsed.file;
       p_decision.style.fontSize = "20px";
-      text = data;
+      text = data;//['1st'];
     });
 };
 
 const highlightSearch = (evt) => {
   let regex = evt.target.value;
-  console.log(text);
+  //console.log(text);
   // Erase all previous highlights if clear is clicked
   if (regex == "") {
     p_decision.innerText = text;
@@ -316,7 +320,7 @@ const removeDemande = () => {
     if (i !== 0 ) {
       content_nodes[i].id = 'decision-'+parseInt(i);
       Array.from(Array.from(content_nodes[i].children)[0].children)[0].innerText = 'Demande ' + parseInt(i);
-      console.log(Array.from(Array.from(content_nodes[i].children)[0].children)[0]);
+      //console.log(Array.from(Array.from(content_nodes[i].children)[0].children)[0]);
     }
   }
 }
