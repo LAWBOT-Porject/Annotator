@@ -175,8 +175,9 @@ const addDemande = () => {
   let contentDiv = htmlToElement('<div id="decision-'+idx+'"  class="tab-content"></div>');
   let decisionForm = htmlToElement
   ('<form action="/annotate/" method="POST" enctype="multipart/form-data" class="form-decision"></form>');
-  let line1 = htmlToElement('<h2>'+decisionTabTxt+'</h2>');
-  decisionForm.appendChild(line1);
+  // let line1 = htmlToElement('<h2>'+decisionTabTxt+'</h2>');
+  // decisionForm.appendChild(line1);
+
   // Demandeur
   let demandeurs = htmlToElement('<h3>Demandeur(s)</h3>');
   decisionForm.appendChild(demandeurs);
@@ -223,9 +224,9 @@ const addDemande = () => {
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
   let objet = htmlToElement('<input type="text" size="25" name="objet" id="objet-'+idx+'" placeholder="Objet">');
 
-  let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
+  //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   infos1.appendChild(objet);
-  infos1.appendChild(fondement);
+  //infos1.appendChild(fondement);
   decisionForm.appendChild(infos1);
   // Chercher classe de demande + resultat recherche
   let infos = htmlToElement('<div class="infos-row-class"> </div>');
@@ -241,7 +242,7 @@ const addDemande = () => {
   infos1.appendChild(c2);
   infos1.appendChild(r2C2);
   infos.appendChild(infos1);
-  decisionForm.appendChild(infos);
+  //decisionForm.appendChild(infos);
   // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantDemande = htmlToElement('<input type="number" name="motant-demande" id="montant-demande-'+idx+'" placeholder="Montant demandé">');
@@ -253,9 +254,9 @@ const addDemande = () => {
   decisionForm.appendChild(infos1);
   // Pretention, Motifs + Dispositifs
   infos1 = htmlToElement('<div class="demande-txtareas"> </div>');
-  let pretention = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
-  let motifs = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
-  let dispositifs = htmlToElement('<textarea rows="15" cols="45" name="pretention-'+idx+'" id="dispositifs-'+idx+'" placeholder="Dispositifs"></textarea>');
+  let pretention = htmlToElement('<textarea rows="3" cols="45" name="pretention-'+idx+'" id="pretention-'+idx+'" placeholder="Prétention"></textarea>');
+  let motifs = htmlToElement('<textarea rows="3" cols="45" name="pretention-'+idx+'" id="motifs-'+idx+'" placeholder="Motifs"></textarea>');
+  let dispositifs = htmlToElement('<textarea rows="3" cols="45" name="pretention-'+idx+'" id="dispositifs-'+idx+'" placeholder="Dispositifs"></textarea>');
   infos1.appendChild(pretention);
   infos1.appendChild(motifs);
   infos1.appendChild(dispositifs);
@@ -493,14 +494,16 @@ let avocats = 0;
 function addAvocat () {
   avocats++;
   let h4 = htmlToElement('<h4>'+avocats+'.</h4>');
-  let titre = htmlToElement('<input placeholder="Titre" type="text" size="10" required>');
-  let prenom = htmlToElement('<input placeholder="Nom" type="text" size="25" required>');
-  let nom = htmlToElement('<input placeholder="Prénom" type="text" size="25" required>');
+  let titre = htmlToElement('<input placeholder="Titre" type="text" size="5" required>');
+  let prenom = htmlToElement('<input placeholder="Nom" type="text" size="20" required>');
+  let nom = htmlToElement('<input placeholder="Prénom" type="text" size="20" required>');
+  let bareau = htmlToElement('<input placeholder="Barreau" type="text" size="20" required>');
   let infos1 = htmlToElement('<div class="infos-row-avocat"></div>');
   infos1.appendChild(h4);
   infos1.appendChild(titre);
   infos1.appendChild(prenom);
   infos1.appendChild(nom);
+  infos1.appendChild(bareau);
   let avocat = htmlToElement('<div class="avocat-'+avocats+' avocat"></div>');
   avocat.appendChild(infos1);
   let partiesRows = [];
