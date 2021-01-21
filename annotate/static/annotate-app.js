@@ -222,14 +222,15 @@ const addDemande = () => {
   }
   // Objet + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
-  let objet = htmlToElement('<input type="text" size="25" name="objet" id="objet-'+idx+'" placeholder="Objet">');
+  let classSearch = htmlToElement('<label id="class-search-'+idx+'">Rehercher classe</label>');
+  let objet = htmlToElement('<textarea rows="3" cols="40" name="description" id="description-'+idx+'" placeholder="Description"></textarea>');
 
   //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   infos1.appendChild(objet);
-  //infos1.appendChild(fondement);
+  infos1.appendChild(classSearch);
   decisionForm.appendChild(infos1);
   // Chercher classe de demande + resultat recherche
-  let infos = htmlToElement('<div class="infos-row-class"> </div>');
+  /* let infos = htmlToElement('<div class="infos-row-class"> </div>');
   infos1 = htmlToElement('<div class="classe-container"> </div>');
   let r1C1 = htmlToElement('<input type="radio" name="classe" value="classe-1" id="classe-1">');
   let c1 = htmlToElement('<label for="classe-1">Classe 1</label>');
@@ -241,7 +242,7 @@ const addDemande = () => {
   infos1 = htmlToElement('<div class="classe-container"> </div>');
   infos1.appendChild(c2);
   infos1.appendChild(r2C2);
-  infos.appendChild(infos1);
+  infos.appendChild(infos1); */
   //decisionForm.appendChild(infos);
   // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
@@ -284,7 +285,7 @@ const addDemande = () => {
   infos1.appendChild(r2Reject);
   decisionForm.appendChild(infos1);
   let submit = htmlToElement('<button type="submit" id="submit-decision-'+idx+'">Sauvgarder</button>');
-  decisionForm.appendChild(submit);
+  //decisionForm.appendChild(submit);
   //let csrf = htmlToElement('<input type="hidden" name="_csrf" value="{{% csrf_token %}}" />');
   // fetch('new_decision_form')
   //   .then((response) => response.text())

@@ -112,9 +112,24 @@ input {
   overflow: hidden;
 }
 
-.demande-txtareas textarea {
-  font-size: 1.5rem;
-  text-align: center;
+.demande-txtareas textarea, textarea[name="description"] {
+  font-size: 1.3rem;
+  /* text-align: center; */
+}
+label[id^="class-search"] {
+ margin-left: 1vh;
+ background-color: #7FFFD4;
+ cursor: pointer;
+ border: .5px solid #7FFFD4;
+ border-radius: 6px;
+ font-size: 1rem;
+ padding: .4vh;
+ font-family: "Roboto", Helvetica, Arial;
+}
+
+label[id^="class-search"]:hover {
+  border: .5px solid #C5D3D6;
+  background-color: #C5D3D6;
 }
 
 input#text-search {
@@ -247,7 +262,7 @@ input#text-size {
   width: 100%;
   margin: 0;
   margin-bottom: 2vh;
-  border: 2px solid #e91616;
+  /* border: 2px solid #e91616; */
  }
 .infos-row-avocat{
   display: flex;
@@ -297,8 +312,13 @@ form label[for^="reject"] {
   font-size: 1.1rem; 
   margin: 0 auto;
   margin-top: .5vh;
-  
   border-radius: 6px;
+}
+
+button[type="submit"]:hover {
+  font-weight: 550; 
+  font-size: 1.2rem;
+  background: #5add5f;
 }
 
 ::placeholder {
