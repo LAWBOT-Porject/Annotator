@@ -13,14 +13,10 @@ def upload_view(request, *args, **kwargs):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         files = request.FILES.getlist('file')
-        #print(request.FILES['file_field'])
         unallowed_files = 0
         if form.is_valid():
             for f in files:
                 # Verify if the uploaded file types are allowed
-                #print('1 ####### ', f.name)
-                #print('2 ####### ', f)
-                print('Mohamed prophet of Allah')
                 if verify_file_type(f.name):
                     # Save the file only if its extention is allowed
                     handle_uploaded_file(f, f.name)
