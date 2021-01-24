@@ -8,6 +8,39 @@
         {{form.as_p}}
         <button type="submit" style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Uploader</button>
     </form>
-</div>
 
-{% endblock %}
+    <!-- <form method='POST' action="/upload/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="file_input" name="file_field" multiple />
+        <input type="text" id="directories" name="directories" hidden />
+        <input type="submit" />
+    </form>
+    <script>
+        files = document.querySelector("#file_input").files;
+        document.querySelector("#file_input").addEventListener("change", function () {
+            files = document.querySelector("#file_input").files;
+            let directories = {}
+            console.log('Mohamed 12345');
+            console.log(files);
+            /* for (let file of files) {
+                console.log(file);
+                file.webkitRelativePath
+                directories[file.name] = file.webkitRelativePath
+            } */
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                let fileParamName = `file${i}`;
+                let filePathParamName = `filepath${i}`;
+                formData.append(fileParamName, file);
+                formData.append(filePathParamName, file.webkitRelativePath);
+            }
+            console.log(formData);
+            //directories = JSON.stringify(directories);
+            //console.log('kerersdkjfnksdjan;l' + directories);
+            //document.querySelector("#directories").value = directories
+        });
+    </script>
+</div> -->
+
+    {% endblock %}

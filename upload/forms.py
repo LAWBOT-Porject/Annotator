@@ -8,5 +8,8 @@ class UploadFileForm(forms.Form):
                         .ClearableFileInput(
                             attrs={
                                     'multiple': True, 
-                                    'accept': allow_file_types()}
+                                    # 'accept': allow_file_types(),
+                                    #'directory': True,
+                                    'webkitdirectory': True,
+                                    }
                             ))
