@@ -15,6 +15,8 @@ from shutil import copyfile
 
 def handle_uploaded_file(f, name):
     with open( hp.files.uploaded_files_folder + name, 'wb+') as destination:
+        #destination.write(f.read())
+        # the method below is both time and memory efficient
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -25,8 +27,7 @@ def verify_file_type(file_name):
     return ('.' + file_name.split('.')[-1] in 
     hp.files.allowed_file_types) or ('.' + file_name.split('.')[-1] in [ x.upper() 
                                             for x in hp.files.allowed_file_types ])
-
-
+## TO DO : Save raw uploaded files in md5 related structure
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
