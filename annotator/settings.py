@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'upload',
     'annotate',
     'visualize',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'annotator.wsgi.application'
-
+AUT_USER_MODEL   = 'account.Account'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
