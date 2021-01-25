@@ -7,16 +7,16 @@ This file can also be imported as a module and contains the following functions:
     * handle_uploaded_file - save the uploaded files
 """
 
-
 from config.hparam import hparam as hp
-import textract
-import re
+import re, hashlib, textract
 from fuzzywuzzy import fuzz
 from shutil import copyfile
 
 
 def handle_uploaded_file(f, name):
     with open( hp.files.uploaded_files_folder + name, 'wb+') as destination:
+        #destination.write(f.read())
+        # the method below is both time and memory efficient
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -27,7 +27,13 @@ def verify_file_type(file_name):
     return ('.' + file_name.split('.')[-1] in 
     hp.files.allowed_file_types) or ('.' + file_name.split('.')[-1] in [ x.upper() 
                                             for x in hp.files.allowed_file_types ])
-                                            
+## TO DO : Save raw uploaded files in md5 related structure
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 def transform_to_standard_chars(raw_text):
     raw_text = raw_text.lower()
@@ -119,7 +125,6 @@ def search_reference(raw_text):
                 return ''.join(reference.split('/'))[:7]
             except : return ''
     return reference
-
 
 def convert_to_txt(file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):

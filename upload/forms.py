@@ -7,6 +7,9 @@ class UploadFileForm(forms.Form):
     file        = forms.FileField(widget=forms
                         .ClearableFileInput(
                             attrs={
+                                    'id': 'file_input',
                                     'multiple': True, 
-                                    'accept': allow_file_types()}
+                                    # 'accept': allow_file_types(),
+                                    'webkitdirectory': True,
+                                    }
                             ))

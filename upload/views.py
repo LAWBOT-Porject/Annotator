@@ -1,6 +1,7 @@
 #from django.http.response import HttpResponse, HttpResponseRedirect
 from .forms import UploadFileForm
 from django.shortcuts import render
+import time
 from helpers.upload_utilities import (
     handle_uploaded_file,
     verify_file_type,
@@ -24,8 +25,9 @@ def upload_view(request, *args, **kwargs):
                 else :
                     # Otherwise remove it from the uploaded files list
                     unallowed_files += 1
-            return render(request, 'response.html', 
-            {'number_files': (len(files) - unallowed_files)} )
+        return render(request, 'response.html', {
+            'number_files': (len(files) - unallowed_files),
+            })
     else:
         form = UploadFileForm()
     return render(request, 'upload.html', {'form': form})
