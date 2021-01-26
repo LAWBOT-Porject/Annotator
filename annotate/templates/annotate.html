@@ -2,6 +2,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+{% if request.user.is_staff %}
 <div class="grid-container">
 
     <div class="tools-bar grid-item">
@@ -204,6 +205,10 @@
         </div>
     </div>
 </div>
+{% else %}
+<h1 style="color: rgb(255, 123, 0); background-color: aquamarine; height: 100%; text-align: center;">Votre compte est en
+    phase de création, merci pour votre patience.</h1>
+{% endif %}
 {% else %}
 <h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier puis
     revenir</h1>

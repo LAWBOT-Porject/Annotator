@@ -2,6 +2,7 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+{% if request.user.is_staff %}
 <div class="upload-container">
 
     <form action="/upload/" method="POST" enctype="multipart/form-data">
@@ -9,6 +10,11 @@
         {{form.as_p}}
         <button type="submit" style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Uploader</button>
     </form>
+    {% else %}
+    <h1 style="color: rgb(255, 123, 0); background-color: aquamarine; height: 100%; text-align: center;">Votre compte
+        est en
+        phase de création, merci pour votre patience.</h1>
+    {% endif %}
     {% else %}
     <h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier puis
         revenir</h1>

@@ -23,8 +23,8 @@
     list-style-type: none;
     display: flex;
     justify-content: space-between;
-    width: 80vh;
-    margin: .9rem auto;
+    width: 80%;
+    margin: 1vh auto;
     background-color: aquamarine;
 }
 
