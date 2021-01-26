@@ -3,8 +3,14 @@
  -->
 <ul id="navbar">
     <li><a href="/home">Accueil</a></li>
+    <li><a href="/about">A propos</a></li>
+    {% if user.is_authenticated %}
     <li><a href="/upload">Uploader</a></li>
     <li><a href="/annotate">Annoter</a></li>
     <li><a href="/visualize">Visualiser</a></li>
-    <li><a href="/about">A propos</a></li>
+    <li><a href="{% url 'logout' %}">Se déconnecter</a></li>
+    {% else %}
+    <li><a href="{% url 'register' %}">S'inscrire</a></li>
+    <li><a href="{% url 'login' %}">S'identifier</a></li>
+    {% endif %}
 </ul>

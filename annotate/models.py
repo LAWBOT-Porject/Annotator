@@ -1,4 +1,4 @@
-from django.db import models
+""" from django.db import models
 
 class PersonnePhysique(models.Model):
     nom_personne_ph = models.CharField(max_length=50) #, help_text='Nom')
@@ -136,4 +136,4 @@ class Annotation(models.Model):
     pass
 
 
-    
+     """

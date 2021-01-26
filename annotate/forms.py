@@ -1,4 +1,4 @@
-from django import forms
+""" from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.forms import ModelForm, CharField, TextInput, DateField, ChoiceField, RadioSelect
 from .models import (
@@ -43,22 +43,22 @@ class PartiePhysiqueForm(ModelForm):
             'adresse_personne_ph': _('Adresse'),
             # 'sexe_personne_ph': _('Some useful help text.'),
         }
-        """ widgets = {
-            'titre_personne_ph': CharField( max_length=20, 
-                                            ),
-            'nom_personne_ph': CharField( max_length=100, 
-                                            ),
-            'prenom_personne_ph': CharField( max_length=100, 
-                                            ),
-            'date_naissance_personne_ph': DateField(),
-            'adresse_personne_ph': CharField( max_length=255, 
-                                            ),
-            'sexe_personne_ph' : ChoiceField(choices=CHOICES, 
-                                            ),
-        } """
-        """ labels = {'', '', '', 'Date de naissance', '', ''} """
+        # """ #widgets = {
+        #     'titre_personne_ph': CharField( max_length=20, 
+        #                                     ),
+        #     'nom_personne_ph': CharField( max_length=100, 
+        #                                     ),
+        #     'prenom_personne_ph': CharField( max_length=100, 
+        #                                     ),
+        #     'date_naissance_personne_ph': DateField(),
+        #     'adresse_personne_ph': CharField( max_length=255, 
+        #                                     ),
+        #     'sexe_personne_ph' : ChoiceField(choices=CHOICES, 
+        #                                     ),
+        # } """
+        # """ labels = {'', '', '', 'Date de naissance', '', ''} """
 
-class PartieMoraleForm(ModelForm):
+""" class PartieMoraleForm(ModelForm):
     class Meta:
         model = PersonneMorale
         fields = (  'nom_entreprise', 
@@ -66,26 +66,27 @@ class PartieMoraleForm(ModelForm):
                     'numero_NAF',
                     'adresse_entreprise',
                   )
-        """ widgets = {
-            'nom_entreprise': CharField( max_length=255, 
-                                            ),
-            'numero_SIRET': CharField( max_length=100, 
-                                            ),
-            'numero_NAF': CharField( max_length=100, 
-                                            ),
-            'adresse_entreprise': CharField( max_length=20, 
-                                            ),
-        } """
-        labels = {'', '', '', ''}
+ """        
+        #     """ widgets = {
+        #     'nom_entreprise': CharField( max_length=255, 
+        #                                     ),
+        #     'numero_SIRET': CharField( max_length=100, 
+        #                                     ),
+        #     'numero_NAF': CharField( max_length=100, 
+        #                                     ),
+        #     'adresse_entreprise': CharField( max_length=20, 
+        #                                     ),
+        # } """
+    #    """  labels = {'', '', '', ''}
 
-class DateInput(forms.DateInput):
+""" class DateInput(forms.DateInput):
     input_type= 'date'
-    input_format= ('%d %B %Y')
+    input_format= ('%d %B %Y') """
     # attrs= { 
     #         'placeholder': 'jj-mm-aaaa'
     #         }
 
-class decisionInfo(forms.Form):
+""" class decisionInfo(forms.Form):
     rg = forms.CharField( label='', max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Numéro RG'}))
     juridiction = forms.CharField( label='',max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Juridiction'})) 
     chambre = forms.CharField( label='',max_length=30, widget=forms.TextInput(attrs={'placeholder': 'Chambre'})) 
@@ -99,3 +100,4 @@ class decisionInfo(forms.Form):
 
 class decisionForm(forms.Form):
     dispositifs = forms.CharField( label='', widget=forms.TextInput(attrs={'placeholder': 'Dispositifs'}))
+ """

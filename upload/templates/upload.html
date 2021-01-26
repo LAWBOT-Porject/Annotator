@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="upload-container">
 
     <form action="/upload/" method="POST" enctype="multipart/form-data">
@@ -8,6 +9,10 @@
         {{form.as_p}}
         <button type="submit" style="font-weight: 500; font-size: 1.1rem; margin-top: 2vh;">Uploader</button>
     </form>
+    {% else %}
+    <h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier puis
+        revenir</h1>
+    {% endif %}
     <script>
         /* files = document.querySelector("#file_input").files;
         document.querySelector("#file_input").addEventListener("change", function () {

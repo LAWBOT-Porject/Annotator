@@ -79,8 +79,8 @@ TEMPLATES = [
     },
 ]
 
+#AUT_USER_MODEL   = 'account.Account'
 WSGI_APPLICATION = 'annotator.wsgi.application'
-AUT_USER_MODEL   = 'account.Account'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -137,3 +137,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/home'

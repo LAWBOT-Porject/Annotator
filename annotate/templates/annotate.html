@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="grid-container">
 
     <div class="tools-bar grid-item">
@@ -203,5 +204,8 @@
         </div>
     </div>
 </div>
-</div>
+{% else %}
+<h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier puis
+    revenir</h1>
+{% endif %}
 {% endblock %}
