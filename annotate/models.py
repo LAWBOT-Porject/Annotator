@@ -1,3 +1,55 @@
+from django.db import models
+from django.conf import settings
+
+## TO DO : Add juridiction foreignKey
+class Decision(models.Model):
+    rg = models.CharField(max_length=20, default='', )
+    chambre = models.CharField(max_length=50, default='', )
+    rg_position = models.IntegerField(default=-1)
+    chambre_position = models.IntegerField(default=-1)
+    juridiction_position = models.IntegerField(default=-1)
+    zip_code_position = models.IntegerField(default=-1)
+    texte_decision = models.TextField(default='')
+    decision_original_path = models.CharField(max_length=510, default='', )
+    decision_treated_path = models.CharField(max_length=510, default='', )
+    corbeille = models.BooleanField(default=False)
+    # 0 => did not be opened yet, 1 => opened but not completed yet, 2 => completely annotated
+    annotation_state = models.IntegerField(default=0)
+    # This is automiticaally filled when creating object i.e 
+    # when uploading the decision file with the current date and time
+    upload_date = models.DateTimeField(auto_now_add=True)
+    # Can be considered as last modification date
+    annotation_date = models.DateTimeField(auto_now=True)
+    uploader_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                on_delete=models.SET_NULL,)
+    annotator_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                on_delete=models.SET_NULL,)
+    juridiction_id = models.ForeignKey(Juridiction,
+                                on_delete=models.SET_NULL,)
+    
+    def __str__(self):
+        return self.rg
+
+class Ville(models.Model):
+    zip_code = models.CharField(max_length=6, primary_key=True)
+    ville = models.CharField(max_length=80, default='', )
+    pays = models.CharField(max_length=50, default='', )
+    
+    def __str__(self):
+        return ' '.join([self.ville, self.zip_code, self.pays])
+
+class Juridiction(models.Model):
+    type_juridiction = models.CharField(max_length=40, default='',)
+    abbreviation = models.CharField(max_length=10, default='', )
+    zip_code = models.ForeignKey(Ville,
+                                on_delete=models.SET_NULL,)
+    
+    def __str__(self):
+        return ' '.join([self.type_juridiction,
+                         self.zip_code ])
+
+
+class 
 """ from django.db import models
 
 class PersonnePhysique(models.Model):
