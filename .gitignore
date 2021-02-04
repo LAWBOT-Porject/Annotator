@@ -5,3 +5,5 @@ config/
 .gitignore
 static/
 annotate/migrations/
+data/
+*.sql

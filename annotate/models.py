@@ -1,14 +1,35 @@
 from django.db import models
 from django.conf import settings
 
+class Ville(models.Model):
+    """ class Meta:
+        unique_together = (('zip_code', 'ville'),) """
+    zip_code = models.CharField(max_length=6)#, primary_key=True)
+    ville = models.CharField(max_length=80, default='', )
+    
+    def __str__(self):
+        return ' '.join([self.ville, self.zip_code, self.pays])
+
+class Juridiction(models.Model):
+    type_juridiction = models.CharField(max_length=50, default='',)
+    abbreviation = models.CharField(max_length=10, default='', )
+    zip_code = models.ForeignKey(Ville,
+                                on_delete=models.SET_NULL, null=True,)
+    
+    def __str__(self):
+        return ' '.join([self.type_juridiction,
+                         self.zip_code ])
+
 ## TO DO : Add juridiction foreignKey
 class Decision(models.Model):
-    rg = models.CharField(max_length=20, default='', )
+    rg = models.CharField(max_length=20, )
     chambre = models.CharField(max_length=50, default='', )
+    # Position fields
     rg_position = models.IntegerField(default=-1)
     chambre_position = models.IntegerField(default=-1)
     juridiction_position = models.IntegerField(default=-1)
     zip_code_position = models.IntegerField(default=-1)
+    
     texte_decision = models.TextField(default='')
     decision_original_path = models.CharField(max_length=510, default='', )
     decision_treated_path = models.CharField(max_length=510, default='', )
@@ -21,171 +42,149 @@ class Decision(models.Model):
     # Can be considered as last modification date
     annotation_date = models.DateTimeField(auto_now=True)
     uploader_id = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                on_delete=models.SET_NULL,)
+                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_uploader')
     annotator_id = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                on_delete=models.SET_NULL,)
+                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_annotator')
     juridiction_id = models.ForeignKey(Juridiction,
-                                on_delete=models.SET_NULL,)
+                                on_delete=models.SET_NULL, null=True,)
     
     def __str__(self):
         return self.rg
 
-class Ville(models.Model):
-    zip_code = models.CharField(max_length=6, primary_key=True)
-    ville = models.CharField(max_length=80, default='', )
-    pays = models.CharField(max_length=50, default='', )
-    
-    def __str__(self):
-        return ' '.join([self.ville, self.zip_code, self.pays])
 
-class Juridiction(models.Model):
-    type_juridiction = models.CharField(max_length=40, default='',)
-    abbreviation = models.CharField(max_length=10, default='', )
+
+class Personne(models.Model):
+    titre = models.CharField(max_length=20, default='', )
+    # nom field can be filled with person or entreprise name
+    nom = models.CharField(max_length=60, default='', )
+    prenom = models.CharField(max_length=60, default='', )
+    birth_date = models.DateField(default='')
     zip_code = models.ForeignKey(Ville,
-                                on_delete=models.SET_NULL,)
+                                on_delete=models.SET_NULL, null=True,)
+    adresse = models.CharField(max_length=100, default='', )
+    siret = models.CharField(max_length=20, default='', )
+    naf = models.CharField(max_length=20, default='', )
+    # If true so physical person, else it's an entreprise
+    physique = models.BooleanField(default=True)
+    # Position fields
+    titre_position = models.IntegerField(default=-1)
+    nom_position = models.IntegerField(default=-1)
+    prenom_position = models.IntegerField(default=-1)
+    birth_date_position = models.IntegerField(default=-1)
+    zip_code_position = models.IntegerField(default=-1)
+    adresse_position = models.IntegerField(default=-1)
+    siret_position = models.IntegerField(default=-1)
+    naf_position = models.IntegerField(default=-1)
     
     def __str__(self):
-        return ' '.join([self.type_juridiction,
-                         self.zip_code ])
+        return ' '.join([(self.titre + ' ' + self.prenom if self.prenom != ''  else self.siret)
+                        , self.nom, self.zip_code])
 
-
-class 
-""" from django.db import models
-
-class PersonnePhysique(models.Model):
-    nom_personne_ph = models.CharField(max_length=50) #, help_text='Nom')
-    position_nom_personne_ph = models.IntegerField()
-    prenom_personne_ph = models.CharField(max_length=50)
-    position_prenom_personne_ph = models.IntegerField()
-    titre_personne_ph = models.CharField(max_length=20, blank=True)
-    position_titre_personne_ph = models.IntegerField()
-    date_naissance_personne_ph = models.DateField(blank=True)
-    position_date_naissance = models.IntegerField()
-    adresse_personne_ph = models.CharField(max_length=255, blank=True)
-    position_adresse_personne_ph = models.IntegerField(blank=True)
-    code_postale_personne_ph = models.ForeignKey('Ville', on_delete=models.CASCADE)
-    barreau = models.CharField(max_length=255, blank=True)
-    position_barreau = models.IntegerField()
-    pseudo_personne_ph = models.CharField(max_length=50, blank=True)
-    sexe_personne_ph = models.BooleanField()
-    fonction = models.ForeignKey('Fonction', on_delete=models.CASCADE,)
+class DecisionPersonne(models.Model):
+    class Meta:
+        unique_together = (('decision_id', 'person_id'),)
+    # Did not make the primary key composed of decicion id and perosn id 
+    # in case of avocat can be related to more than one person in one decision
+    decision_id = models.ForeignKey(Decision,
+                                on_delete=models.CASCADE,)
+    person_id = models.ForeignKey(Personne,
+                                on_delete=models.CASCADE, related_name='%(class)s_person')
+    # Person function in this decision
+    fonction = models.CharField(max_length=60, default='', )
+    # Partie id in case of avocat function
+    person2_id = models.ForeignKey(Personne,
+                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_person2')
+    # In case of avocat function                            
+    barreau = models.CharField(max_length=60, default='', )
+    
+    # Position fields
+    fonction_position = models.IntegerField(default=-1)
+    barreau_position = models.IntegerField(default=-1)
+    
     def __str__(self):
-        return ' '.join([self.titre_personne_ph, 
-                        self.nom_personne_ph, 
-                        self.prenom_personne_ph])
+        return self.fonction
 
-class PersonneMorale(models.Model):
-    nom_entreprise = models.CharField(max_length=50)
-    position_nom_entreprise = models.IntegerField()
-    numero_SIRET = models.CharField(max_length=50)
-    position_numero_SIRET = models.IntegerField()
-    numero_NAF = models.CharField(max_length=50, blank=True)
-    position_numero_NAF = models.IntegerField()
-    pseudo_entreprise = models.CharField(max_length=50, blank=True)
-    adresse_entreprise = models.CharField(max_length=255, blank=True)
-    position_adresse_entreprise = models.IntegerField()
-    code_postale_entreprise = models.ForeignKey('Ville', on_delete=models.CASCADE)
-    fonction = models.ForeignKey('Fonction', on_delete=models.CASCADE,)
+class Categorie(models.Model):
 
-class Fonction(models.Model):
-    nom_fonction = models.CharField(max_length=50)
-
-class Decision(models.Model):
-    texte_decision = models.TextField()
-    numero_rg = models.CharField(max_length=30)
-    position_numero_rg = models.IntegerField()
-    date_decision = models.DateField(blank=True)
-    position_date_decision = models.IntegerField(blank=True)
-    chambre = models.CharField(max_length=100, blank=True)
-    position_chambre = models.IntegerField()
-    chemin_fichier = models.TextField(blank=True)
-    juridiction = models.ForeignKey('Juridiction', on_delete=models.CASCADE)
-
-class Juridiction(models.Model):
-    type_juridiction = models.CharField(max_length=255)
-    position_type_juridiction = models.IntegerField()
-    code_postale_juridiction = models.ForeignKey('Ville', on_delete=models.CASCADE)
-    abbreviation_type = models.CharField(max_length=20, blank=True)
+    noppac = models.CharField(max_length=50, primary_key= True)
+    description = models.TextField(default='')
+    # In case of avocat function                            
+    objet = models.CharField(max_length=255, default='', )
+    
+    def __str__(self):
+        return self.description
 
 class Demande(models.Model):
-    # Pretention, Motifs and dispos
-    pretention = models.TextField(blank=True)
-    position_pretention = models.IntegerField(blank=True)
-    motifs = models.TextField(blank=True)
-    position_motifs = models.IntegerField(blank=True)
-    dispositifs = models.TextField(blank=True)
-    position_dispositifs = models.IntegerField(blank=True)
-    # Demande
-    montant_demande = models.CharField(max_length=50, blank=True)
-    position_montant_demande = models.IntegerField(blank=True)
-    unite_demande = models.CharField(max_length=50, blank=True)
-    position_unite_demande = models.IntegerField(blank=True)
-    quantite_demande = models.CharField(max_length=255, blank=True)
-    position_quantite_demande = models.IntegerField(blank=True)
-    # Result
-    montant_resultat = models.CharField(max_length=50, blank=True)
-    position_montant_resultat = models.IntegerField(blank=True)
-    unite_resultat = models.CharField(max_length=50, blank=True)
-    position_unite_resultat = models.IntegerField(blank=True)
-    quantite_resultat = models.CharField(max_length=255, blank=True)
-    position_quantite_resultat = models.IntegerField(blank=True)
-    result = models.BooleanField()
-    # Decision many (demandes) to one (decision)
-    id_decision = models.ForeignKey('Decision', on_delete=models.CASCADE)
-    # Demande Categorie
-    noppac = models.ForeignKey('CategorieDemande', on_delete=models.CASCADE)
 
-class CategorieDemande(models.Model):
-    noppac = models.CharField(primary_key=True, max_length=255)
-    descriptif_categorie = models.TextField(blank=True)
-    objet_categorie = models.TextField(blank=True)
-    normes = models.ManyToManyField('Norme')
+    decision_id = models.ForeignKey(Decision,
+                                on_delete=models.CASCADE,)
+    categorie_id = models.ForeignKey(Categorie,
+                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_categorie')
+    montant_demande = models.DecimalField(max_digits=10, decimal_places=3, default=-1)
+    unite_demande = models.CharField(max_length=20, default='', )
+    quantite_demande = models.CharField(max_length=200, default='', )
+    montant_resultat = models.DecimalField(max_digits=10, decimal_places=3, default=-1)
+    unite_resultat = models.CharField(max_length=20, default='', )
+    quantite_resultat = models.CharField(max_length=200, default='', )
+
+    pretention = models.TextField(default='')
+    dispositifs = models.TextField(default='')
+    motifs = models.TextField(default='')
+    # Demand result accepted or refused 
+    resultat = models.BooleanField(default=True)
+    # Set by the juriste when composing dataset
+    default_categorie_id = models.ForeignKey(Categorie,
+                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_default_categorie')
+    # In case the first classification of demand category was not correct
+    mauvaise_categorie = models.BooleanField(default=False)
+    # Position fields
+    montant_demande_position = models.IntegerField(default=-1)
+    unite_demande_position = models.IntegerField(default=-1)
+    quantite_demande_position = models.IntegerField(default=-1)
+    montant_resultat_position = models.IntegerField(default=-1)
+    unite_resultat_position = models.IntegerField(default=-1)
+    quantite_resultat_position = models.IntegerField(default=-1)
+    pretention_position = models.IntegerField(default=-1)
+    dispositifs_position = models.IntegerField(default=-1)
+    motifs_position = models.IntegerField(default=-1)
     
+    def __str__(self):
+        return self.categorie_id
+
+class Demander(models.Model):
+    class Meta:
+        unique_together = (('demande_id', 'person_id'),)
+    demande_id = models.ForeignKey(Demande,
+                                on_delete=models.CASCADE,)
+    # Id demandeur
+    person_id = models.ForeignKey(Personne,
+                                on_delete=models.CASCADE,)
+
+class Defender(models.Model):
+    class Meta:
+        unique_together = (('demande_id', 'person_id'),)
+    demande_id = models.ForeignKey(Demande,
+                                on_delete=models.CASCADE,)
+    # Id defendeur
+    person_id = models.ForeignKey(Personne,
+                                on_delete=models.CASCADE,)
+
+
 class Norme(models.Model):
-    fondement = models.TextField(blank=True)
-    texte_norme = models.TextField(blank=True)
-    date_debut = models.DateField(blank=True)
-    date_fin = models.DateField(blank=True)
+
+    fondement = models.CharField(max_length=255, default='')
+    texte_norme = models.TextField(default='')
+    date_debut = models.DateField(default='')
+    date_fin = models.DateField(default='')
     
-class Ville(models.Model):
-    code_postale = models.CharField(max_length=10, primary_key=True)
-    ville = models.CharField(max_length=255)
+    def __str__(self):
+        return self.fondement
 
-# 2 problems : avocats + 2 IDs uniques
-class PersonneDecision(models.Model):
+class CategorieNorme(models.Model):
     class Meta:
-        unique_together = [
-                            ['id_decision', 'id_personne_ph'],
-                            ['id_decision', 'id_personne_morale'],
-                        ]
-    id_decision = models.ForeignKey('Decision', 
-                            on_delete=models.CASCADE)
-
-    id_personne_ph = models.ForeignKey('PersonnePhysique', 
-                            on_delete=models.CASCADE, blank=True)
-
-    id_personne_morale = models.ForeignKey('PersonneMorale', 
-                            on_delete=models.CASCADE, blank=True)
-
-    id_fonction = models.ForeignKey('Fonction', 
-                            on_delete=models.CASCADE)
-
-    position_fonction = models.IntegerField(blank=True)
-
-class PartieDemande(models.Model):
-    class Meta:
-        unique_together = [
-                            ['id_demande', 'id_demandeur']
-                        ]
-    id_demande = models.ForeignKey('Demande', on_delete=models.CASCADE)
-    id_demandeur = models.ForeignKey('PersonnePhysique', on_delete=models.CASCADE)
-    #id_defendeur = models.ForeignKey('PersonnePhysique', on_delete=models.CASCADE)
-
-class Annotateur(models.Model):
-    pass
-
-class Annotation(models.Model):
-    pass
-
-
-     """
+        unique_together = (('categorie_id', 'norme_id'),)
+    
+    categorie_id = models.ForeignKey(Categorie,
+                                on_delete=models.CASCADE,)
+    norme_id = models.ForeignKey(Norme,
+                                on_delete=models.CASCADE,)

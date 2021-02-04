@@ -20,8 +20,10 @@ def upload_view(request, *args, **kwargs):
                 # Verify if the uploaded file types are allowed
                 if verify_file_type(f.name):
                     # Save the file only if its extention is allowed
-                    handle_uploaded_file(f, f.name)
-                    convert_to_txt(f.name)
+                    upload_path = handle_uploaded_file(f, f.name)
+                    convert_to_txt(upload_path, f.name)
+                    current_user = request.user
+                    #print (current_user.id)
                 else :
                     # Otherwise remove it from the uploaded files list
                     unallowed_files += 1
