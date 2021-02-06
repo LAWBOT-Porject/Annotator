@@ -8,7 +8,7 @@ This file can also be imported as a module and contains the following functions:
 """
 
 from config.hparam import hparam as hp
-import re, hashlib, textract, codecs
+import re, hashlib, textract#, codecs
 from fuzzywuzzy import fuzz
 from shutil import copyfile
 from pathlib import Path
@@ -95,9 +95,10 @@ def search_city(raw_text):
             zip_code = [z.zip_code for z in all_villes if z.ville == city]
             try :
                 zc = zip_code[0]
-                return [zc, position]
             except :
-                return ['00000', position]
+                zc = '00000'
+            finally:
+                return [zc, position]
 
 def search_city_asraw(raw_text, cities_file_path):
     token_set_ratio = 0
@@ -201,8 +202,8 @@ def convert_to_txt(file_path, file_name):
         hp.files.treated_files_folder + '/'+ new_file_name]
     else :
         
-        with codecs.open(file_path, encoding='utf-8') as file:
-            search_text = file.read()
+        with open(file_path, encoding='utf-8') as file:
+            search_text = file.read()[:500]
             #search_text = str(search_text)[:200] #str(text)[:200]
             #print(search_text)#.decode('utf-8'))
             #print(str('\é\î\à\ç ') + str(search_text[:500].encode(encoding='utf-8').decode()))
@@ -211,6 +212,7 @@ def convert_to_txt(file_path, file_name):
             juridiction = juridiction[0]
             #print('###### ', juridiction)                                            #+ hp.files.juridictions_file_name)
             city = search_city(search_text) #, hp.files.static_data_folder 
+            #print(city)
             city_position = city[1]                             #            + hp.files.cities_file_name)
             city = city[0]
             reference = search_reference(search_text)
