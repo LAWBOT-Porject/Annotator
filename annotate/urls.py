@@ -1,4 +1,4 @@
-from django.urls import path , re_path
+from django.urls import path
 from .views import annotate_view, read_file#, return_new_decision_form#,read_file
 
 app_name = 'annotate'

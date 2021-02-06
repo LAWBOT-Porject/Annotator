@@ -7,6 +7,7 @@
     {% if user.is_authenticated %}
     {% if request.user.is_staff %}
     <li><a href="/upload">Uploader</a></li>
+    <li><a href="/organize">Organiser</a></li>
     <li><a href="/annotate">Annoter</a></li>
     <li><a href="/visualize">Visualiser</a></li>
     <li><a href="{% url 'logout' %}">Se déconnecter</a></li>

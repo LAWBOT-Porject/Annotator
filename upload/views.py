@@ -31,6 +31,7 @@ def upload_view(request, *args, **kwargs):
                     rg = new_file_name[11:-4]
                     current_user = request.user
                     #print (current_user.id)
+                    ## TODO Treat the case of 00000 zipcode => Assign just the juridiction type without city
                     all_juridictions = juridiction.objects.filter(zip_code__zip_code=zip_code)
                     try :
                         jurid = all_juridictions.get(abbreviation=juridiction_abr)
@@ -47,6 +48,7 @@ def upload_view(request, *args, **kwargs):
                         new_juridiction.save()
                         jurid = new_juridiction
                     try:
+                        # If there is no exception raised that means we already have this decision (Because .get raises Entry.DoesNotExist exception if there is no record found)
                         all_decisions = Decision.objects.filter(rg=rg)
                         decision_exists = all_decisions.get(juridiction_id=jurid)
                     except:

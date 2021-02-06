@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'annotate',
     'visualize',
     'account',
+    'organize',
 ]
 
 MIDDLEWARE = [

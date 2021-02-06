@@ -31,6 +31,7 @@ urlpatterns = [
     path('visualize/', include('visualize.urls')),
     path('account/', include('django.contrib.auth.urls')),
     path('account/', include('account.urls')),
+    path('organize/', include('organize.urls')),
     
     path('admin/', admin.site.urls),
     # path('<path:file>', read_file,name="file_display"),
