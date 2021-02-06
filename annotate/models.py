@@ -18,17 +18,17 @@ class Juridiction(models.Model):
     
     def __str__(self):
         return ' '.join([self.type_juridiction,
-                         self.zip_code ])
+                        self.zip_code ])
 
 ## TO DO : Add juridiction foreignKey
 class Decision(models.Model):
     rg = models.CharField(max_length=20, )
     chambre = models.CharField(max_length=50, default='', )
     # Position fields
-    rg_position = models.IntegerField(default=-1)
-    chambre_position = models.IntegerField(default=-1)
+    rg_position          = models.IntegerField(default=-1)
+    chambre_position     = models.IntegerField(default=-1)
     juridiction_position = models.IntegerField(default=-1)
-    zip_code_position = models.IntegerField(default=-1)
+    zip_code_position    = models.IntegerField(default=-1)
     
     texte_decision = models.TextField(default='')
     decision_original_path = models.CharField(max_length=510, default='', )

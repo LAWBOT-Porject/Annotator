@@ -8,7 +8,7 @@ This file can also be imported as a module and contains the following functions:
 """
 
 from config.hparam import hparam as hp
-import re, hashlib, textract
+import re, hashlib, textract, codecs
 from fuzzywuzzy import fuzz
 from shutil import copyfile
 from pathlib import Path
@@ -90,13 +90,14 @@ def search_city(raw_text):
     for city in cities :
         cmp_city = transform_to_standard_chars(city).lower()
         temp_ratio = fuzz.partial_ratio(cmp_city, raw_text)
-        if (temp_ratio == 100 and (raw_text.find(cmp_city) != -1)):
+        position = raw_text.find(cmp_city)
+        if (temp_ratio == 100 and (position != -1)):
             zip_code = [z.zip_code for z in all_villes if z.ville == city]
             try :
                 zc = zip_code[0]
-                return zc
+                return [zc, position]
             except :
-                return '00000'
+                return ['00000', position]
 
 def search_city_asraw(raw_text, cities_file_path):
     token_set_ratio = 0
@@ -120,13 +121,14 @@ def search_juridiction(raw_text): #, juridictions_file_path)
     for jurid in juridics :
         cmp_jurid = transform_to_standard_chars(jurid).lower()
         temp_ratio = fuzz.partial_ratio(cmp_jurid, raw_text)
-        if (temp_ratio == 100 and (raw_text.find(cmp_jurid) != -1)):
+        position = raw_text.find(cmp_jurid)
+        if (temp_ratio == 100 and (position != -1)):
             abbreviation = [j.abbreviation for j in all_juridictions if j.type_juridiction == jurid]
             try :
                 abrv = abbreviation[0]
-                return abrv
+                return [abrv, position]
             except :
-                return 'ABRV'
+                return ['ABRV', position]
 
 def search_juridiction_asraw(raw_text, juridictions_file_path):
     token_set_ratio = 0
@@ -158,26 +160,35 @@ def full_juridiction(juridiction_abbr):
 def search_reference(raw_text):
     try: # Case 1 : reference is 10 digits
         reference = re.findall(r'[0-9]{10}', raw_text)[0]
+        position = raw_text.find(reference)
     except:
         try : # Case 2 : reference is 8 digits
             reference = re.findall(r'[0-9]{8}', raw_text)[0]
+            position = raw_text.find(reference)
         except:
             try : # Case 3 : reference is 7 digits separated or not by forwarded slach '/'
                 reference = re.findall(r'[0-9]{2}[\/]?[0-9]{5}',raw_text)[0]
-                return ''.join(reference.split('/'))[:7]
-            except : return ''
+                position = raw_text.find(reference)
+                return [''.join(reference.split('/'))[:7], position]
+            except : return ['', -1]
     return reference
 
 def convert_to_txt(file_path, file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(file_path, errors="ignore")
-        text = text.decode("utf-8")
-        search_text = str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
+        #text = text.decode("utf-8")
+        text = text.decode("latin-1")
+        search_text = text #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
         juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
-                                                       #  + hp.files.juridictions_file_name)
+                                                    #  + hp.files.juridictions_file_name)
+        juridiction_pos = juridiction[1]
+        juridiction = juridiction[0]
         city = search_city(search_text) #, hp.files.static_data_folder 
-                                        #            + hp.files.cities_file_name)
+        city_position = city[1]                             #            + hp.files.cities_file_name)
+        city = city[0]
         reference = search_reference(search_text)
+        rg_position = reference[1]
+        reference = reference[0]
         new_file_name = '-'.join([juridiction, city, reference ])
         new_file_name += hp.files.standard_file_type
         file = open(hp.files.treated_files_folder + '/'+
@@ -185,16 +196,30 @@ def convert_to_txt(file_path, file_name):
                     new_file_name , "w")
         file.write(str(text)) 
         file.close()
+        return [new_file_name, rg_position, 
+        city_position, juridiction_pos, search_text,
+        hp.files.treated_files_folder + '/'+ new_file_name]
     else :
-        with open(file_path, 'r') as file:
-            text = file.read()
-            search_text = str(text)[:200]
+        
+        with codecs.open(file_path, encoding='utf-8') as file:
+            search_text = file.read()
+            #search_text = str(search_text)[:200] #str(text)[:200]
+            #print(search_text)#.decode('utf-8'))
+            #print(str('\é\î\à\ç ') + str(search_text[:500].encode(encoding='utf-8').decode()))
             juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
-            print('###### ', juridiction)                                            #+ hp.files.juridictions_file_name)
+            juridiction_pos = juridiction[1]
+            juridiction = juridiction[0]
+            #print('###### ', juridiction)                                            #+ hp.files.juridictions_file_name)
             city = search_city(search_text) #, hp.files.static_data_folder 
-            print('###### ',city)                              #            + hp.files.cities_file_name)
+            city_position = city[1]                             #            + hp.files.cities_file_name)
+            city = city[0]
             reference = search_reference(search_text)
+            rg_position = reference[1]
+            reference = reference[0]
             new_file_name = '-'.join([juridiction, city, reference ])
             new_file_name += hp.files.standard_file_type
-            print('##### treated path #{0}#'.format(hp.files.treated_files_folder+ '/' + new_file_name))
+            #print('##### treated path #{0}#'.format(hp.files.treated_files_folder+ '/' + new_file_name))
             copyfile(file_path, hp.files.treated_files_folder + '/' + new_file_name)
+            return [new_file_name, rg_position, 
+            city_position, juridiction_pos,search_text,#str(text),
+            hp.files.treated_files_folder + '/' + new_file_name]
