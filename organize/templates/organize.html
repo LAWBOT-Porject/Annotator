@@ -3,9 +3,17 @@
 {% block content %}
 {% if user.is_authenticated %}
 {% if request.user.is_staff %}
-<div class="organize-container">
+<div class="organize-container grid-container-org">
 
-    A bien tot
+    <div class="research-container-org grid-item-org">
+
+    </div>
+    <div class="navigation-container-org grid-item-org">
+
+    </div>
+    <div class="files-container-org grid-item-org">
+
+    </div>
 </div>
 {% else %}
 <h1 style="color: rgb(255, 123, 0); background-color: aquamarine; height: 100%; text-align: center;">Votre compte
