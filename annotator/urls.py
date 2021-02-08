@@ -17,11 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 from static_pages.views import home_view, about_view
 #from annotate.views import read_file
-from filebrowser.sites import site
 
 urlpatterns = [
-    path('admin/filebrowser/', site.urls),
-    path('grappelli/', include('grappelli.urls')),
     # main pages routing
     path('', home_view, name='home'),
     path('home/', home_view, name='home'),
