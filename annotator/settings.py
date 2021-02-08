@@ -36,6 +36,9 @@ ALLOWED_HOSTS = [hp.host.ip,
 # Application definition
 
 INSTALLED_APPS = [
+    # 'grappelli',
+    # 'filebrowser',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,3 +143,6 @@ STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = '/home'
+# DIRECTORY = getattr(settings, "FILEBROWSER_DIRECTORY", 'uploads/')
+# FILEBROWSER_DIRECTORY = 'data/treateds'
+# DIRECTORY = ''
