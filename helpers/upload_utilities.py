@@ -32,8 +32,8 @@ def handle_uploaded_file(f, name):
         # print(e.errno)
     # Move file from temp folder to the new folder
     try:
-        print('path {0}'.format(path))
-        print('new path {0}'.format(new_path + name))
+        # print('path {0}'.format(path))
+        # print('new path {0}'.format(new_path + name))
         Path(path).rename(new_path + name)
     except FileExistsError: # FileNotFoundError or FileExistsError as e 
         # Delete file from temp folder if it already has a folder in uploads
@@ -87,18 +87,33 @@ def search_city(raw_text):
     all_villes = ville.objects.all()
     cities     = [city.ville for city in all_villes]
     # cities = ville.objects.values('ville').distinct()
+    biggest_ration = 0
+    potential_city = ''
     for city in cities :
         cmp_city = transform_to_standard_chars(city).lower()
         temp_ratio = fuzz.partial_ratio(cmp_city, raw_text)
         position = raw_text.find(cmp_city)
-        if (temp_ratio == 100 and (position != -1)):
-            zip_code = [z.zip_code for z in all_villes if z.ville == city]
+        if (temp_ratio >= 90 or (position != -1)):
+            zip_code = [z.zip_code for z in all_villes if z.ville  == city]
             try :
                 zc = zip_code[0]
             except :
                 zc = '00000'
-            finally:
-                return [zc, position]
+                position = -1
+            #finally:
+            return [zc, position]
+        elif (temp_ratio > biggest_ration) :
+            biggest_ration = temp_ratio
+            potential_city = city
+        else: continue
+    zip_code = [z.zip_code for z in all_villes if z.ville == potential_city]
+    position = raw_text.find(potential_city)
+    try :
+        zc = zip_code[0]
+    except :
+        zc = '00000'
+        position = -1
+    return [zc, position]
 
 def search_city_asraw(raw_text, cities_file_path):
     token_set_ratio = 0
@@ -119,17 +134,32 @@ def search_juridiction(raw_text): #, juridictions_file_path)
     all_juridictions = juridiction.objects.filter(zip_code_id__isnull=True)
     juridics         = [juridic.type_juridiction for juridic in all_juridictions]
     # cities = ville.objects.values('ville').distinct()
+    biggest_ration = 0
+    potential_jurid = ''
     for jurid in juridics :
         cmp_jurid = transform_to_standard_chars(jurid).lower()
         temp_ratio = fuzz.partial_ratio(cmp_jurid, raw_text)
         position = raw_text.find(cmp_jurid)
-        if (temp_ratio == 100 and (position != -1)):
+        if (temp_ratio >= 90 or (position != -1)):
             abbreviation = [j.abbreviation for j in all_juridictions if j.type_juridiction == jurid]
             try :
                 abrv = abbreviation[0]
-                return [abrv, position]
             except :
-                return ['ABRV', position]
+                abrv = 'ABRV'
+                position = -1
+            return [abrv, position]
+        elif (temp_ratio > biggest_ration) :
+            biggest_ration = temp_ratio
+            potential_jurid = jurid
+        else: continue
+    abbreviation = [j.abbreviation for j in all_juridictions if j.type_juridiction == potential_jurid]
+    position = raw_text.find(potential_jurid)
+    try :
+        abrv = abbreviation[0]
+    except :
+        abrv = 'ABRV'
+        position = -1
+    return [abrv, position]
 
 def search_juridiction_asraw(raw_text, juridictions_file_path):
     token_set_ratio = 0
@@ -201,7 +231,6 @@ def convert_to_txt(file_path, file_name):
         city_position, juridiction_pos, search_text,
         hp.files.treated_files_folder + '/'+ new_file_name]
     else :
-        
         with open(file_path, encoding='utf-8') as file:
             search_text = file.read()[:500]
             #search_text = str(search_text)[:200] #str(text)[:200]
@@ -212,8 +241,7 @@ def convert_to_txt(file_path, file_name):
             juridiction = juridiction[0]
             #print('###### ', juridiction)                                            #+ hp.files.juridictions_file_name)
             city = search_city(search_text) #, hp.files.static_data_folder 
-            #print(city)
-            city_position = city[1]                             #            + hp.files.cities_file_name)
+            city_position = city[1]                           #            + hp.files.cities_file_name)
             city = city[0]
             reference = search_reference(search_text)
             rg_position = reference[1]

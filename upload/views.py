@@ -31,22 +31,28 @@ def upload_view(request, *args, **kwargs):
                     rg = new_file_name[11:-4]
                     current_user = request.user
                     #print (current_user.id)
-                    ## TODO Treat the case of 00000 zipcode => Assign just the juridiction type without city
-                    all_juridictions = juridiction.objects.filter(zip_code__zip_code=zip_code)
-                    try :
-                        jurid = all_juridictions.get(abbreviation=juridiction_abr)
-                    except:
-                        type_jurid = juridiction.objects.get(abbreviation= juridiction_abr)
-                        type_jurid = type_jurid.type_juridiction
-                        try:
-                            city = ville.objects.get(zip_code=zip_code)
-                        except :
-                            city = None
-                        new_juridiction = juridiction(type_juridiction=type_jurid, 
-                                                    abbreviation=juridiction_abr,
-                                                    zip_code=city)
-                        new_juridiction.save()
-                        jurid = new_juridiction
+                    ## DONE : Treat the case of 00000 zipcode => Assign just the juridiction type without city
+                    # If we know which city
+                    if (zip_code != '00000'):
+                        # Try to get the tribunal of the decision zip code and juridiction abr
+                        try :
+                            jurid = juridiction.objects.get(zip_code__zip_code=zip_code, abbreviation=juridiction_abr)
+                        # If there is no result we should create a new one with the decision juridiction type and zip code
+                        except:
+                            # Search the type that is associated to the given abr and where the zip code is null
+                            type_jurid = juridiction.objects.get(abbreviation= juridiction_abr, zip_code__isnull=True)
+                            type_jurid = type_jurid.type_juridiction
+                            # Search the city field that has the associated zip code
+                            city = ville.objects.filter(zip_code=zip_code)[0]
+                            new_juridiction = juridiction(type_juridiction=type_jurid, 
+                                                        abbreviation=juridiction_abr,
+                                                        zip_code=city)
+                            new_juridiction.save()
+                            jurid = new_juridiction
+                    else :
+                        # Link with the general juridictions that have no zip code
+                        jurid = juridiction.objects.get(abbreviation= juridiction_abr, zip_code__isnull=True)
+                            
                     try:
                         # If there is no exception raised that means we already have this decision (Because .get raises Entry.DoesNotExist exception if there is no record found)
                         all_decisions = Decision.objects.filter(rg=rg)

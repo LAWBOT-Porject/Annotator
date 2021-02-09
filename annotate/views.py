@@ -34,6 +34,7 @@ def annotate_view(request, *args, **kwargs):
                                              'root_path': hp.files.treated_files_folder})
 
 def read_file(request , file):
+    ## TODO : request file name from data base and get all extracted fields
     f = open(hp.files.treated_files_folder + file, 'r')
     file_content = f.read()
     f.close()
