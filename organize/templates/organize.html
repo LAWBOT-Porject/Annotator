@@ -9,7 +9,16 @@
 
     </div>
     <div class="navigation-container-org grid-item-org">
-        <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" alt="{{dirpaths}}">
+        <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" title="Aller au racine"
+            alt="{{dirpaths}}">
+        <div class="dir-manager">
+            <img id="create-folder" onclick="addDir()" src="../static/create_new_folder-24px.svg"
+                title="Créer un nouveau répertoire" alt="Create new Folder">
+            <img id="rename-folder" src="../static/rename_folder.svg" title="Renommer un répertoire"
+                alt="Rename Folder">
+            <img id="delete-folder" src="../static/delete_folder-24px.svg" title="Supprimer un répertoire"
+                alt="Delete Folder">
+        </div>
     </div>
     <div class="files-container-org grid-item-org">
 

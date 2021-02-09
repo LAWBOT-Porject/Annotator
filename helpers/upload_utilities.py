@@ -12,8 +12,7 @@ import re, hashlib, textract#, codecs
 from fuzzywuzzy import fuzz
 from shutil import copyfile
 from pathlib import Path
-from annotate.models import Ville as ville
-from annotate.models import Juridiction as juridiction
+from annotate.models import (Ville as ville, Juridiction as juridiction)
 
 def handle_uploaded_file(f, name):
     path = hp.files.uploaded_files_folder + '/temp/' + name
