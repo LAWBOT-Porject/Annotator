@@ -1,6 +1,7 @@
 from os import walk, listdir
 from os.path import isdir, basename, join
 from pathlib import Path
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from config.hparam import hparam as hp
@@ -11,6 +12,9 @@ def organize_view(request, *args, **kwargs):
                                             })
 def get_ul_elements():
     return dict_man(get_treated_folder()[0])
+    
+""" def get_ul_elements(request):
+    return HttpResponse(json.dumps( dict_man(get_treated_folder()[0])), content_type='application/json') """
 
 def get_treated_folder() -> list:
     result: list = []
@@ -54,7 +58,6 @@ def dict_man (dic: dict):
     return html
 
 def create_new_dir(request):
-    import json
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     new_path = body['path']
@@ -63,4 +66,4 @@ def create_new_dir(request):
         Path(new_path).mkdir(mode=755, parents=True, exist_ok=True)
     except: #FileNotFoundError or FileExistsError as e :
         print("Errors 1")
-    return HttpResponse({"response": "Folder Created"}, content_type='application/json')
+    return HttpResponse(json.dumps({"response": "Folder Created"}), content_type='application/json')

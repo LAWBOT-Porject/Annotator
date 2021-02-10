@@ -6,7 +6,20 @@
 <div class="organize-container grid-container-org">
 
     <div class="research-container-org grid-item-org">
-
+        <div class="reaserch-keys-container">
+            <div class="key-row-1">
+                <input id="key-1" type="text" placeholder="mot clé">
+                <select name="key-word-type-1" id="key-word-type">
+                    <option value="gap"></option>
+                    <option value="except">Sauf</option>
+                    <option value="and" disabled>Et</option>
+                    <option value="or" disabled>Ou</option>
+                </select>
+                <img onclick="addKey()" src="../static/add_circle-24px.svg" alt="Add key word"
+                    title="Ajouter un mot clé">
+            </div>
+            <button type="submit">Chercher</button>
+        </div>
     </div>
     <div class="navigation-container-org grid-item-org">
         <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" title="Aller au racine"
