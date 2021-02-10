@@ -8,12 +8,12 @@
     <div class="research-container-org grid-item-org">
         <div class="reaserch-keys-container">
             <div class="key-row-1">
-                <input id="key-1" type="text" placeholder="mot clé">
-                <select name="key-word-type-1" id="key-word-type-1">
-                    <option value="gap"></option>
-                    <option value="except">Sauf</option>
+                <input id="key-1" type="text" size="40" placeholder="mot clé" required>
+                <select name="key-word-type-1" title="Choisir un opérateur logique" id="key-word-type-1">
+                    <!-- <option value="gap"></option> -->
                     <option value="and">Et</option>
                     <option value="or">Ou</option>
+                    <option value="except">Sauf</option>
                 </select>
                 <div class="add-remove-keyword-1">
                     <img id="add-key-1" onclick="addKey()" src="../static/add_circle-24px.svg" alt="Add key word"
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <button type="submit">Chercher</button>
+        <button onclick="searchKeyWord()" id="search-key-word-btn" type="submit">Chercher</button>
     </div>
     <div class="navigation-container-org grid-item-org">
         <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" title="Aller au racine"
