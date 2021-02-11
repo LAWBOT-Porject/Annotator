@@ -26,6 +26,7 @@
     <div class="navigation-container-org grid-item-org">
         <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" title="Aller au racine"
             alt="{{dirpaths}}">
+        <input id="dirs-only" type="hidden" name="{{dirs_only}}">
         <div class="dir-manager">
             <img id="create-folder" onclick="addDir()" src="../static/create_new_folder-24px.svg"
                 title="Créer un nouveau répertoire" alt="Create new Folder">
@@ -36,9 +37,25 @@
         </div>
     </div>
     <div class="files-container-org grid-item-org">
-
+        <div class="research-result-container">
+            <button style="width:auto" type="submit">Déplacer</button>
+            <div class="tous">
+                <input type="checkbox" name="all-files" id="all-files">
+                <label style="margin-left: 1vh;" for="all-files">Sélectionner tous</label>
+            </div>
+        </div>
         <ul id="myUL">
         </ul>
+        <div class="search-result-hider">
+            <div style="overflow-y: auto; height: 100%; width: 50%; padding: 15px 5px; border:2px solid green"
+                class="dirs-ul-container">
+                <ul id="dirs-ul">
+                </ul>
+            </div>
+            <div class="files-result-ul-container">
+                <ul id="files-result-ul"></ul>
+            </div>
+        </div>
     </div>
 </div>
 {% else %}

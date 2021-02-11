@@ -10,8 +10,9 @@ from config.hparam import hparam as hp
 
 def organize_view(request, *args, **kwargs):
     #content = get_treated_folder()[0]
-    return render(request, 'organize.html', {"dirpaths": get_ul_elements() #dict_man(content),
-                                            })
+    print(f'ULs: {get_ul_elements(dirs_only=True)}')
+    return render(request, 'organize.html', {"dirpaths": get_ul_elements(), #dict_man(content),
+                                              "dirs_only": get_ul_elements(dirs_only=True)})
 def get_ul_elements(dirs_only=False):
     if not dirs_only : return dict_man(get_treated_folder()[0])
     else : return dict_man_dirs(get_treated_folder()[0])
@@ -69,13 +70,13 @@ def dict_man_dirs (dic: dict):
             if v == 'directory':
                 ## TODO : Find safer method to store paths than data attributes
                 html += '<li class= "level-'+ str(level)+'"><span class="caret" data-path="'+ dic['path'] +'">' + dic['name'] + '</span> <ul class="nested">'
-            # if v == 'file':
+            if v == 'file': continue
             #     html += '<li class= "level-'+ str(level)+'">' + dic['name'] + '</li>'
                 #print(dic['name'])
         if k == 'children':
             level += 1
             for i in v:
-                html +=  dict_man(i)
+                html +=  dict_man_dirs(i)
         else : continue
         html += '</ul>'
         level -= 1
