@@ -38,7 +38,7 @@
     </div>
     <div class="files-container-org grid-item-org">
         <div class="research-result-container">
-            <button style="width:auto" type="submit">Déplacer</button>
+            <button id="move-to-btn" onclick="moveFiles()" style="width:auto" type="submit">Déplacer</button>
             <div class="tous">
                 <input type="checkbox" name="all-files" id="all-files">
                 <label style="margin-left: 1vh;" for="all-files">Sélectionner tous</label>
@@ -47,12 +47,11 @@
         <ul id="myUL">
         </ul>
         <div class="search-result-hider">
-            <div style="overflow-y: auto; height: 100%; width: 50%; padding: 15px 5px; border:2px solid green"
-                class="dirs-ul-container">
+            <div style="overflow-y: auto; padding: 2vh;" class="dirs-ul-container">
                 <ul id="dirs-ul">
                 </ul>
             </div>
-            <div class="files-result-ul-container">
+            <div style="overflow-y: auto; padding: 2vh;" class="files-result-ul-container">
                 <ul id="files-result-ul"></ul>
             </div>
         </div>

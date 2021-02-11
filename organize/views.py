@@ -10,7 +10,7 @@ from config.hparam import hparam as hp
 
 def organize_view(request, *args, **kwargs):
     #content = get_treated_folder()[0]
-    print(f'ULs: {get_ul_elements(dirs_only=True)}')
+    #print(f'ULs: {get_ul_elements(dirs_only=True)}')
     return render(request, 'organize.html', {"dirpaths": get_ul_elements(), #dict_man(content),
                                               "dirs_only": get_ul_elements(dirs_only=True)})
 def get_ul_elements(dirs_only=False):
@@ -87,7 +87,7 @@ def create_new_dir(request):
     body_unicode = request.body.decode('utf-8')
     body = loads(body_unicode)
     new_path = body['path']
-    print(f'Here {new_path}')
+    #print(f'Here {new_path}')
     try:
         Path(new_path).mkdir(mode=755, parents=True, exist_ok=True)
     except: #FileNotFoundError or FileExistsError as e :
@@ -118,5 +118,5 @@ def search_key_words(request):
         file_names_list.append(ntbasename(i.decision_treated_path))
         file_paths_list.append(i.decision_treated_path)
         #print(f'{i.rg}  {ntbasename(i.decision_treated_path)}')
-    print(type({"files_result": file_names_list}))#, "result": result})
+    #print(type({"files_result": file_names_list}))#, "result": result})
     return JsonResponse({"file_names": file_names_list, "file_paths": file_paths_list}) #, "file_paths": file_paths_list})
