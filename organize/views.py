@@ -1,7 +1,7 @@
 from os import walk, listdir
 from os.path import isdir, basename, join
 from pathlib import Path
-from ntpath import basename as ntbasename ##TODOO change this to os.basename once deployed
+from ntpath import basename as ntbasename, join as ntjoin ##TODOO change this to os.basename once deployed
 from json import loads, dumps
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -115,8 +115,40 @@ def search_key_words(request):
     file_names_list = []
     file_paths_list = []
     for i in result:
-        file_names_list.append(ntbasename(i.decision_treated_path))
+        file_names_list.append(basename(i.decision_treated_path))
         file_paths_list.append(i.decision_treated_path)
         #print(f'{i.rg}  {ntbasename(i.decision_treated_path)}')
     #print(type({"files_result": file_names_list}))#, "result": result})
     return JsonResponse({"file_names": file_names_list, "file_paths": file_paths_list}) #, "file_paths": file_paths_list})
+
+def move_files(request):
+    body_unicode = request.body.decode('utf-8')
+    body = loads(body_unicode)
+    file_paths = body['paths']
+    file_names = body['names']
+    target_dir = body['targetDir']
+    # print(target_dir)
+    # print(file_paths)
+    from pathlib import Path
+    for i in range(len(file_paths)):
+        try:
+        # print('path {0}'.format(path))
+        # print('new path {0}'.format(new_path + name))
+            print(file_paths[i])
+            print(ntjoin(target_dir, file_names[i]))
+            Path(file_paths[i]).rename(join(target_dir, file_names[i]))
+            print("Mohamed")
+            old = Decision.objects.get(decision_treated_path__contains = file_names[i])
+            old.decision_treated_path = join(target_dir, file_names[i])
+            old.save()
+        except FileExistsError: # FileNotFoundError or FileExistsError as e 
+            # Delete file from temp folder if it already has a folder in uploads
+            print('FileExistsError')
+            old = Decision.objects.get(decision_treated_path__contains = file_names[i])
+            old.decision_treated_path = join(target_dir, file_names[i])
+            old.save()
+        except:
+            print('Doesnot Exist error')
+            n = Decision(decision_treated_path=join(target_dir, file_names[i]))
+            n.save()
+    return JsonResponse({"response": "Mohamed"})
