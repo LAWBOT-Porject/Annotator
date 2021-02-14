@@ -42,11 +42,13 @@
         <h3 class="navigation"> Navigation</h3>
         <div class="files-list">
             <ul class="files-list">
-                {% for file in files %}
-                <li data-link="read/{{file}}" class="file-link">
+                {% for file, path in files %}
+                <li data-link="read/{{path}}" class="file-link">
                     <!-- <li data-link="{{root_path}}/{{file}}" class="file-link"> -->
                     {{file}}
                 </li>
+                {% empty %}
+                <p style="color: brown;">Aucun fichier uploadé, merci d'uploader et revenir (^=^)</p>
                 {% endfor %}
             </ul>
         </div>

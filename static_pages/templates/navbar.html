@@ -2,13 +2,33 @@
 </div>
  -->
 <ul id="navbar">
-    <li><a href="/home">Accueil</a></li>
+    <li><a href="/">Accueil</a></li>
     <li><a href="/about">A propos</a></li>
     {% if user.is_authenticated %}
     {% if request.user.is_staff %}
     <li><a href="/upload">Uploader</a></li>
     <li><a href="/organize">Organiser</a></li>
-    <li><a href="/annotate">Annoter</a></li>
+    <li><a id="annotate-href" href="/annotate" style="cursor: pointer;">Annoter</a></li>
+    <!-- href="/annotate" href="/annotate/somedirs" onclick="annotate()" -->
+    <script>
+        /* function annotate() {
+            fetch("annotate/", {
+                method: "GET",
+                credentials: "same-origin",
+                headers: {
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest", //Necessary to work with request.is_ajax()
+                    "X-CSRFToken": getCookie("csrftoken"),
+                }, //JavaScript object of data to POST
+            })
+                .then((response) => {
+                    //window.location.reload();
+                    // return response.json();
+                    console.log("Mohamed");
+                })
+                .catch((err) => console.log(err));
+        } */
+    </script>
     <li><a href="/visualize">Visualiser</a></li>
     <li><a href="{% url 'logout' %}">Se déconnecter</a></li>
     {% else %}

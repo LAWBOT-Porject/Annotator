@@ -24,6 +24,9 @@
         <button onclick="searchKeyWord()" id="search-key-word-btn" type="submit">Chercher</button>
     </div>
     <div class="navigation-container-org grid-item-org">
+        <!-- onclick="annotate(this)" -->
+        <button id="move-to-btn" style="width:auto" type="submit"> <a id="annotate-organize" href="/annotate"
+                style="color: #fff;text-decoration: none; cursor: pointer;">Annoter</a></button>
         <img id="home-dir" onclick="loadHome()" src="../static/home-24px.svg" title="Aller au racine"
             alt="{{dirpaths}}">
         <input id="dirs-only" type="hidden" name="{{dirs_only}}">

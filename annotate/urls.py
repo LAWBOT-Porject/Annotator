@@ -3,6 +3,7 @@ from .views import annotate_view, read_file#, return_new_decision_form#,read_fil
 
 app_name = 'annotate'
 urlpatterns = [
+    path('<str:directory>', annotate_view, name='annotate'),
     path('', annotate_view, name='annotate'),
     # re_path(r'^read.*', read_file, name='read_file'),
     path('read/<str:file>', read_file, name='read'),

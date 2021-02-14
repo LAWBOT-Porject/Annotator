@@ -3,14 +3,17 @@ from os.path import isdir, basename, join
 from pathlib import Path
 from ntpath import basename as ntbasename, join as ntjoin ##TODOO change this to os.basename once deployed
 from json import loads, dumps
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from annotate.models import Decision
 from config.hparam import hparam as hp
 
+treated_files_folder = hp.files.treated_files_folder
+
 def organize_view(request, *args, **kwargs):
     #content = get_treated_folder()[0]
     #print(f'ULs: {get_ul_elements(dirs_only=True)}')
+    print('here organize view')
     return render(request, 'organize.html', {"dirpaths": get_ul_elements(), #dict_man(content),
                                               "dirs_only": get_ul_elements(dirs_only=True)})
 def get_ul_elements(dirs_only=False):
@@ -22,7 +25,7 @@ def get_ul_elements(dirs_only=False):
 
 def get_treated_folder() -> list:
     result: list = []
-    for (dirpath, dirnames, filenames) in walk(hp.files.treated_files_folder):
+    for (dirpath, dirnames, filenames) in walk(treated_files_folder):
         # print(f'\n\nDirnames: {dirnames} \n')
         result.append(path_to_dict(dirpath))
     # print(f'\n\nDirnames: {result[0]} \n')
@@ -152,3 +155,22 @@ def move_files(request):
             n = Decision(decision_treated_path=join(target_dir, file_names[i]))
             n.save()
     return JsonResponse({"response": "Mohamed"})
+
+def annotate_view(request):
+    body_unicode = request.body.decode('utf-8')
+    body = loads(body_unicode)
+    selected_dir = body['directory']
+    print('Mohamed')
+    if selected_dir == '':
+        selected_dir = treated_files_folder
+    print('here annotate from organize ', selected_dir)
+    # decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir)
+    # files = []
+    # for item in decisions:
+    #     tmp = []
+    #     decision_path = item.decision_treated_path
+    #     tmp.append(basename(decision_path))
+    #     tmp.append(decision_path)
+    #     files.append(tmp)
+    # return render(request, 'annotate.html', {"files": files})
+    return redirect('/annotate')#, {"directory": selected_dir})
