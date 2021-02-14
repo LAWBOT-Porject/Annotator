@@ -368,6 +368,7 @@ const addDemande = () => {
   // Resultat
   let resultat = htmlToElement('<h3 class="infos-row-2">Résultat</h3>');
   infos1 = htmlToElement('<div class="resultat-container"> </div>');
+
   let r1Acc = htmlToElement(
     '<input type="radio" name="resultat-' +
       idx +
@@ -392,6 +393,32 @@ const addDemande = () => {
   infos1.appendChild(reject);
   infos1.appendChild(r2Reject);
   decisionForm.appendChild(infos1);
+  infos1 = htmlToElement('<div class="resultat-container"> </div>');
+  let mauvaiseContainer = htmlToElement(
+    '<div class="mauvaise-container" style="display: flex; justify-content: space-around; align-items: center;"></div>'
+  );
+  let mauvaise = htmlToElement(
+    '<input type="checkbox" name="mauvaise" id="mauvaise-' + idx + '">'
+  );
+  let mauvaiseLabel = htmlToElement(
+    '<label for="mauvaise-' +
+      idx +
+      '" style="margin-left: 1vh; color: red; font-weight: bold;">Mauvaise Catégorie</label>'
+  );
+  mauvaiseContainer.appendChild(mauvaise);
+  mauvaiseContainer.appendChild(mauvaiseLabel);
+  infos1.appendChild(mauvaiseContainer);
+  decisionForm.appendChild(infos1);
+  /*  <div class="submit-decision-section"
+                        style="display: flex; justify-content: space-around; align-items: center;">
+                        <div class="corbeille-container"
+                            style="display: flex; justify-content: space-around; align-items: center;">
+                            <input type="checkbox" name="corbeille" id="corbeille">
+                            <label for="corbeille"
+                                style="margin-left: 1vh; color: red; font-weight: bold;">Corbeille</label>
+                        </div>
+                        <button type="submit">Sauvgarder</button>
+                    </div> */
   let submit = htmlToElement(
     '<button type="submit" id="submit-decision-' + idx + '">Sauvgarder</button>'
   );

@@ -192,7 +192,16 @@
 
                     <!-- {{infos.as_p}}
                         {{personne.as_p}} -->
-                    <button type="submit">Sauvgarder</button>
+                    <div class="submit-decision-section"
+                        style="display: flex; justify-content: space-around; align-items: center;">
+                        <div class="corbeille-container"
+                            style="display: flex; justify-content: space-around; align-items: center;">
+                            <input type="checkbox" name="corbeille" id="corbeille">
+                            <label for="corbeille"
+                                style="margin-left: 1vh; color: red; font-weight: bold;">Corbeille</label>
+                        </div>
+                        <button type="submit">Sauvgarder</button>
+                    </div>
             </div>
             </form>
             <!-- <div class="cached t">
