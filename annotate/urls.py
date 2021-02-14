@@ -6,7 +6,7 @@ urlpatterns = [
     path('<str:directory>', annotate_view, name='annotate'),
     path('', annotate_view, name='annotate'),
     # re_path(r'^read.*', read_file, name='read_file'),
-    path('read/<str:file>', read_file, name='read'),
+    path('read', read_file, name='read'),
     #path('new_decision_form', return_new_decision_form, name='new_decision_form' )
     #url(r'^add/(?P<id>\d+)/$', views.addview, name='add'),
     # re_path(r'^(?P<path>.*)/$', annotate_view),

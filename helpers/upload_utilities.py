@@ -16,7 +16,7 @@ from annotate.models import (Ville as ville, Juridiction as juridiction)
 
 def handle_uploaded_file(f, name):
     path = hp.files.uploaded_files_folder + '/temp/' + name
-    with open( path, 'wb+') as destination:
+    with open( path, 'wb+' , encoding='utf-8') as destination:
         #destination.write(f.read())
         # the method below is both time and memory efficient
         for chunk in f.chunks():
@@ -206,8 +206,8 @@ def search_reference(raw_text):
 def convert_to_txt(file_path, file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         text = textract.process(file_path, errors="ignore")
-        #text = text.decode("utf-8")
-        text = text.decode("latin-1")
+        text = text.decode("utf-8")
+        # text = text.decode("latin-1")
         search_text = text #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
         juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
                                                     #  + hp.files.juridictions_file_name)

@@ -1,8 +1,9 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpResponse #, HttpResponseRedirect
+# from django.urls import reverse
 from django.shortcuts import render
 # from os import walk
 from os.path import basename
+from annotate.models import (Ville as ville, Juridiction as juridiction)
 #from .forms import decisionInfo,decisionForm, PartiePhysiqueForm
 from config.hparam import hparam as hp
 from helpers.upload_utilities import (
@@ -17,7 +18,12 @@ from annotate.models import Decision
 
 treated_files_folder = hp.files.treated_files_folder
 
-def annotate_view(request, directory=None):
+def annotate_view(request, directory=None, *args, **kwargs):
+    # print(request.path)
+    if 'read' in request.path:
+        # print("Mohamed")
+        response = read_file(request)
+        return response
     files = []
     selected_dir = treated_files_folder
     if (directory != None):
@@ -30,7 +36,7 @@ def annotate_view(request, directory=None):
         tmp.append(decision_path)
         files.append(tmp)
     return render(request, 'annotate.html', 
-    {"files": files})
+    {"files": files, 'file_list_len': len(files),})
     
     # for (dirpath, dirnames, filenames) in walk(hp.files.treated_files_folder):
     #     files.extend(filenames)
@@ -47,23 +53,38 @@ def annotate_view(request, directory=None):
     #                                         #  'root_path': hp.files.treated_files_folder
     #                                         })
 
-def read_file(request , file):
+from json import loads
+def read_file(request ):
     ## TODO : request file name from data base and get all extracted fields
     # f = open(hp.files.treated_files_folder + file, 'r')
-    f = open(file, 'r')
+    body_unicode = request.body.decode('utf-8')
+    body = loads(body_unicode)
+    file = body['path']
+    file_name = body['file_name']
+    f = open(file, 'r', encoding='utf-8')
     file_content = f.read()
     f.close()
+    if (request.method == 'POST'):
+        print('Mohamed')
+        print('Mohamed ', file_name)
+        # print(file_content)
     ## TO CHANGE (more optimised) ##
-    file = file.split('.')[0]
-    city = search_city_asraw(file_content, hp.files.static_data_folder 
-                                                    + hp.files.cities_file_name)
-    juridiction = full_juridiction(file[:4]).capitalize()
-    rg = file[7:]
+    file_name = file_name.split('.')[0].split('-')
+    try:
+        city = ville.objects.filter(zip_code=file_name[1])[0].ville
+    except:
+        city = ''
+    try:
+        juridic = juridiction.objects.filter(abbreviation= file_name[0], zip_code__isnull=True)[0].type_juridiction
+    except:
+        juridic = ''
+    rg = file_name[2]
     context = {
         'city': city,
-        'juridiction': juridiction,
+        'juridiction': juridic,
         'rg': rg,
         'file': file_content
     }
     data = json.dumps(context)
+    # data = json.dumps({"Here": "Mohamed"})
     return HttpResponse(data, content_type='application/json')

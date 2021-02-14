@@ -51,7 +51,8 @@ def upload_view(request, *args, **kwargs):
                             jurid = new_juridiction
                     else :
                         # Link with the general juridictions that have no zip code
-                        jurid = juridiction.objects.get(abbreviation= juridiction_abr, zip_code__isnull=True)
+                        # jurid = juridiction.objects.get(abbreviation= juridiction_abr, zip_code__isnull=True)
+                        jurid = juridiction.objects.filter(abbreviation= juridiction_abr, zip_code__isnull=True)[0]
                             
                     try:
                         # If there is no exception raised that means we already have this decision (Because .get raises Entry.DoesNotExist exception if there is no record found)
