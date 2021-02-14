@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'visualize',
     'account',
     'organize',
+    'categorize',
 ]
 
 MIDDLEWARE = [

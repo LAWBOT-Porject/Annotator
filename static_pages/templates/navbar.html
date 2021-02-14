@@ -3,9 +3,12 @@
  -->
 <ul id="navbar">
     <li><a href="/">Accueil</a></li>
+    {% if not user.is_authenticated %}
     <li><a href="/about">A propos</a></li>
+    {% endif %}
     {% if user.is_authenticated %}
     {% if request.user.is_staff %}
+    <li><a href="/categorize">Catégoriser</a></li>
     <li><a href="/upload">Uploader</a></li>
     <li><a href="/organize">Organiser</a></li>
     <li><a id="annotate-href" href="/annotate" style="cursor: pointer;">Annoter</a></li>
