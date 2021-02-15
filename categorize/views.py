@@ -15,7 +15,6 @@ def categorize_view(request):
         normes_fondements = []
         for categ_norme in all_categ_norme:
             categ_norme_id = getattr(categ_norme, 'norme_id_id')
-            print('############ ', categ_norme_id)
             normes_fondements.append(getattr(Norme.objects.get(id=int(categ_norme_id)),'fondement' ))
         temp.append(normes_fondements)
         categories.append(temp)
@@ -31,3 +30,22 @@ def categorize_view(request):
         temp.append( getattr(all_normes[i], 'date_fin'))
         normes.append(temp)
     return render(request, 'categorize.html', {"categories" : categories, "normes" : normes})
+
+def create_norme(request):
+    if request.method == 'POST':
+        print(request.POST.get('new-fondement'))#.decode('utf-8'))
+        print(request.POST.get('new-descriptif'))#.decode('utf-8'))
+        print(request.POST.get('new-date-debut'))
+        print(request.POST.get('new-date-fin'))
+        new_norme = Norme.objects.create(fondement=request.POST.get('new-fondement'),
+                            texte_norme=request.POST.get('new-descriptif'),
+                            date_debut=request.POST.get('new-date-debut'),
+                            date_fin=request.POST.get('new-date-fin'),)
+        new_norme_id = getattr(new_norme, 'id')
+        print(new_norme_id)
+        related_categories = request.POST.getlist('related-categ')
+        print(related_categories)
+        for item in related_categories:
+            item = Categorie.objects.get(noppac=item)
+            new_relation = CategorieNorme.objects.create(categorie_id=item, norme_id=new_norme)
+    return categorize_view(request)

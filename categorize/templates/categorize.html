@@ -34,9 +34,9 @@
             {% for index, nppac, description, objet, normes_fondements in categories %}
             <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
             <div class="categorie-item-{{index}}">
-                <span title="Nppac" class="categorie-info-{{index}}">{{nppac|slice:":10"}}</span>
-                <span title="Description" class="categorie-info-{{index}}">{{description|slice:":15"}}</span>
-                <span title="Objet" class="categorie-info-{{index}}">{{objet|slice:":15"}}</span>
+                <span title="Nppac" class="categorie-info-{{index}}">{{nppac|slice:":25"}}</span>
+                <span title="Description" class="categorie-info-{{index}}">{{description|slice:":20"}}</span>
+                <span title="Objet" class="categorie-info-{{index}}">{{objet|slice:":20"}}</span>
                 <!-- Model popup window -->
                 <div id="myModal-{{index}}" class="modal">
                     <!-- Modal content -->
@@ -48,9 +48,10 @@
                         <p>{{description}}</p>
                         <h2>Objet</h2>
                         <p>{{objet}}</p>
+                        <h2>Normes associées</h2>
                         {% for norme_fondement in normes_fondements %}
                         <span
-                            style="margin-right: 3px; color: white; background-color: black;">{{norme_fondement}}</span>
+                            style="margin-right: 5px; color: white; background-color: black;">{{norme_fondement}}</span>
                         {% empty %}
                         <p style="color: brown;">Aucune norme associée est trouvée</p>
                         {% endfor %}
@@ -67,15 +68,16 @@
         <div class="normes-title">
 
             <h1>Normes</h1>
-            <img src="../static/add_circle-24px.svg" alt="Créer une norme" title="Créer une norme">
+            <img onclick="displayNormeForm()" src="../static/add_circle-24px.svg" alt="Créer une norme"
+                title="Créer une norme">
         </div>
         <div id="normes-ul">
 
             {% for index, fondement, texte_norme, date_debut, date_fin in normes %}
             <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
             <div class="norme-item-{{index}}">
-                <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":10"}}</span>
-                <span title="Texte de norme" class="norme-info-{{index}}">{{texte_norme|slice:":15"}}</span>
+                <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":20"}}</span>
+                <span title="Texte de norme" class="norme-info-{{index}}">{{texte_norme|slice:":25"}}</span>
                 <span title="Date de début" class="norme-info-{{index}}">{{date_debut}}</span>
                 <span title="Date de fin" class="norme-info-{{index}}">{{date_fin}}</span>
                 <!-- Model popup window -->
@@ -98,6 +100,36 @@
             {% empty %}
             <p style="color: brown;">Aucune norme trouvée</p>
             {% endfor %}
+        </div>
+        <div class="create-norme-container">
+            <form class="new-norm-forma" action="/categorize/create-norme" method="post">
+                {% csrf_token %}
+                <div class="new-norme-fond-desc-container"
+                    style="margin: 1vh auto; width: 100%; display: flex; justify-content: space-around; align-items: center;">
+                    <textarea name="new-fondement" id="new-fondement" cols="55" rows="11"
+                        placeholder="Fondement"></textarea>
+                    <textarea name="new-descriptif" id="new-descriptif" cols="55" rows="11"
+                        placeholder="Texte descriptif"></textarea>
+                </div>
+                <div class="new-dates-container"
+                    style="margin: .5vh auto; width: 100%; display: flex; justify-content: space-around; align-items: center;">
+                    <input type="date" name="new-date-debut" id="new-date-debut" placeholder="Date début"
+                        title="Date début">
+                    <input type="date" name="new-date-fin" id="new-date-fin" placeholder="Date fin" title="Date fin">
+                </div>
+                <div class="related-categories-container"
+                    style="width:35%; border: 2px solid gray; overflow-y: auto; margin: 1vh auto ;">
+                    {% for index, nppac, description, objet, normes_fondements in categories %}
+                    <div class="related-categ-{{index}}"
+                        style="display: flex; justify-content: space-evenly; align-items: center;">
+                        <input style="cursor: pointer;" type="checkbox" name="related-categ" value="{{nppac}}"
+                            id="related-categ-{{index}}"><label style="cursor: pointer;"
+                            for="related-categ-{{index}}">{{nppac}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" style="width: max-content;">Créer la norme</button>
+            </form>
         </div>
     </div>
 </div>
