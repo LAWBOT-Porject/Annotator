@@ -31,19 +31,36 @@
             <img src="../static/add_circle-24px.svg" alt="Créer une catégories" title="Créer une catégories">
         </div>
         <div id="categories-ul">
-            <div onclick="document.getElementById('myModal').style.display = 'block'" class="categorie-item">
-                <span>PPAC</span> <span>Description</span> <span>Objet</span>
+            {% for index, nppac, description, objet, normes_fondements in categories %}
+            <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
+            <div class="categorie-item-{{index}}">
+                <span title="Nppac" class="categorie-info-{{index}}">{{nppac|slice:":10"}}</span>
+                <span title="Description" class="categorie-info-{{index}}">{{description|slice:":15"}}</span>
+                <span title="Objet" class="categorie-info-{{index}}">{{objet|slice:":15"}}</span>
                 <!-- Model popup window -->
-                <div id="myModal" class="modal">
+                <div id="myModal-{{index}}" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
-                        <p>Some text in the Modal..</p>
+                        <span class="close-{{index}}">&times;</span>
+                        <h2>Nppac</h2>
+                        <p>{{nppac}}</p>
+                        <h2>Description</h2>
+                        <p>{{description}}</p>
+                        <h2>Objet</h2>
+                        <p>{{objet}}</p>
+                        {% for norme_fondement in normes_fondements %}
+                        <span
+                            style="margin-right: 3px; color: white; background-color: black;">{{norme_fondement}}</span>
+                        {% empty %}
+                        <p style="color: brown;">Aucune norme associée est trouvée</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            <div class="categorie-item">
-                <span>PPAC</span> <span>Description</span> <span>Objet</span>
-            </div>
+            {% empty %}
+            <p style="color: brown;">Aucune catégorie trouvée</p>
+            {% endfor %}
+
         </div>
     </div>
     <div class="norme-container grid-item-categ">
@@ -53,12 +70,34 @@
             <img src="../static/add_circle-24px.svg" alt="Créer une norme" title="Créer une norme">
         </div>
         <div id="normes-ul">
-            <div class="norme-item">
-                <span>Fondement</span> <span>Texte descriptif</span> <span>02-12-2002</span> <span>02-12-2002</span>
+
+            {% for index, fondement, texte_norme, date_debut, date_fin in normes %}
+            <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
+            <div class="norme-item-{{index}}">
+                <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":10"}}</span>
+                <span title="Texte de norme" class="norme-info-{{index}}">{{texte_norme|slice:":15"}}</span>
+                <span title="Date de début" class="norme-info-{{index}}">{{date_debut}}</span>
+                <span title="Date de fin" class="norme-info-{{index}}">{{date_fin}}</span>
+                <!-- Model popup window -->
+                <div id="myModalNorme-{{index}}" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="closenorme-{{index}}">&times;</span>
+                        <h2>Fondement</h2>
+                        <p>{{fondement}}</p>
+                        <h2>Texte de norme</h2>
+                        <p>{{texte_norme}}</p>
+                        <h2>Date de début</h2>
+                        <p>{{date_debut}}</p>
+                        <h2>Date de fin</h2>
+                        <p>{{date_fin}}</p>
+
+                    </div>
+                </div>
             </div>
-            <div class="norme-item">
-                <span>Fondement</span> <span>Texte descriptif</span> <span>02-12-2002</span> <span>02-12-2002</span>
-            </div>
+            {% empty %}
+            <p style="color: brown;">Aucune norme trouvée</p>
+            {% endfor %}
         </div>
     </div>
 </div>
