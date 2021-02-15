@@ -3,16 +3,75 @@
 {% block content %}
 {% if user.is_authenticated %}
 {% if request.user.is_staff %}
-<div class="categorize-container">
-    <p>Mohamed</p>
-    {% else %}
-    <h1 style="color: rgb(255, 123, 0); background-color: aquamarine; height: 100%; text-align: center;">Votre compte
-        est en
-        phase de création, merci pour votre patience.</h1>
-    {% endif %}
-    {% else %}
-    <h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier puis
-        revenir</h1>
-    {% endif %}
+<div class="categorize-container grid-container-categ">
+    <div class="research-categ-container grid-item-categ">
+        <form action="/categorize/search-categorie" method="post">
+            <input type="text" size="18" name="ppac" id="ppac" placeholder="Numéro PPAC">
+            <input type="text" size="25" name="objet-categorie" id="objet-categorie" placeholder="Objet">
+            <input type="text" size="28" name="description-categorie" id="description-categorie"
+                placeholder="Description">
+
+            <button id="search-categ" type="submit" style="width: fit-content;">Chercher</button>
+        </form>
+    </div>
+    <div class="research-norme-container grid-item-categ">
+        <form action="/categorize/search-norme" method="post">
+            <input type="text" size="20" name="fondement" id="fondement" placeholder="Fondement">
+            <input type="text" size="30" name="texte-descriptif" id="texte-descriptif" placeholder="Texte descriptif">
+            <input type="date" name="start-date" id="start-date" placeholder="Date debut">
+            <input type="date" name="end-date" id="end-date" placeholder="Date fin">
+
+            <button id="search-norme" type="submit" style="width: fit-content;">Chercher</button>
+        </form>
+    </div>
+    <div class="categ-container grid-item-categ">
+        <div class="categories-title">
+
+            <h1>Catégories</h1>
+            <img src="../static/add_circle-24px.svg" alt="Créer une catégories" title="Créer une catégories">
+        </div>
+        <div id="categories-ul">
+            <div onclick="document.getElementById('myModal').style.display = 'block'" class="categorie-item">
+                <span>PPAC</span> <span>Description</span> <span>Objet</span>
+                <!-- Model popup window -->
+                <div id="myModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <p>Some text in the Modal..</p>
+                    </div>
+                </div>
+            </div>
+            <div class="categorie-item">
+                <span>PPAC</span> <span>Description</span> <span>Objet</span>
+            </div>
+        </div>
+    </div>
+    <div class="norme-container grid-item-categ">
+        <div class="normes-title">
+
+            <h1>Normes</h1>
+            <img src="../static/add_circle-24px.svg" alt="Créer une norme" title="Créer une norme">
+        </div>
+        <div id="normes-ul">
+            <div class="norme-item">
+                <span>Fondement</span> <span>Texte descriptif</span> <span>02-12-2002</span> <span>02-12-2002</span>
+            </div>
+            <div class="norme-item">
+                <span>Fondement</span> <span>Texte descriptif</span> <span>02-12-2002</span> <span>02-12-2002</span>
+            </div>
+        </div>
+    </div>
 </div>
+{% else %}
+<h1 style="color: rgb(255, 123, 0); background-color: aquamarine; height: 100%; text-align: center;">Votre
+    compte
+    est en
+    phase de création, merci pour votre patience.</h1>
+{% endif %}
+{% else %}
+<h1 style="color: red; background-color: aquamarine; height: 100%; text-align: center;">Merci de s'identifier
+    puis
+    revenir</h1>
+{% endif %}
+
 {% endblock %}
