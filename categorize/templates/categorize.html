@@ -28,7 +28,8 @@
         <div class="categories-title">
 
             <h1>Catégories</h1>
-            <img src="../static/add_circle-24px.svg" alt="Créer une catégories" title="Créer une catégories">
+            <img onclick="displayCategoryForm()" src="../static/add_circle-24px.svg" alt="Créer une catégories"
+                title="Créer une catégories">
         </div>
         <div id="categories-ul">
             {% for index, nppac, description, objet, normes_fondements in categories %}
@@ -61,8 +62,33 @@
             {% empty %}
             <p style="color: brown;">Aucune catégorie trouvée</p>
             {% endfor %}
-
         </div>
+
+        <div class="create-category-container">
+            <form class="new-category-form" action="/categorize/create-category" method="post">
+                {% csrf_token %}
+                <input type="text" size="30" placeholder="Noppac" name="new-noppac" id="new-noppac" title="Noppac">
+                <div class="new-categ-desc-obj-container"
+                    style="margin: 1vh auto; width: 100%; display: flex; justify-content: space-around; align-items: center;">
+                    <textarea name="new-description" id="new-description" cols="35" rows="11"
+                        placeholder="Description"></textarea>
+                    <textarea name="new-objet" id="new-objet" cols="35" rows="11" placeholder="Objet"></textarea>
+                </div>
+                <div class="related-normes-container"
+                    style="width:80%; border: 2px solid gray; overflow-y: auto; margin: 1vh auto ;">
+                    {% for index, fondement, texte_norme, date_debut, date_fin, id in normes %}
+                    <div class="related-norme-{{index}}"
+                        style="display: flex; justify-content: left; align-items: center;">
+                        <input style="cursor: pointer;" type="checkbox" name="related-norme" value="{{id}}"
+                            id="related-norme-{{index}}"><label style="margin-left: 4px ; cursor: pointer;"
+                            for="related-norme-{{index}}">{{fondement}}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" style="width: max-content;">Créer la catégorie</button>
+            </form>
+        </div>
+
     </div>
     <div class="norme-container grid-item-categ">
         <div class="normes-title">
@@ -73,7 +99,7 @@
         </div>
         <div id="normes-ul">
 
-            {% for index, fondement, texte_norme, date_debut, date_fin in normes %}
+            {% for index, fondement, texte_norme, date_debut, date_fin, id in normes %}
             <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
             <div class="norme-item-{{index}}">
                 <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":20"}}</span>
@@ -102,7 +128,7 @@
             {% endfor %}
         </div>
         <div class="create-norme-container">
-            <form class="new-norm-forma" action="/categorize/create-norme" method="post">
+            <form class="new-norm-form" action="/categorize/create-norme" method="post">
                 {% csrf_token %}
                 <div class="new-norme-fond-desc-container"
                     style="margin: 1vh auto; width: 100%; display: flex; justify-content: space-around; align-items: center;">
@@ -121,9 +147,9 @@
                     style="width:35%; border: 2px solid gray; overflow-y: auto; margin: 1vh auto ;">
                     {% for index, nppac, description, objet, normes_fondements in categories %}
                     <div class="related-categ-{{index}}"
-                        style="display: flex; justify-content: space-evenly; align-items: center;">
+                        style="display: flex; justify-content: left; align-items: center;">
                         <input style="cursor: pointer;" type="checkbox" name="related-categ" value="{{nppac}}"
-                            id="related-categ-{{index}}"><label style="cursor: pointer;"
+                            id="related-categ-{{index}}"><label style="margin-left: 4px ;cursor: pointer;"
                             for="related-categ-{{index}}">{{nppac}}</label>
                     </div>
                     {% endfor %}
