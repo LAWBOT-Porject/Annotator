@@ -3,7 +3,6 @@
 *files_uploaded/
 config/
 .gitignore
-static/
 annotate/migrations/
 data/
 *.sql

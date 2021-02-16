@@ -16,11 +16,11 @@ from annotate.models import (Ville as ville, Juridiction as juridiction)
 
 def handle_uploaded_file(f, name):
     path = hp.files.uploaded_files_folder + '/temp/' + name
-    with open( path, 'wb+' , encoding='utf-8') as destination:
-        #destination.write(f.read())
+    with open( path, 'wb+' ) as destination: #encoding= 'utf-8'
+        destination.write(f.read())
         # the method below is both time and memory efficient
-        for chunk in f.chunks():
-            destination.write(chunk)
+        # for chunk in f.chunks():
+        #     destination.write(str(chunk))
     # Create the folder path from the file hash
     md = md5(path)
     new_path = '/'.join([hp.files.uploaded_files_folder, md[:1], md[:2], md[:3],''])

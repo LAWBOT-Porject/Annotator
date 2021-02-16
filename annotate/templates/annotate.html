@@ -20,7 +20,8 @@
             <button onclick="zoom_in()">
                 <h2 class="zoom-in">T+</h2>
             </button>
-            <input type="search" name="text-search" id="text-search" placeholder="Rechercher un terme" incremental>
+            <input type="text" name="category-noppac-annotate" id="category-noppac-annotate" placeholder="NoPPAC"
+                incremental>
         </div>
         <div class="annotation-cl tool-col">
             <div class="add-remove-tab">
@@ -41,7 +42,7 @@
 
         <h3 class="navigation"> Navigation</h3>
         <div class="files-list">
-            <ul class="files-list">
+            <ul>
                 {% for file, path in files %}
                 <li data-link="{{path}}" class="file-link">
                     <!-- <li data-link="{{root_path}}/{{file}}" class="file-link"> -->

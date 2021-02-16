@@ -1,0 +1,27 @@
+.upload-container {
+
+    width: fit-content;
+    height: 30vh;
+    margin: 8vh auto;
+
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.success-container {
+    
+    width: fit-content;
+    height: 30vh;
+    margin: 8vh auto;
+    
+}
+
+.success-container p{
+    color: green;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+#unallowed-types {
+    color: red;
+}

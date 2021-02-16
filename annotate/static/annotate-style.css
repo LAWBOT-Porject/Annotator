@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
 .grid-container {
-  height: 90vh;
+  height: 93vh;
   /* border: 4px solid red; */
   width: 99%;
   margin: 0 auto;
@@ -28,6 +28,7 @@
 }
 .annotate-navigation {
   grid-area: annotate-navigation;
+  overflow-y: auto;
 }
 .decision-container {
   grid-area: decision-container;
@@ -40,6 +41,7 @@
   grid-area: annotation-container;
   overflow-x: hidden;
 }
+
 
 li.file-link {
   cursor: pointer;
@@ -134,7 +136,7 @@ label[id^="class-search"]:hover {
   background-color: #c5d3d6;
 }
 
-input#text-search {
+input#category-noppac-annotate {
   margin-left: 2vh;
 }
 input#text-size {

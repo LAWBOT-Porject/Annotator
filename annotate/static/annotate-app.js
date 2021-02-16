@@ -30,8 +30,8 @@ const zoom_out_btn = document.getElementsByClassName("zoom-out");
 const zoom_in_btn = document.getElementsByClassName("zoom-in");
 // Text size input field
 const text_size = document.getElementById("text-size");
-// Search input field
-const searchBar = document.getElementById("text-search");
+// NoPPAC of default demand category
+const defaultCategoryNoPPAC = document.getElementById("category-noppac-annotate");
 
 const goToNext = () => {
   index = (index + 1) % lis.length;
@@ -116,6 +116,7 @@ const zoom_in = () => {
   let a = parseInt(p_decision.style.fontSize.split("p")[0]) + 1;
   p_decision.style.fontSize = String(a) + "px";
 };
+// Text Size in decision
 const set_size = (evt) => {
   let value = evt.target.value;
   if (value < 0) {
@@ -762,7 +763,7 @@ function removeAvocat(e) {
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
 // searchBar.addEventListener("keyup", highlightSearch);
-searchBar.addEventListener("search", highlightSearch);
+//searchBar.addEventListener("search", highlightSearch);
 
 // Convert Node list (of li) to an Array
 lis = [...li_tags];
