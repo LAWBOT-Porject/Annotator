@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}Registration{%endblock%}
 {% block content %}
-<h1>Register</h1>
-<form method="post">
-    {%csrf_token%}
-    {{form.as_p}}
-    <button type="submit">Register</button>
-</form>
+<div style="border: 2px solid green; background-color: #C5D3D6; margin: 0 auto;display: flex; width: 80%; height: 100%; flex-direction: column; justify-content: space-around; align-items: center; margin-top: 4vh;"
+    class="register-container">
+    <h1 style="margin-bottom: 2vh;">Register</h1>
+    <form method="post">
+        {%csrf_token%}
+        {{form.as_p}}
+        <button style="margin: 2vh auto;width: max-content;" type="submit">Register</button>
+    </form>
+</div>
 {% endblock %}

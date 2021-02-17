@@ -13,7 +13,6 @@ treated_files_folder = hp.files.treated_files_folder
 def organize_view(request, *args, **kwargs):
     #content = get_treated_folder()[0]
     #print(f'ULs: {get_ul_elements(dirs_only=True)}')
-    print('here organize view')
     return render(request, 'organize.html', {"dirpaths": get_ul_elements(), #dict_man(content),
                                               "dirs_only": get_ul_elements(dirs_only=True)})
 def get_ul_elements(dirs_only=False):
@@ -137,10 +136,7 @@ def move_files(request):
         try:
         # print('path {0}'.format(path))
         # print('new path {0}'.format(new_path + name))
-            print(file_paths[i])
-            print(ntjoin(target_dir, file_names[i]))
             Path(file_paths[i]).rename(join(target_dir, file_names[i]))
-            print("Mohamed")
             old = Decision.objects.get(decision_treated_path__contains = file_names[i])
             old.decision_treated_path = join(target_dir, file_names[i])
             old.save()
@@ -150,20 +146,18 @@ def move_files(request):
             old = Decision.objects.get(decision_treated_path__contains = file_names[i])
             old.decision_treated_path = join(target_dir, file_names[i])
             old.save()
-        except:
+        except Decision.DoesNotExist:
             print('Doesnot Exist error')
             n = Decision(decision_treated_path=join(target_dir, file_names[i]))
             n.save()
-    return JsonResponse({"response": "Mohamed"})
+    return JsonResponse({"response": "MPA"})
 
 def annotate_view(request):
     body_unicode = request.body.decode('utf-8')
     body = loads(body_unicode)
     selected_dir = body['directory']
-    print('Mohamed')
     if selected_dir == '':
         selected_dir = treated_files_folder
-    print('here annotate from organize ', selected_dir)
     # decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir)
     # files = []
     # for item in decisions:

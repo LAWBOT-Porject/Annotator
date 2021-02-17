@@ -32,7 +32,60 @@ const zoom_in_btn = document.getElementsByClassName("zoom-in");
 const text_size = document.getElementById("text-size");
 // NoPPAC of default demand category
 const defaultCategoryNoPPAC = document.getElementById("category-noppac-annotate");
+let defaultCategDescript = "";
+defaultCategoryNoPPAC.addEventListener('change', (evt) => {
+  defaultCategDescript =  fetch("get_default_category", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      "X-Requested-With": "XMLHttpRequest", //Necessary to work with request.is_ajax()
+      "X-CSRFToken": getCookieAnnotate("csrftoken"),
+    },
+    body: JSON.stringify({ nppac: evt.target.value }), //JavaScript object of data to POST
+  })
+    .then((response) => {
+        //window.location.reload();
+        return response.json();
+    }).then((data) => {
+      defaultCategDescript = data["default_categorie"];
+      // evt.target.value = defaultCategDescript;
+      document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
+        element.value = defaultCategDescript;
+      }); 
+      console.log(data["default_categorie"]);
+      console.log(data["nppac"]);
+      return defaultCategDescript;
+    })
+    .catch(err => {
+      console.log(err);
+      return '';
+    })
+})
 
+document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
+  element.value = defaultCategDescript;
+});
+
+function getCookieAnnotate(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+const submitAnnotation = () => {
+  console.log('Mohamed')
+}
 const goToNext = () => {
   index = (index + 1) % lis.length;
   lis[index].click();
@@ -275,7 +328,7 @@ const addDemande = () => {
   let objet = htmlToElement(
     '<textarea rows="3" cols="40" name="description" id="description-' +
       idx +
-      '" placeholder="Description"></textarea>'
+      '" placeholder="Description" value="'+defaultCategDescript+'"></textarea>'
   );
 
   //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
@@ -307,12 +360,12 @@ const addDemande = () => {
   let uniteDemande = htmlToElement(
     '<input placeholder="Unité" type="text" size="10" id="unite-demande-' +
       idx +
-      '" required>'
+      '" >'
   );
   let quantiteDemande = htmlToElement(
     '<input placeholder="Quantité Demande" type="text" size="30" id="quantite-demande-' +
       idx +
-      '" required>'
+      '" >'
   );
   infos1.appendChild(montantDemande);
   infos1.appendChild(uniteDemande);
@@ -355,12 +408,12 @@ const addDemande = () => {
   let uniteResultat = htmlToElement(
     '<input placeholder="Unité" type="text" size="10" id="unite-resultat-' +
       idx +
-      '" required>'
+      '" >'
   );
   let quantiteResultat = htmlToElement(
     '<input placeholder="Quantité Résultat" type="text" size="30" id="quantite-resultat-' +
       idx +
-      '" required>'
+      '" >'
   );
   infos1.appendChild(montantResultat);
   infos1.appendChild(uniteResultat);
@@ -420,6 +473,9 @@ const addDemande = () => {
                         </div>
                         <button type="submit">Sauvgarder</button>
                     </div> */
+                    document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
+                      element.value = defaultCategDescript;
+                    });
   let submit = htmlToElement(
     '<button type="submit" id="submit-decision-' + idx + '">Sauvgarder</button>'
   );
@@ -504,13 +560,13 @@ const addJuge = () => {
   index_juge = parseInt(juges);
   let h3 = htmlToElement("<h4>" + index_juge + ".</h4>");
   let titre = htmlToElement(
-    '<input placeholder="Titre" type="text" size="10" required>'
+    '<input placeholder="Titre" type="text" size="10" >'
   );
   let nom = htmlToElement(
-    '<input placeholder="Nom" type="text" size="25" required>'
+    '<input placeholder="Nom" type="text" size="25" >'
   );
   let prenom = htmlToElement(
-    '<input placeholder="Prénom" type="text" size="25" required>'
+    '<input placeholder="Prénom" type="text" size="25" >'
   );
   let add = htmlToElement(
     '<img id="add-juge-' +
@@ -604,13 +660,13 @@ function addPerson() {
   typeDiv.appendChild(btnDiv);
 
   let titre = htmlToElement(
-    '<input placeholder="Titre" type="text" size="10" required>'
+    '<input placeholder="Titre" type="text" size="10" >'
   );
   let nom = htmlToElement(
-    '<input placeholder="Nom" type="text" size="25" required>'
+    '<input placeholder="Nom" type="text" size="25" >'
   );
   let prenom = htmlToElement(
-    '<input placeholder="Prénom" type="text" size="25" required>'
+    '<input placeholder="Prénom" type="text" size="25" >'
   );
   let infr1 = htmlToElement('<div class="infos-row"></div>');
   infr1.appendChild(titre);
@@ -618,10 +674,10 @@ function addPerson() {
   infr1.appendChild(prenom);
 
   let ddn = htmlToElement(
-    '<input placeholder="Date de naissance" type="date" required>'
+    '<input placeholder="Date de naissance" type="date" >'
   );
   let adr1 = htmlToElement(
-    '<input placeholder="Adresse" type="text" size="45" required>'
+    '<input placeholder="Adresse" type="text" size="45" >'
   );
   let infr2 = htmlToElement('<div class="infos-row"></div>');
   infr2.appendChild(ddn);
@@ -634,16 +690,16 @@ function addPerson() {
   personPhysique.appendChild(infr2);
 
   let entrepriseName = htmlToElement(
-    '<input placeholder="Nom d\'entreprise" type="text" size="35" required>'
+    '<input placeholder="Nom d\'entreprise" type="text" size="35" >'
   );
   let siret = htmlToElement(
-    '<input placeholder="Numéro SIRET" type="text" size="35" required>'
+    '<input placeholder="Numéro SIRET" type="text" size="35" >'
   );
   let naf = htmlToElement(
-    '<input placeholder="Numéro NAF" type="text" size="25" required>'
+    '<input placeholder="Numéro NAF" type="text" size="25" >'
   );
   let adr2 = htmlToElement(
-    '<input placeholder="Adresse" type="text" size="45" required>'
+    '<input placeholder="Adresse" type="text" size="45" >'
   );
   let infr3 = htmlToElement('<div class="infos-row"></div>');
   let infr4 = htmlToElement('<div class="infos-row"></div>');
@@ -704,16 +760,16 @@ function addAvocat() {
   avocats++;
   let h4 = htmlToElement("<h4>" + avocats + ".</h4>");
   let titre = htmlToElement(
-    '<input placeholder="Titre" type="text" size="5" required>'
+    '<input placeholder="Titre" type="text" size="5" >'
   );
   let prenom = htmlToElement(
-    '<input placeholder="Nom" type="text" size="20" required>'
+    '<input placeholder="Nom" type="text" size="20" >'
   );
   let nom = htmlToElement(
-    '<input placeholder="Prénom" type="text" size="20" required>'
+    '<input placeholder="Prénom" type="text" size="20" >'
   );
   let bareau = htmlToElement(
-    '<input placeholder="Barreau" type="text" size="20" required>'
+    '<input placeholder="Barreau" type="text" size="20" >'
   );
   let infos1 = htmlToElement('<div class="infos-row-avocat"></div>');
   infos1.appendChild(h4);

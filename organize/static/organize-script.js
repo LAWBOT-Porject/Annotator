@@ -3,6 +3,12 @@ let directory = "",
   selected_dir_move = "",
   selected_dir_path_move = "";
 let keys = 1;
+const htmlToElementOrganize = (html) => {
+  let template = document.createElement("template");
+  html = html.trim(); // Never return a text node of whitespace as the result
+  template.innerHTML = html;
+  return template.content.firstChild;
+};
 
 function loadHome() {
   document.querySelector(".search-result-hider").style.display = "none";
@@ -78,14 +84,14 @@ const addKey = () => {
   //document.querySelectorAll("#key-word-type-1 option").disabled = false;
   keys++;
   keys_str = parseInt(keys);
-  let container = htmlToElement('<div class="key-row-' + keys_str + '">');
-  let key = htmlToElement(
+  let container = htmlToElementOrganize('<div class="key-row-' + keys_str + '">');
+  let key = htmlToElementOrganize(
     '<input id="key-' +
       keys_str +
       '" type="text" size="40" placeholder="mot clé" required>'
   );
   container.appendChild(key);
-  let options = htmlToElement(
+  let options = htmlToElementOrganize(
     '<select name="key-word-type-' +
       keys_str +
       '" id="key-word-type-' +
@@ -93,17 +99,17 @@ const addKey = () => {
       '" title="Choisir un opérateur logique" ><option value="and" >Et</option><option value="or">Ou</option> <option value="except">Sauf</option></select>'
   );
   container.appendChild(options);
-  let addIcon = htmlToElement(
+  let addIcon = htmlToElementOrganize(
     '<img id="add-key-' +
       keys_str +
       '" onclick="addKey()" src="../static/add_circle-24px.svg" alt="Add key word" title="Ajouter un mot clé">'
   );
-  let deleteIcon = htmlToElement(
+  let deleteIcon = htmlToElementOrganize(
     '<img id="delete-key-' +
       keys_str +
       '" onclick="deleteKey()" src="../static/remove_circle-24px.svg" alt="Delete key word" title="Supprimer un mot clé">'
   );
-  let twoIconsContainer = htmlToElement(
+  let twoIconsContainer = htmlToElementOrganize(
     '<div class="add-remove-keyword-' + keys_str + '"> </div>'
   );
   twoIconsContainer.appendChild(addIcon);
@@ -217,12 +223,12 @@ const searchKeyWord = () => {
       );
       // files_ul.style["overflow"] = "auto";
       for (let index = 0; index < files.length; index++) {
-        let containerDiv = htmlToElement(
+        let containerDiv = htmlToElementOrganize(
           '<div style = "display: flex" class="file-element-' +
             index +
             '"></div>'
         );
-        let file_li = htmlToElement(
+        let file_li = htmlToElementOrganize(
           '<label style="cursor: pointer" id="file-' +
             index +
             '" data-path="' +
@@ -233,7 +239,7 @@ const searchKeyWord = () => {
             files[index] +
             "</label>"
         );
-        let check = htmlToElement(
+        let check = htmlToElementOrganize(
           '<input id="file-check-' +
             index +
             '" type="checkbox" value="' +

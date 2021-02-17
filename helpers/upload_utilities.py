@@ -92,12 +92,12 @@ def search_city(raw_text):
         cmp_city = transform_to_standard_chars(city).lower()
         temp_ratio = fuzz.partial_ratio(cmp_city, raw_text)
         position = raw_text.find(cmp_city)
-        if (temp_ratio >= 90 or (position != -1)):
+        if (temp_ratio ==100 or (position != -1)):
             zip_code = [z.zip_code for z in all_villes if z.ville  == city]
             try :
                 zc = zip_code[0]
             except :
-                zc = '00000'
+                zc = '00001' # To tell that the city does not exist in db table
                 position = -1
             #finally:
             return [zc, position]
@@ -114,22 +114,8 @@ def search_city(raw_text):
         position = -1
     return [zc, position]
 
-def search_city_asraw(raw_text, cities_file_path):
-    token_set_ratio = 0
-    selected_city = ''
-    raw_text = transform_to_standard_chars(raw_text)
-    with open(cities_file_path, 'r') as f:
-        for line in f:
-            line = line.replace('\n', '')
-            temp_ratio = fuzz.partial_ratio(line.lower(), raw_text.lower())
-            if (temp_ratio > token_set_ratio):
-                token_set_ratio = temp_ratio
-                selected_city = line
-        #print(selected_city)
-        return selected_city.capitalize()
-
 def search_juridiction(raw_text): #, juridictions_file_path)
-    raw_text = transform_to_standard_chars(raw_text)
+    raw_text = transform_to_standard_chars(raw_text).lower()
     all_juridictions = juridiction.objects.filter(zip_code_id__isnull=True)
     juridics         = [juridic.type_juridiction for juridic in all_juridictions]
     # cities = ville.objects.values('ville').distinct()
@@ -139,12 +125,12 @@ def search_juridiction(raw_text): #, juridictions_file_path)
         cmp_jurid = transform_to_standard_chars(jurid).lower()
         temp_ratio = fuzz.partial_ratio(cmp_jurid, raw_text)
         position = raw_text.find(cmp_jurid)
-        if (temp_ratio >= 90 or (position != -1)):
+        if (temp_ratio == 100 or (position != -1)):
             abbreviation = [j.abbreviation for j in all_juridictions if j.type_juridiction == jurid]
             try :
                 abrv = abbreviation[0]
             except :
-                abrv = 'ABRV'
+                abrv = 'ABRZ' # To tell that juridiction does not exist in table
                 position = -1
             return [abrv, position]
         elif (temp_ratio > biggest_ration) :
@@ -160,32 +146,6 @@ def search_juridiction(raw_text): #, juridictions_file_path)
         position = -1
     return [abrv, position]
 
-def search_juridiction_asraw(raw_text, juridictions_file_path):
-    token_set_ratio = 0
-    selected_juri = ''
-    raw_text = transform_to_standard_chars(raw_text)
-    with open(juridictions_file_path, 'r') as f:
-        for line in f:
-            line = line.replace('\n', '')
-            temp_ratio = fuzz.token_set_ratio(line, raw_text)
-            if (temp_ratio > token_set_ratio):
-                token_set_ratio = temp_ratio
-                selected_juri = line
-        return selected_juri.capitalize()
-
-def abbreviate_juridiction(in_juridiction):
-    for dic in hp.files.juridictions_abbreviations :
-        for key in dic:
-            if (in_juridiction == key):
-                return dic[key]
-    return 'juridabbr404'
-
-def full_juridiction(juridiction_abbr):
-    for dic in hp.files.juridictions_abbreviations :
-        for key, value in dic.items():
-            if (juridiction_abbr == value):
-                return key
-    return 'jurid404'
 
 def search_reference(raw_text):
     try: # Case 1 : reference is 10 digits
@@ -201,14 +161,30 @@ def search_reference(raw_text):
                 position = raw_text.find(reference)
                 return [''.join(reference.split('/'))[:7], position]
             except : return ['', -1]
-    return reference
+    return [reference, position]
 
 def convert_to_txt(file_path, file_name):
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
-        text = textract.process(file_path, errors="ignore")
-        text = text.decode("utf-8")
+        try:
+            text = textract.process(file_path, encoding= 'utf-8', errors="ignore")
+            try:
+                text = text.decode("utf-8")
+            except:
+                text = text.decode("ISO-8859-1")
+        except :
+            try:
+                text = textract.process(file_path, encoding= 'ISO-8859-1', errors="ignore")
+                try:
+                    text = text.decode("utf-8")
+                except:
+                    text = text.decode("ISO-8859-1")
+            except:
+                with open(file_path,  encoding='utf-8') as file:
+                    text = file.read()
+                    text = str(text)
         # text = text.decode("latin-1")
-        search_text = text #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
+        search_text = text[500] #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
+        print(search_text)
         juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
                                                     #  + hp.files.juridictions_file_name)
         juridiction_pos = juridiction[1]
@@ -219,12 +195,19 @@ def convert_to_txt(file_path, file_name):
         reference = search_reference(search_text)
         rg_position = reference[1]
         reference = reference[0]
+        if (reference == ''):
+            reference = search_reference(file_name)[0]
+        if (reference == ''):
+            import uuid
+            reference = str(uuid.uuid1().int)[5:15]
+
         new_file_name = '-'.join([juridiction, city, reference ])
         new_file_name += hp.files.standard_file_type
+        print(new_file_name)
         file = open(hp.files.treated_files_folder + '/'+
                     #file_name.split('.')[0] +
                     new_file_name , "w")
-        file.write(str(text)) 
+        file.write(text) 
         file.close()
         return [new_file_name, rg_position, 
         city_position, juridiction_pos, search_text,
