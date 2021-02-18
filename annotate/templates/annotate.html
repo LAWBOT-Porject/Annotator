@@ -26,8 +26,10 @@
         </div>
         <div class="annotation-cl tool-col">
             <div class="add-remove-tab">
-                <img onclick="addDemande()" src="../static/add_circle-24px.svg" alt="Ajouter demande">
-                <img onclick="removeDemande()" src="../static/remove_circle-24px.svg" alt="Supprimer demande">
+                <img onclick="addDemande()" src="../static/add_circle-24px.svg" alt="Ajouter demande"
+                    style="cursor: pointer;" title="Ajouter demande">
+                <img onclick="removeDemande()" src="../static/remove_circle-24px.svg" alt="Supprimer demande"
+                    style="cursor: pointer;" title="Supprimer demande">
             </div>
             <div id="tab-id" class="tab">
                 <ul id="tabs-items">
@@ -70,21 +72,22 @@
                     <div class="infos-form-content">
                         <!-- <h2>Informations sur la décision</h2> -->
                         <div class="infos-row-1">
-                            <input id="rg" placeholder="Numéro RG" type="text" size="30">
-                            <input id="ville" placeholder="Ville" type="text" size="40">
+                            <input id="rg" placeholder="Numéro RG" type="text" size="30" value="" name="decision-rg">
+                            <input id="ville" placeholder="Ville" type="text" size="40" value="" name="decision-ville">
                         </div>
                         <div class="infos-row-2">
-                            <input id="juridiction" placeholder="Juridiction" size="30" type="text">
-                            <input placeholder="Chambre" type="text">
-                            <input placeholder="Date" type="date">
+                            <input id="juridiction" placeholder="Juridiction" size="30" type="text" value=""
+                                name="decision-juridiction">
+                            <input placeholder="Chambre" type="text" value="" name="decision-chambre">
+                            <input placeholder="Date" type="date" value="" name="decision-date">
                         </div>
                         <h3>Juges</h3>
                         <div class="infos-row-3">
                             <div class="juge-1 juge">
                                 <h4>1.</h4>
-                                <input placeholder="Titre" type="text" size="10">
-                                <input placeholder="Nom" type="text" size="25">
-                                <input placeholder="Prénom" type="text" size="25">
+                                <input placeholder="Titre" type="text" size="10" value="" name="juge-1-titre">
+                                <input placeholder="Nom" type="text" size="25" value="" name="juge-1-nom">
+                                <input placeholder="Prénom" type="text" size="25" value="" name="juge-1-prenom">
                                 <img id="add-juge-1" onclick="addJuge()" src="../static/add_circle-24px.svg"
                                     alt="Ajouter juge">
                                 <!-- <img id="remove-juge-1" onclick="removeJuge(this)"
@@ -109,13 +112,14 @@
                                 </div>
                                 <div class="person-physique-1">
                                     <div class="infos-row">
-                                        <input placeholder="Titre" type="text" size="10">
-                                        <input placeholder="Nom" type="text" size="25">
-                                        <input placeholder="Prénom" type="text" size="25">
+                                        <input placeholder="Titre" type="text" size="10" value="" name="partie-1-titre">
+                                        <input placeholder="Nom" type="text" size="25" value="" name="partie-1-nom">
+                                        <input placeholder="Prénom" type="text" size="25" value=""
+                                            name="partie-1-prenom">
                                     </div>
                                     <div class="infos-row">
-                                        <input placeholder="Date de naissance" type="date">
-                                        <input placeholder="Adresse" type="text" size="45">
+                                        <input placeholder="Date de naissance" type="date" value="" name="partie-1-dob">
+                                        <input placeholder="Adresse" type="text" size="45" value="" name="partie-1-adr">
                                     </div>
                                     <!-- <div class="sexe-radios infos-row">
                                         <input type="radio" name="homme-femme" id="homme">
@@ -126,12 +130,16 @@
                                 </div>
                                 <div class="person-morale-1">
                                     <div class="infos-row">
-                                        <input placeholder="Nom d'entreprise" type="text" size="35">
-                                        <input placeholder="Numéro SIRET" type="text" size="35">
+                                        <input placeholder="Nom d'entreprise" type="text" size="35" value=""
+                                            name="partie-1-nom-entreprise">
+                                        <input placeholder="Numéro SIRET" type="text" size="35" value=""
+                                            name="partie-1-siret">
                                     </div>
                                     <div class="infos-row">
-                                        <input placeholder="Numéro NAF" type="text" size="25">
-                                        <input placeholder="Adresse" type="text" size="45">
+                                        <input placeholder="Numéro NAF" type="text" size="25" value=""
+                                            name="partie-1-naf">
+                                        <input placeholder="Adresse" type="text" size="45" value=""
+                                            name="partie-1-adr-entreprise">
                                     </div>
                                 </div>
                             </div>
@@ -151,13 +159,14 @@
                                 </div>
                                 <div class="person-physique-2">
                                     <div class="infos-row">
-                                        <input placeholder="Titre" type="text" size="10">
-                                        <input placeholder="Nom" type="text" size="25">
-                                        <input placeholder="Prénom" type="text" size="25">
+                                        <input placeholder="Titre" type="text" size="10" value="" name="partie-2-titre">
+                                        <input placeholder="Nom" type="text" size="25" value="" name="partie-2-nom">
+                                        <input placeholder="Prénom" type="text" size="25" value=""
+                                            name="partie-2-prenom">
                                     </div>
                                     <div class="infos-row">
-                                        <input placeholder="Date de naissance" type="date">
-                                        <input placeholder="Adresse" type="text" size="45">
+                                        <input placeholder="Date de naissance" type="date" value="" name="partie-2-dob">
+                                        <input placeholder="Adresse" type="text" size="45" value="" name="partie-2-adr">
                                     </div>
                                     <!-- <div class="sexe-radios infos-row">
                                         <input type="radio" name="homme-femme" id="homme">
@@ -168,12 +177,15 @@
                                 </div>
                                 <div class="person-morale-2">
                                     <div class="infos-row">
-                                        <input placeholder="Nom d'entreprise" type="text" size="35">
-                                        <input placeholder="Numéro SIRET" type="text" size="35">
+                                        <input placeholder="Nom d'entreprise" type="text" size="35" value=""
+                                            name="partie-2-nom-entreprise">
+                                        <input placeholder="Numéro SIRET" type="text" size="35" value=""
+                                            name="partie-2-siret">
                                     </div>
                                     <div class="infos-row">
-                                        <input placeholder="Numéro NAF" type="text" size="25">
-                                        <input placeholder="Adresse" type="text" size="45">
+                                        <input placeholder="Numéro NAF" type="text" size="25" value=""
+                                            name="partie-2-siret">
+                                        <input placeholder="Adresse" type="text" size="45" value="" name="partie-2-naf">
                                     </div>
                                 </div>
                             </div>
@@ -198,9 +210,9 @@
                         style="display: flex; justify-content: space-around; align-items: center;">
                         <div class="corbeille-container"
                             style="display: flex; justify-content: space-around; align-items: center;">
-                            <input type="checkbox" name="corbeille" id="corbeille">
+                            <input type="checkbox" value="corbeille" name="corbeille" id="corbeille">
                             <label for="corbeille"
-                                style="margin-left: 1vh; color: red; font-weight: bold;">Corbeille</label>
+                                style="cursor: pointer; margin-left: 1vh; color: red; font-weight: bold;">Corbeille</label>
                         </div>
                         <button onclick="submitAnnotation()" id="submit-annotation" type="submit">Sauvgarder</button>
                     </div>

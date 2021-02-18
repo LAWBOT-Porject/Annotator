@@ -1,4 +1,5 @@
-import json
+
+from json import loads, dumps
 from os.path import basename
 from django.http import HttpResponse
 from config.hparam import hparam as hp
@@ -37,8 +38,16 @@ def annotate_view(request, directory=None, *args, **kwargs):
             return read_file(request) 
         if 'get_default_category' in request.path:
             return get_category_by_nppac(request)
-        print(request)
-        return redirect('/annotate/'+ default_dir)
+        data = request.POST
+        print(type(data))
+        for key in data:
+            print(f'{key}: {data[key]}')
+        if default_dir != treated_files_folder:
+            print('with folder')
+            return redirect('/annotate/'+ default_dir )
+        else:
+            print('without folder')
+            return redirect('/annotate/' )
 
     
 
@@ -67,7 +76,7 @@ def read_file(request ):
         'rg': rg,
         'file': file_content
     }
-    data = json.dumps(context)
+    data = dumps(context)
     return HttpResponse(data, content_type='application/json')
 
 def get_category_by_nppac (request):
@@ -80,5 +89,5 @@ def get_category_by_nppac (request):
     except Categorie.DoesNotExist :
         default_categorie = '##### Catégorie non trouvée #####'
         nppac = ''
-    data = json.dumps({"nppac": nppac, "default_categorie": default_categorie})
+    data = dumps({"nppac": nppac, "default_categorie": default_categorie})
     return HttpResponse(data, content_type='application/json')
