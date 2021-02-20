@@ -212,7 +212,13 @@ form input,
 form button,
 form h2,
 form h3,
-form h4 {
+form h4,
+.form-decision input,
+.form-decision button,
+.form-decision h2,
+.form-decision h3,
+.form-decision h4 
+{
   font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 
@@ -297,11 +303,15 @@ form h4 {
   margin-left: 2vh;
 }
 
-form input[value="accept"] {
+form input[value="accept"],
+.form-decision input[value="accept"]
+{
   margin-right: 6vh;
 }
 
-form label[for^="reject"] {
+form label[for^="reject"],
+.form-decision label[for^="reject"] 
+{
   margin-left: 6vh;
 }
 /*.avocats-btns-1, .avocat-partie h3{

@@ -11,8 +11,8 @@ const previous = document.querySelector(".previous");
 const next = document.querySelector(".next");
 // Tabs items ul container
 const tabs_ul = document.getElementById("tabs-items");
-const decisionForm = document.querySelector(".cached");
-
+// const decisionForm = document.querySelector(".cached");
+let selected_file_name = "";
 // Tabs contents div container
 const content_div = document.getElementById("tabs-contents");
 
@@ -93,8 +93,51 @@ function getCookieAnnotate(name) {
 }
 
 const submitAnnotation = () => {
-  console.log('Mohamed');
-}
+  // /annotate/submit_individual_demande/
+  // let form = document.querySelector('form.form-decision');
+  // let formBtn = document.querySelector('button[id^="submit-decision-"]');
+  // formBtn.click();
+  // console.log('Mohamed');
+  if (tabs_index > 0 ){
+     for (let tab_idx = 1; tab_idx <= tabs_index; tab_idx++) {
+      let demandeurs = [], defendeurs = [];
+      for (let i = 1; i <= parties; i++) {
+        let demandeur = document.getElementById('demande-' +tab_idx +"-partiedemandeur-" +i )
+        let defendeur = document.getElementById('demande-' +tab_idx +"-partiedefendeur-" +i)
+        demandeurs.push(demandeur);
+        defendeurs.push(defendeur);
+      } 
+      fetch("submit_individual_demande/"+ tab_idx , {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest", //Necessary to work with request.is_ajax()
+        "X-CSRFToken": getCookieAnnotate("csrftoken"),
+      },
+      body: JSON.stringify({ 
+        "Rasoul": "Mohamed"
+        // file_name: selected_file_name,
+        //  demandeurs: demandeurs,
+        //  defendeurs: defendeurs,
+       }), //JavaScript object of data to POST
+    })
+      .then((response) => {
+        if (response.ok) {
+          //window.location.reload();
+          return response.json();
+        } else throw new Error("Something went wrong");
+      }).then((data) => {
+        console.log(data);
+        return;
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+    }
+    }
+  }
 const goToNext = () => {
   index = (index + 1) % lis.length;
   lis[index].click();
@@ -113,6 +156,7 @@ const displyTextFile = (evt) => {
   // Get selected decision file link
   let link = evt.target.getAttribute("data-link");
   let file_name = evt.target.innerText;
+  selected_file_name = file_name;
   // Style the selected file
   evt.target.classList.add("selected_file");
   // Loop over other li items to unstyle all others (unstyle previously styled items)
@@ -129,7 +173,7 @@ const displyTextFile = (evt) => {
     headers: {
       Accept: "application/json",
       "X-Requested-With": "XMLHttpRequest", //Necessary to work with request.is_ajax()
-      "X-CSRFToken": getCookie("csrftoken"),
+      "X-CSRFToken": getCookieAnnotate("csrftoken"),
     },
     body: JSON.stringify({ path: link, file_name: file_name }), //JavaScript object of data to POST
   })
@@ -257,9 +301,8 @@ const addDemande = () => {
   let contentDiv = htmlToElement(
     '<div id="decision-' + idx + '"  class="tab-content"></div>'
   );
-  let decisionForm = htmlToElement(
-    '<form action="/annotate/" method="POST" enctype="multipart/form-data" class="form-decision"></form>'
-  );
+  let decisionForm = htmlToElement('<div  class="form-decision"></div>');
+  // action="#" method="POST"
   // let line1 = htmlToElement('<h2>'+decisionTabTxt+'</h2>');
   // decisionForm.appendChild(line1);
 
@@ -320,16 +363,22 @@ const addDemande = () => {
   }
   // Objet + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
+  let demandePPAC = htmlToElement('<input style="background-color: #CCCCCC;" placeholder="NPPAC de demande" size="22" readonly id="nppac-demand-'+idx+'">');
+  infos1.appendChild(demandePPAC);
+  decisionForm.appendChild(infos1);
+
+  infos1 = htmlToElement('<div class="infos-row"> </div>');
   let classSearch = htmlToElement(
     '<label id="class-search-' + idx + '">Rehercher classe</label>'
-  );
+    );
   let objet = htmlToElement(
-    '<textarea rows="3" cols="40" name="descriptionCategorie-'+idx+'" id="description-' +
+    '<textarea style="background-color: #CCCCCC;" rows="3" cols="70" readonly name="descriptionCategorie-'+idx+'" id="description-' +
       idx +
       '" placeholder="Description" value="'+defaultCategDescript+'"></textarea>'
   );
 
   //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
+  
   infos1.appendChild(objet);
   infos1.appendChild(classSearch);
   decisionForm.appendChild(infos1);
@@ -473,7 +522,7 @@ const addDemande = () => {
                       element.value = defaultCategDescript;
                     });
   let submit = htmlToElement(
-    '<button type="submit" id="submit-decision-' + idx + '">Sauvgarder</button>'
+    '<button style="display:none;" type="submit" id="submit-decision-' + idx + '">Sauvgarder</button>'
   );
   //decisionForm.appendChild(submit);
   //let csrf = htmlToElement('<input type="hidden" name="_csrf" value="{{% csrf_token %}}" />');
