@@ -320,7 +320,7 @@ const addDemande = () => {
       '<label style="cursor: pointer;" for="demande-' +idx +"-partiedemandeur-" +(i + 1) +'">Partie ' + (i + 1) + "</label>"
     );
     let partieChkbx = htmlToElement(
-      '<input type="checkbox" value="" name="demande-' +idx +"-partiedemandeur-" +(i + 1) +'" id="demande-' +idx +"-partiedemandeur-" +(i + 1) +'">'
+      '<input type="checkbox" value="" name="demande-' +idx +"-partiedemandeur-" +(i + 1) +'" id="demande-' +idx +"-partiedemandeur-" +(i + 1) +'" style="cursor:pointer;">'
     );
     partieContainer.appendChild(partieLbl);
     partieContainer.appendChild(partieChkbx);
@@ -347,7 +347,7 @@ const addDemande = () => {
       '<label style="cursor: pointer;" for="demande-' +idx +"-partiedefendeur-" +(i + 1) +'">Partie ' + (i + 1) + "</label>"
     );
     let partieChkbx = htmlToElement(
-      '<input type="checkbox" value="" name="demande-' +idx +"-partiedefendeur-" +(i + 1) +'" id="demande-' +idx +"-partiedefendeur-" +(i + 1) +'">'
+      '<input type="checkbox" value="" name="demande-' +idx +"-partiedefendeur-" +(i + 1) +'" id="demande-' +idx +"-partiedefendeur-" +(i + 1) +'" style="cursor:pointer;">'
     );
     partieContainer.appendChild(partieLbl);
     partieContainer.appendChild(partieChkbx);
@@ -363,7 +363,9 @@ const addDemande = () => {
   }
   // Objet + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
-  let demandePPAC = htmlToElement('<input style="background-color: #CCCCCC;" placeholder="NPPAC de demande" size="22" readonly id="nppac-demand-'+idx+'">');
+  let demandePPAC = htmlToElement('<input style="background-color: #CCCCCC;" '+
+  'placeholder="NPPAC de demande" size="22" readonly id="nppac-demand-'+idx+
+  '" value="" name="nppac-demand-'+idx+'">');
   infos1.appendChild(demandePPAC);
   decisionForm.appendChild(infos1);
 
@@ -372,8 +374,8 @@ const addDemande = () => {
     '<label id="class-search-' + idx + '">Rehercher classe</label>'
     );
   let objet = htmlToElement(
-    '<textarea style="background-color: #CCCCCC;" rows="3" cols="70" readonly name="descriptionCategorie-'+idx+'" id="description-' +
-      idx +
+    '<textarea style="background-color: #CCCCCC;" rows="3" cols="70" readonly '+
+    'name="descriptionCategorie-'+idx+'" id="descriptionCategorie-' +idx +
       '" placeholder="Description" value="'+defaultCategDescript+'"></textarea>'
   );
 
@@ -400,7 +402,7 @@ const addDemande = () => {
   // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantDemande = htmlToElement(
-    '<input type="number" value="" name="motant-demande-'+idx+'" id="montant-demande-' +
+    '<input type="number" value="" name="montant-demande-'+idx+'" id="montant-demande-' +
       idx +
       '" placeholder="Montant demandé">'
   );
@@ -446,7 +448,7 @@ const addDemande = () => {
   // Montant resultat
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantResultat = htmlToElement(
-    '<input type="number" value="" name="motant-resultat-'+idx+'" id="montant-resultat-' +
+    '<input type="number" value="" name="montant-resultat-'+idx+'" id="montant-resultat-' +
       idx +
       '" placeholder="Montant Résultat">'
   );
@@ -469,21 +471,21 @@ const addDemande = () => {
   infos1 = htmlToElement('<div class="resultat-container"> </div>');
 
   let r1Acc = htmlToElement(
-    '<input type="radio" name="resultat-' +
+    '<input type="radio" name="accept-' +
       idx +
       '" value="accept" id="accept-' +
       idx +
-      '">'
+      '" style="cursor:pointer;">'
   );
   let accept = htmlToElement(
     '<label for="accept-' + idx + '" style="cursor: pointer;">Acceptée</label>'
   );
   let r2Reject = htmlToElement(
-    '<input type="radio" name="resultat-' +
+    '<input type="radio" name="reject-' +
       idx +
       '" value="reject" id="reject-' +
       idx +
-      '">'
+      '" style="cursor:pointer;">'
   );
   let reject = htmlToElement('<label for="reject-' + idx + '" style="cursor: pointer;">Rejetée</label>');
   decisionForm.appendChild(resultat);
@@ -497,7 +499,7 @@ const addDemande = () => {
     '<div class="mauvaise-container" style="display: flex; justify-content: space-around; align-items: center;"></div>'
   );
   let mauvaise = htmlToElement(
-    '<input type="checkbox" value="mauvaise-'+idx+'" name="mauvaise-'+idx+'" id="mauvaise-' + idx + '">'
+    '<input type="checkbox" value="mauvaise-'+idx+'" name="mauvaise-'+idx+'" id="mauvaise-' + idx + '" style="cursor:pointer;">'
   );
   let mauvaiseLabel = htmlToElement(
     '<label for="mauvaise-' +
@@ -585,6 +587,84 @@ const removeDemande = () => {
   for (let i = 0; i < content_nodes.length; i++) {
     if (i !== 0) {
       content_nodes[i].id = "decision-" + parseInt(i);
+      let demandeurs = Array.prototype.slice.call(content_nodes[i].querySelectorAll('input[id*="-partiedemandeur-"]'));
+      demandeurs.forEach(demandeur => {
+        let id = demandeur.id;
+        id = id.split("-");
+        id[1] = i;
+        id = id.join("-");
+        demandeur.id = id;
+        demandeur.name = id;
+      });
+      let defendeurs = Array.prototype.slice.call(content_nodes[i].querySelectorAll('input[id*="-partiedefendeur-"]'));
+      defendeurs.forEach(defendeur => {
+        let id = defendeur.id;
+        id = id.split("-");
+        id[1] = i;
+        id = id.join("-");
+        defendeur.id = id;
+        defendeur.name = id;
+      });
+      
+      let nppac = content_nodes[i].querySelector('input[id^="nppac-demand-"]');
+      nppac.id = "nppac-demand-"+i;
+      nppac.name = "nppac-demand-"+i;
+      
+      let description = content_nodes[i].querySelector('textarea[id^="descriptionCategorie-"]');
+      description.id = "descriptionCategorie-"+i;
+      description.name = "descriptionCategorie-"+i;
+
+      let searchLbl = content_nodes[i].querySelector('label[id^="class-search-"]');
+      searchLbl.id = "class-search-"+i;
+
+      let montantDemande = content_nodes[i].querySelector('input[id^="montant-demande-"]');
+      montantDemande.id = "montant-demande-"+i;
+      montantDemande.name = "montant-demande-"+i;
+      
+      let uniteDemande = content_nodes[i].querySelector('input[id^="unite-demande-"]');
+      uniteDemande.id = "unite-demande-"+i;
+      uniteDemande.name = "unite-demande-"+i;
+      
+      let quantiteDemande = content_nodes[i].querySelector('input[id^="quantite-demande-"]');
+      quantiteDemande.id = "quantite-demande-"+i;
+      quantiteDemande.name = "quantite-demande-"+i;
+      
+      let pretention = content_nodes[i].querySelector('textarea[id^="pretention-"]');
+      pretention.id = "pretention-"+i;
+      pretention.name = "pretention-"+i;
+      
+      let motifs = content_nodes[i].querySelector('textarea[id^="motifs-"]');
+      motifs.id = "motifs-"+i;
+      motifs.name = "motifs-"+i;
+      
+      let dispos = content_nodes[i].querySelector('textarea[id^="dispositifs-"]');
+      dispos.id = "dispositifs-"+i;
+      dispos.name = "dispositifs-"+i;
+      
+      let montantResultat = content_nodes[i].querySelector('input[id^="montant-resultat-"]');
+      montantResultat.id = "montant-resultat-"+i;
+      montantResultat.name = "montant-resultat-"+i;
+      
+      let uniteResultat = content_nodes[i].querySelector('input[id^="unite-resultat-"]');
+      uniteResultat.id = "unite-resultat-"+i;
+      uniteResultat.name = "unite-resultat-"+i;
+      
+      let quantiteResultat = content_nodes[i].querySelector('input[id^="quantite-resultat-"]');
+      quantiteResultat.id = "quantite-resultat-"+i;
+      quantiteResultat.name = "quantite-resultat-"+i;
+      
+      let accept = content_nodes[i].querySelector('input[id^="accept-"]');
+      accept.id = "accept-"+i;
+      accept.name = "accept-"+i;
+      
+      let refuse = content_nodes[i].querySelector('input[id^="reject-"]');
+      refuse.id = "reject-"+i;
+      refuse.name = "reject-"+i;
+      
+      let mauvaise = content_nodes[i].querySelector('input[id^="mauvaise-"]');
+      mauvaise.id = "mauvaise-"+i;
+      mauvaise.name = "mauvaise-"+i;
+      
       // Array.from(
       //   Array.from(content_nodes[i].children)[0].children
       // )[0].innerText = "Demande " + parseInt(i);
@@ -616,12 +696,12 @@ const addJuge = () => {
   let add = htmlToElement(
     '<img id="add-juge-' +
       index_juge +
-      '" onclick="addJuge()" src="../static/add_circle-24px.svg" alt="Ajouter juge">'
+      '" onclick="addJuge()" src="../static/add_circle-24px.svg" alt="Ajouter juge" style="cursor:pointer;">'
   );
   let remove = htmlToElement(
     '<img id="remove-juge-' +
       index_juge +
-      '" onclick="removeJuge(this)" src="../static/remove_circle-24px.svg" alt="Supprimer juge">'
+      '" onclick="removeJuge(this)" src="../static/remove_circle-24px.svg" alt="Supprimer juge" style="cursor:pointer;">'
   );
   let jugeDiv = htmlToElement(
     '<div class="juge-' + index_juge + ' juge"></div>'
@@ -664,30 +744,30 @@ function addPerson() {
       index_parties +
       '" value="physique" id="physique-' +
       index_parties +
-      '">'
+      '" style="cursor:pointer;">'
   );
   let physiqueLabel = htmlToElement(
-    '<label for="physique-'+index_parties+'">Personne Physique</label>'
+    '<label for="physique-'+index_parties+'" style="cursor:pointer;">Personne Physique</label>'
   );
   let r2 = htmlToElement(
     '<input type="radio" name="physique-morale-' +
       index_parties +
       '" value="morale" id="morale-' +
       index_parties +
-      '">'
+      '" style="cursor:pointer;">'
   );
   let moraleLabel = htmlToElement(
-    '<label for="morale-' + index_parties + '">Personne Morale</label>'
+    '<label for="morale-' + index_parties + '" style="cursor:pointer;">Personne Morale</label>'
   );
   let add = htmlToElement(
     '<img id="add-person-' +
       index_parties +
-      '" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne">'
+      '" onclick="addPerson()" src="../static/add_circle-24px.svg" alt="Ajouter personne" style="cursor:pointer;">'
   );
   let remove = htmlToElement(
     '<img id="remove-person-' +
       index_parties +
-      '" onclick="removePerson()" src="../static/remove_circle-24px.svg" alt="Supprimer personne">'
+      '" onclick="removePerson()" src="../static/remove_circle-24px.svg" alt="Supprimer personne" style="cursor:pointer;">'
   );
   let btnDiv = htmlToElement(
     '<div class="parties-btns-' + index_parties + '"></div>'
@@ -830,12 +910,12 @@ function addAvocat() {
   for (let i = 0; i < parties; i++) {
     let partieContainer = htmlToElement('<div class="avocat-partie"></div>');
     let partieLbl = htmlToElement(
-      '<label for="partie-' + (i + 1) + '">Partie ' + (i + 1) + "</label>"
+      '<label for="partie-' + (i + 1) + '" style="cursor:pointer;">Partie ' + (i + 1) + "</label>"
     );
     let partieChkbx = htmlToElement(
       '<input type="checkbox" value="avocat-'+avocats+'-partie-' +(i + 1) +'" name="avocat-'+avocats+'-partie-' +(i + 1) +'" id="partie-' +
         (i + 1) +
-        '">'
+        '" style="cursor:pointer;">'
     );
     partieContainer.appendChild(partieLbl);
     partieContainer.appendChild(partieChkbx);
