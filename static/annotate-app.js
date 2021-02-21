@@ -16,6 +16,10 @@ let selected_file_name = "";
 // Tabs contents div container
 const content_div = document.getElementById("tabs-contents");
 
+const jugesNumber = document.getElementById("juges-number"), 
+      partiesNumber = document.getElementById("parties-number"),
+      avocatsNumber = document.getElementById("avocats-number"), 
+      demandsNumber = document.getElementById("demandes-number");
 // Index of the current file
 let index = -1;
 // Size of decision tabs
@@ -539,6 +543,7 @@ const addDemande = () => {
   content_div.appendChild(contentDiv);
   selectText();
   tabBtn.click();
+  demandsNumber.value = tabs_index;
 };
 
 const selectText = () => {
@@ -671,6 +676,8 @@ const removeDemande = () => {
       //console.log(Array.from(Array.from(content_nodes[i].children)[0].children)[0]);
     }
   }
+
+  demandsNumber.value = tabs_index;
 };
 let juges = 1;
 const addJuge = () => {
@@ -714,6 +721,7 @@ const addJuge = () => {
   jugeDiv.appendChild(remove);
   document.querySelector(".infos-row-3").appendChild(jugeDiv);
   selectText();
+  jugesNumber.value = juges;
 };
 
 function removeJuge(e) {
@@ -728,6 +736,7 @@ function removeJuge(e) {
   if (!(index === 1)) {
     document.querySelector("#remove-juge-" + index).style.display = "inline";
   }
+  jugesNumber.value = juges;
 }
 
 let parties = 2;
@@ -847,6 +856,7 @@ function addPerson() {
   document.querySelector(".infos-row-4").appendChild(partie);
 
   selectText();
+  partiesNumber.value = parties;
 }
 // To display either person or entreprise
 const displayPartieForm = function () {
@@ -877,7 +887,7 @@ const removePerson = () => {
   parties--;
   index = parseInt(parties);
   document.querySelector(".parties-btns-" + index).style.display = "inline";
-  console.log("Mohamed");
+  partiesNumber.value = parties;
 };
 
 let avocats = 0;
@@ -931,6 +941,7 @@ function addAvocat() {
   }
   document.querySelector(".infos-row-5").appendChild(avocat);
   selectText();
+  avocatsNumber.value = avocats;
 }
 
 function removeAvocat(e) {
@@ -938,6 +949,7 @@ function removeAvocat(e) {
   let toDelete = document.querySelector(".avocat-" + avocats);
   toDelete.parentNode.removeChild(toDelete);
   avocats--;
+  avocatsNumber.value = avocats;
 }
 text_size.addEventListener("keyup", set_size);
 text_size.addEventListener("change", set_size);
