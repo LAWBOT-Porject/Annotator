@@ -57,14 +57,14 @@
             </ul>
         </div>
     </div>
+
     <div class="decision-container grid-item">
         <textarea name="" id="file-contents" readonly>Aucun fichier n'est sélectionné</textarea>
         <!-- <input type="text" id="file-contents" value="Aucun fichier n'est sélectionné" readonly> -->
         <!-- <p id="file-contents">Aucun fichier n'est sélectionné</p> -->
     </div>
+
     <div class="annotation-container grid-item">
-
-
         <form id="tabs-contents" action="/annotate/" method="POST">
             <div id="infos" class="tab-content">
 
@@ -192,7 +192,6 @@
                         </div>
                     </div>
                     <div class="infos-row-5">
-
                         <div class="avocat-partie">
                             <h3>Avocats</h3>
                             <div class="avocats-btns-1">
@@ -205,6 +204,7 @@
                         </div>
                     </div>
                     <div class="counters-container" style="display: none;">
+                        <input type="hidden" name="file-name" value="" id="file-name">
                         <input type="hidden" name="juges-number" value="1" id="juges-number">
                         <input type="hidden" name="parties-number" value="2" id="parties-number">
                         <input type="hidden" name="avocats-number" value="0" id="avocats-number">
@@ -228,7 +228,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 {% else %}

@@ -19,12 +19,14 @@ const content_div = document.getElementById("tabs-contents");
 const jugesNumber = document.getElementById("juges-number"), 
       partiesNumber = document.getElementById("parties-number"),
       avocatsNumber = document.getElementById("avocats-number"), 
-      demandsNumber = document.getElementById("demandes-number");
+      demandsNumber = document.getElementById("demandes-number"),
+      decisionFileName = document.getElementById("file-name")
+      ;
 // Index of the current file
 let index = -1;
 // Size of decision tabs
 let tabs_index = 0;
-
+let selected_tab_index = 0;
 // Paragraph where to put decision file content
 const p_decision = document.getElementById("file-contents");
 let text = "";
@@ -37,12 +39,33 @@ const text_size = document.getElementById("text-size");
 // NoPPAC of default demand category
 const defaultCategoryNoPPAC = document.getElementById("category-noppac-annotate");
 let defaultCategDescript = "";
-let defaultPPAC = "";
-if (defaultPPAC != "") {
-  defaultCategoryNoPPAC.value = defaultPPAC;
+let defaultNPPAC = "";
+
+if(localStorage.getItem("defaultNPPAC") != null){
+  defaultNPPAC          = localStorage.getItem("defaultNPPAC");
+  defaultCategDescript = localStorage.getItem("defaultCategDescript");
+  if(selected_tab_index != 0 ){
+    document.getElementById("nppac-demand-"+selected_tab_index).value = localStorage.getItem("defaultNPPAC");
+    document.getElementById("descriptionCategorie-"+selected_tab_index).value = localStorage.getItem("defaultCategDescript");
+  }
+  defaultCategoryNoPPAC.value = defaultNPPAC;
 }
+
 defaultCategoryNoPPAC.addEventListener('change', (evt) => {
-  let result =  fetch("get_default_category", {
+  if(evt.target.value == "") {
+    localStorage.setItem("defaultNPPAC", "");
+    localStorage.setItem("defaultCategDescript", "");
+    defaultNPPAC  = "";
+    defaultCategDescript = "";
+    if(selected_tab_index != 0 ){
+      document.getElementById("nppac-demand-"+selected_tab_index).value = "";
+      document.getElementById("descriptionCategorie-"+selected_tab_index).value = "";
+    }
+    return;
+  }
+  else{
+    // let result =  
+    fetch("get_default_category", {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -57,28 +80,25 @@ defaultCategoryNoPPAC.addEventListener('change', (evt) => {
         return response.json();
     }).then((data) => {
       defaultCategDescript = data["default_categorie"];
-      // evt.target.value = defaultCategDescript;
-      document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
-        element.value = defaultCategDescript;
-      }); 
-      console.log(data["default_categorie"]);
-      console.log(data["nppac"]);
+      defaultNPPAC = data["nppac"];
+      localStorage.setItem("defaultNPPAC", defaultNPPAC);
+    localStorage.setItem("defaultCategDescript", defaultCategDescript);
+    if(selected_tab_index != 0 ){
+      document.getElementById("nppac-demand-"+selected_tab_index).value = defaultNPPAC;
+      document.getElementById("descriptionCategorie-"+selected_tab_index).value = defaultCategDescript;
+    }
       return {"ppac": data["nppac"], "description": defaultCategDescript};
     })
     .catch(err => {
       console.log(err);
       return '';
-    })
-    if(result){
+    })}
+    /* if(result){
     defaultCategDescript = result["description"];
-    defaultPPAC = result["ppac"];
-  }
+    defaultNPPAC = result["ppac"];
+  } */
 
 })
-
-document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
-  element.value = defaultCategDescript;
-});
 
 function getCookieAnnotate(name) {
   let cookieValue = null;
@@ -161,6 +181,7 @@ const displyTextFile = (evt) => {
   let link = evt.target.getAttribute("data-link");
   let file_name = evt.target.innerText;
   selected_file_name = file_name;
+  decisionFileName.value = file_name;
   // Style the selected file
   evt.target.classList.add("selected_file");
   // Loop over other li items to unstyle all others (unstyle previously styled items)
@@ -262,7 +283,11 @@ const selectTab = (evt) => {
 
   // Get the index of the clicked item
   let index = parseInt(nodes.indexOf(li));
-
+  selected_tab_index = nodes.indexOf(li);
+if (selected_tab_index != 0){
+  document.getElementById("nppac-demand-"+selected_tab_index).value = defaultNPPAC;
+  document.getElementById("descriptionCategorie-"+selected_tab_index).value = defaultCategDescript;
+}
   // Display the correspandant tab content
   //console.log(index);
   let selectedTab =
@@ -365,11 +390,11 @@ const addDemande = () => {
       partiesRows = [];
     }
   }
-  // Objet + Fondement
+  // Description + Fondement
   let infos1 = htmlToElement('<div class="infos-row"> </div>');
   let demandePPAC = htmlToElement('<input style="background-color: #CCCCCC;" '+
-  'placeholder="NPPAC de demande" size="22" readonly id="nppac-demand-'+idx+
-  '" value="" name="nppac-demand-'+idx+'">');
+  'placeholder="NPPAC de demande" size="22" disabled id="nppac-demand-'+idx+
+  '" value="'+defaultNPPAC+'" name="nppac-demand-'+idx+'">');
   infos1.appendChild(demandePPAC);
   decisionForm.appendChild(infos1);
 
@@ -377,15 +402,15 @@ const addDemande = () => {
   let classSearch = htmlToElement(
     '<label id="class-search-' + idx + '">Rehercher classe</label>'
     );
-  let objet = htmlToElement(
-    '<textarea style="background-color: #CCCCCC;" rows="3" cols="70" readonly '+
+  let description = htmlToElement(
+    '<textarea style="background-color: #CCCCCC;" rows="3" disabled cols="70"  '+
     'name="descriptionCategorie-'+idx+'" id="descriptionCategorie-' +idx +
       '" placeholder="Description" value="'+defaultCategDescript+'"></textarea>'
   );
 
   //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   
-  infos1.appendChild(objet);
+  infos1.appendChild(description);
   infos1.appendChild(classSearch);
   decisionForm.appendChild(infos1);
   // Chercher classe de demande + resultat recherche
@@ -508,7 +533,7 @@ const addDemande = () => {
   let mauvaiseLabel = htmlToElement(
     '<label for="mauvaise-' +
       idx +
-      '" style="cursor:pointer; margin-left: 1vh; color: red; font-weight: bold;">Mauvaise Catégorie</label>'
+      '" style="cursor:pointer; margin-left: 1vh; color: red; font-weight: bold;">Contre exemple</label>'
   );
   mauvaiseContainer.appendChild(mauvaise);
   mauvaiseContainer.appendChild(mauvaiseLabel);
@@ -524,9 +549,6 @@ const addDemande = () => {
                         </div>
                         <button type="submit">Sauvgarder</button>
                     </div> */
-                    document.querySelectorAll('textarea[id^="description-"]').forEach(element => {
-                      element.value = defaultCategDescript;
-                    });
   let submit = htmlToElement(
     '<button style="display:none;" type="submit" id="submit-decision-' + idx + '">Sauvgarder</button>'
   );
@@ -678,6 +700,7 @@ const removeDemande = () => {
   }
 
   demandsNumber.value = tabs_index;
+  selected_tab_index = 0;
 };
 let juges = 1;
 const addJuge = () => {

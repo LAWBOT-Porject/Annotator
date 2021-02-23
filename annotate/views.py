@@ -38,17 +38,16 @@ def annotate_view(request, directory=None, *args, **kwargs):
             return read_file(request) 
         if 'get_default_category' in request.path:
             return get_category_by_nppac(request)
-        if 'submit_individual_demande' in request.path:
-            return submit_demand(request, request.path[-1])
+        # if 'submit_individual_demande' in request.path:
+        #     return submit_demand(request, request.path[-1])
         data = request.POST
         string_data = ''
         for key in data:
             string_data += f'\n{key}: {data[key]}'
+
         with open(treated_files_folder + '/form_data.txt', 'w') as f:
             f.write(string_data)
-        # import time
-        # time.sleep(15)
-        print(string_data)
+        # print(string_data)
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )
@@ -56,16 +55,13 @@ def annotate_view(request, directory=None, *args, **kwargs):
             print('without folder')
             return redirect('/annotate/' )
 
+## Not used
 def submit_demand(request, tab_idx):
     if request.method == 'POST':
         data = request.POST
-        print(data)
-        # with open(treated_files_folder + '/demande_'+str(tab_idx)+'_form_data.txt', 'w') as f:
-        #     f.seek(0)
-        #     for key in data:
-        #         f.write(key + ': '+data[key])
         return HttpResponse(dumps({"demande_submission":"yes"}), content_type='application/json')
     return HttpResponse(dumps({"demande_submission":"no"}), content_type='application/json')
+
 from json import loads
 def read_file(request ):
     body_unicode = request.body.decode('utf-8')
