@@ -284,10 +284,10 @@ const selectTab = (evt) => {
   // Get the index of the clicked item
   let index = parseInt(nodes.indexOf(li));
   selected_tab_index = nodes.indexOf(li);
-if (selected_tab_index != 0){
-  document.getElementById("nppac-demand-"+selected_tab_index).value = defaultNPPAC;
-  document.getElementById("descriptionCategorie-"+selected_tab_index).value = defaultCategDescript;
-}
+/*   if (selected_tab_index != 0){
+    document.getElementById("nppac-demand-"+selected_tab_index).value = defaultNPPAC;
+    document.getElementById("descriptionCategorie-"+selected_tab_index).value = defaultCategDescript;
+  } */
   // Display the correspandant tab content
   //console.log(index);
   let selectedTab =
@@ -407,7 +407,7 @@ const addDemande = () => {
     'name="descriptionCategorie-'+idx+'" id="descriptionCategorie-' +idx +
       '" placeholder="Description" value="'+defaultCategDescript+'"></textarea>'
   );
-
+  description.value = defaultCategDescript;
   //let fondement = htmlToElement('<input type="text" size="25" name="fondement" id="fondement-'+idx+'" placeholder="Fondement">');
   
   infos1.appendChild(description);
