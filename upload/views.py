@@ -76,7 +76,7 @@ def upload_view(request, *args, **kwargs):
                                                 texte_decision=first_annotation[4],
                                                 decision_original_path=upload_path,
                                                 decision_treated_path=first_annotation[5],
-                                                uploader_id=current_user,
+                                                # uploader_id=current_user,
                                                 juridiction_id=jurid,)
                         new_decision.save()
                 else :

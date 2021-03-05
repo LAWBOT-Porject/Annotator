@@ -7,6 +7,11 @@ from django.shortcuts import render, redirect
 from annotate.models import (Juridiction as juridiction,
                             Ville as ville, 
                             Categorie,
+                            Personne,
+                            DecisionPersonne,
+                            Demande,
+                            Demander,
+                            Defender,
                             Decision)
 
 treated_files_folder = hp.files.treated_files_folder
@@ -41,13 +46,43 @@ def annotate_view(request, directory=None, *args, **kwargs):
         # if 'submit_individual_demande' in request.path:
         #     return submit_demand(request, request.path[-1])
         data = request.POST
-        string_data = ''
-        for key in data:
-            string_data += f'\n{key}: {data[key]}'
+        current_decision = ''
+        current_decision_id = ''
+        try:
+            ##TODO : specify the user id to get the decision annotated by the current user
+            current_decision = Decision.objects.filter(decision_treated_path__contains= data['file-name'])[0] #.get(annotator_id=current_user)
+            current_decision_id = getattr(current_decision, 'id')
+        except Decision.DoesNotExist:
+            print('Decision exception')
+        decision_text = getattr(current_decision, 'texte_decision')
+        for i in range(int(data['juges-number'])):
+            titre_j = data['juge-'+str(i+1)+'-titre']
+            nom_j = data['juge-'+str(i+1)+'-nom']
+            prenom_j = data['juge-'+str(i+1)+'-prenom']
+            if nom_j and nom_j != '':
+                nom_position_j = decision_text.find(nom_j)
+            else:
+                nom_position_j = -1
+            if prenom_j and prenom_j != '':
+                prenom_position_j = decision_text.find(prenom_j)
+                if titre_j and titre_j != '' and prenom_position_j != -1:
+                    titre_position_j = decision_text[prenom_position_j-20:prenom_position_j].find(titre_j)
+                else:
+                    titre_position_j = -1
+            else:
+                titre_position_j = -1
+                prenom_position_j = -1
 
-        with open(treated_files_folder + '/form_data.txt', 'w') as f:
-            f.write(string_data)
-        # print(string_data)
+            new_juge = Personne.objects.create(titre= titre_j,
+                                                nom= nom_j,
+                                                prenom= prenom_j,
+                                                titre_position= titre_position_j,
+                                                nom_position= nom_position_j,
+                                                prenom_position= prenom_position_j
+                                            )
+            DecisionPersonne.objects.create(decision_id= current_decision,
+                                            person_id = new_juge,
+                                            fonction = 'juge')
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )

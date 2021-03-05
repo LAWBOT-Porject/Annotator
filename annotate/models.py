@@ -51,10 +51,8 @@ class Decision(models.Model):
     def __str__(self):
         return self.rg
 
-
-
 class Personne(models.Model):
-    titre = models.CharField(max_length=20, default='', )
+    titre = models.CharField(max_length=20, default='', null=True)
     # nom field can be filled with person or entreprise name
     nom = models.TextField(default='', null=True)
     prenom = models.TextField(default='', null=True)
@@ -65,7 +63,7 @@ class Personne(models.Model):
     siret = models.TextField(default='', null=True)
     naf = models.TextField(default='', null=True)
     # If true so physical person, else it's an entreprise
-    physique = models.BooleanField(default=True)
+    physique = models.BooleanField(default=True, null=True)
     # Position fields
     titre_position = models.IntegerField(default=-1)
     nom_position = models.IntegerField(default=-1)
@@ -167,7 +165,6 @@ class Defender(models.Model):
     # Id defendeur
     person_id = models.ForeignKey(Personne,
                                 on_delete=models.CASCADE,)
-
 
 class Norme(models.Model):
 

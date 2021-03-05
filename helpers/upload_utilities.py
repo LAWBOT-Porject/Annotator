@@ -184,7 +184,7 @@ def convert_to_txt(file_path, file_name):
                     text = str(text)
         # text = text.decode("latin-1")
         search_text = text[500] #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
-        print(search_text)
+        # print(search_text)
         juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
                                                     #  + hp.files.juridictions_file_name)
         juridiction_pos = juridiction[1]
@@ -203,18 +203,19 @@ def convert_to_txt(file_path, file_name):
 
         new_file_name = '-'.join([juridiction, city, reference ])
         new_file_name += hp.files.standard_file_type
-        print(new_file_name)
+        # print(new_file_name)
         file = open(hp.files.treated_files_folder + '/'+
                     #file_name.split('.')[0] +
                     new_file_name , "w")
         file.write(text) 
         file.close()
         return [new_file_name, rg_position, 
-        city_position, juridiction_pos, search_text,
+        city_position, juridiction_pos, text,
         hp.files.treated_files_folder + '/'+ new_file_name]
     else :
         with open(file_path, encoding='utf-8') as file:
-            search_text = file.read()[:500]
+            decision_texte = file.read()
+            search_text = decision_texte[:500]
             #search_text = str(search_text)[:200] #str(text)[:200]
             #print(search_text)#.decode('utf-8'))
             #print(str('\é\î\à\ç ') + str(search_text[:500].encode(encoding='utf-8').decode()))
@@ -233,5 +234,5 @@ def convert_to_txt(file_path, file_name):
             #print('##### treated path #{0}#'.format(hp.files.treated_files_folder+ '/' + new_file_name))
             copyfile(file_path, hp.files.treated_files_folder + '/' + new_file_name)
             return [new_file_name, rg_position, 
-            city_position, juridiction_pos,search_text,#str(text),
+            city_position, juridiction_pos,decision_texte,#str(text),
             hp.files.treated_files_folder + '/' + new_file_name]
