@@ -26,19 +26,28 @@ def categorize_view(request):
         temp.append(i+1)
         temp.append( getattr(all_normes[i], 'fondement'))
         temp.append( getattr(all_normes[i], 'texte_norme'))
-        temp.append( getattr(all_normes[i], 'date_debut'))
-        temp.append( getattr(all_normes[i], 'date_fin'))
+        date = getattr(all_normes[i], 'date_debut')
+        temp.append( "" if not date else date)
+        date = getattr(all_normes[i], 'date_fin')
+        temp.append( "" if not date else date)
         temp.append( getattr(all_normes[i], 'id'))
         normes.append(temp)
     return render(request, 'categorize.html', {"categories" : categories, "normes" : normes})
 
 def create_norme(request):
     if request.method == 'POST':
-        new_norme = Norme.objects.create(fondement=request.POST.get('new-fondement'),
-                            texte_norme=request.POST.get('new-descriptif'),
-                            date_debut=request.POST.get('new-date-debut'),
-                            date_fin=request.POST.get('new-date-fin'),)
+        new_fondement = request.POST.get('new-fondement')
+        new_descriptif = request.POST.get('new-descriptif')
+        new_date_debut = request.POST.get('new-date-debut')
+        if not new_date_debut: new_date_debut = None
+        new_date_fin = request.POST.get('new-date-fin')
+        if not new_date_fin: new_date_fin = None
+        new_norme = Norme.objects.create(fondement= new_fondement,
+                             texte_norme=new_descriptif,
+                             date_debut=new_date_debut,
+                             date_fin=new_date_fin)
         related_categories = request.POST.getlist('related-categ')
+        print(related_categories)
         for item in related_categories:
             item = Categorie.objects.get(noppac=item)
             CategorieNorme.objects.create(categorie_id=item, norme_id=new_norme)

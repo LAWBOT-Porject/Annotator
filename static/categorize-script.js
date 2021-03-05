@@ -1,15 +1,26 @@
-// Get the modal
-// let modal = document.querySelectorAll('dev[id^="myModal"]');
 
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function (event) {
-//   console.log("Mohamed");
-//   modal.forEach((item) => {
-//     if (event.target == item) {
-//       item.style.display = "none";
-//     }
+// document.querySelectorAll('input[id^="category-checkbox-"]').forEach(item => {
+//   item.addEventListener("change", () => {
+//     document.querySelectorAll('input[id^="norme-checkbox-"]').forEach(i => {
+//       i.style.display = "block";
+//       i.addEventListener("change", () => {
+        let relier =  document.getElementById("cat-nor-relation");
+        relier.addEventListener("click", () => {
+        let SelectedCategoryNPPAC = document.querySelectorAll('input[id^="category-checkbox-"]').forEach(item => {
+          if(item.checked) return item.id.split('-')[2];
+        });
+        let SelectedNormesIds = [];
+        document.querySelectorAll('input[id^="norme-checkbox-"]').forEach(item => {
+          if (item.checked) SelectedNormesIds.push(item.id.split('-')[2]);
+        });
+        console.log(`SelectedCategoryNPPAC : ${SelectedCategoryNPPAC}`);
+        console.log(`SelectedNormesIds : ${SelectedNormesIds}`);
+
+        });
+//       });
+//     });
 //   });
-// };
+// });
 
 document.querySelectorAll('span[class^="categorie-info-"]').forEach((item) => {
   let index = item.className.split("-")[2];

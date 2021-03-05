@@ -4,15 +4,15 @@ from django.conf import settings
 class Ville(models.Model):
     """ class Meta:
         unique_together = (('zip_code', 'ville'),) """
-    zip_code = models.CharField(max_length=6)#, primary_key=True)
-    ville = models.CharField(max_length=80, default='', )
+    zip_code = models.CharField(max_length=10)#, primary_key=True)
+    ville = models.TextField(default='', null=True)
     
     def __str__(self):
         return ' '.join([self.ville, self.zip_code, self.pays])
 
 class Juridiction(models.Model):
-    type_juridiction = models.CharField(max_length=50, default='',)
-    abbreviation = models.CharField(max_length=10, default='', )
+    type_juridiction = models.TextField(default='', null=True)
+    abbreviation = models.TextField(default='', null=True)
     zip_code = models.ForeignKey(Ville,
                                 on_delete=models.SET_NULL, null=True,)
     
@@ -31,8 +31,8 @@ class Decision(models.Model):
     zip_code_position    = models.IntegerField(default=-1)
     
     texte_decision = models.TextField(default='')
-    decision_original_path = models.CharField(max_length=510, default='', )
-    decision_treated_path = models.CharField(max_length=510, default='', )
+    decision_original_path = models.TextField(default='', null=True)
+    decision_treated_path = models.TextField(default='', null=True)
     corbeille = models.BooleanField(default=False)
     # 0 => did not be opened yet, 1 => opened but not completed yet, 2 => completely annotated
     annotation_state = models.IntegerField(default=0)
@@ -56,14 +56,14 @@ class Decision(models.Model):
 class Personne(models.Model):
     titre = models.CharField(max_length=20, default='', )
     # nom field can be filled with person or entreprise name
-    nom = models.CharField(max_length=60, default='', )
-    prenom = models.CharField(max_length=60, default='', )
-    birth_date = models.DateField(default='')
+    nom = models.TextField(default='', null=True)
+    prenom = models.TextField(default='', null=True)
+    birth_date = models.DateField(null=True)
     zip_code = models.ForeignKey(Ville,
                                 on_delete=models.SET_NULL, null=True,)
-    adresse = models.CharField(max_length=100, default='', )
-    siret = models.CharField(max_length=20, default='', )
-    naf = models.CharField(max_length=20, default='', )
+    adresse = models.TextField(default='', null=True)
+    siret = models.TextField(default='', null=True)
+    naf = models.TextField(default='', null=True)
     # If true so physical person, else it's an entreprise
     physique = models.BooleanField(default=True)
     # Position fields
@@ -90,12 +90,12 @@ class DecisionPersonne(models.Model):
     person_id = models.ForeignKey(Personne,
                                 on_delete=models.CASCADE, related_name='%(class)s_person')
     # Person function in this decision
-    fonction = models.CharField(max_length=60, default='', )
+    fonction = models.TextField(default='', null=True)
     # Partie id in case of avocat function
     person2_id = models.ForeignKey(Personne,
                                 on_delete=models.SET_NULL, null=True, related_name='%(class)s_person2')
     # In case of avocat function                            
-    barreau = models.CharField(max_length=60, default='', )
+    barreau = models.TextField(default='', null=True)
     
     # Position fields
     fonction_position = models.IntegerField(default=-1)
@@ -105,11 +105,10 @@ class DecisionPersonne(models.Model):
         return self.fonction
 
 class Categorie(models.Model):
-
     noppac = models.CharField(max_length=50, primary_key= True)
-    description = models.TextField(default='')
+    description = models.TextField(default='', null=True)
     # In case of avocat function                            
-    objet = models.CharField(max_length=255, default='', )
+    objet = models.TextField( default='', null=True)
     
     def __str__(self):
         return self.description
@@ -172,15 +171,15 @@ class Defender(models.Model):
 
 class Norme(models.Model):
 
-    fondement = models.CharField(max_length=255, default='')
-    texte_norme = models.TextField(default='')
-    date_debut = models.DateField(default='')
-    date_fin = models.DateField(default='')
-    
+    fondement = models.TextField( default='', null=True)
+    texte_norme = models.TextField(default='', null=True)
+    date_debut = models.DateField(null=True)
+    date_fin = models.DateField(null=True)
     def __str__(self):
         return self.fondement
 
 class CategorieNorme(models.Model):
+
     class Meta:
         unique_together = (('categorie_id', 'norme_id'),)
     

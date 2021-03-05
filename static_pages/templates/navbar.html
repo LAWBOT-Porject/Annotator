@@ -9,7 +9,9 @@
     {% if user.is_authenticated %}
     {% if request.user.is_staff %}
     <li><a href="/categorize">Catégoriser</a></li>
+    {% if request.user.is_superuser %}
     <li><a href="/upload">Uploader</a></li>
+    {% endif %}
     <li><a href="/organize">Organiser</a></li>
     <li><a id="annotate-href" href="/annotate" style="cursor: pointer;">Annoter</a></li>
     <!-- href="/annotate" href="/annotate/somedirs" onclick="annotate()" -->
@@ -34,6 +36,7 @@
     </script>
     <li><a href="/visualize">Visualiser</a></li>
     <li><a href="{% url 'logout' %}">Se déconnecter</a></li>
+    <li><a href="/admin">Administrer</a></li>
     {% else %}
     <li><a href="{% url 'logout' %}">Se déconnecter</a></li>
     {% endif %}

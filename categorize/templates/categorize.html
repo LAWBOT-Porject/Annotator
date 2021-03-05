@@ -35,7 +35,12 @@
             {% for index, nppac, description, objet, normes_fondements in categories %}
             <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
             <div class="categorie-item-{{index}}">
-                <span title="Nppac" class="categorie-info-{{index}}">{{nppac|slice:":25"}}</span>
+                <div class="check-nppac"
+                    style="display: flex; justify-content: space-between; align-items: center; width: max-content;">
+                    <input type="radio" name="category-checkbox" id="category-checkbox-{{nppac}}"
+                        style="cursor: pointer;  margin-right: 2vh;">
+                    <span title="Nppac" class="categorie-info-{{index}}">{{nppac|slice:":25"}}</span>
+                </div>
                 <span title="Description" class="categorie-info-{{index}}">{{description|slice:":20"}}</span>
                 <span title="Objet" class="categorie-info-{{index}}">{{objet|slice:":20"}}</span>
                 <!-- Model popup window -->
@@ -67,7 +72,8 @@
         <div class="create-category-container">
             <form class="new-category-form" action="/categorize/create-category" method="post">
                 {% csrf_token %}
-                <input type="text" size="30" placeholder="Noppac" name="new-noppac" id="new-noppac" title="Noppac">
+                <input type="text" size="30" placeholder="Noppac" name="new-noppac" id="new-noppac" title="Noppac"
+                    required>
                 <div class="new-categ-desc-obj-container"
                     style="margin: 1vh auto; width: 100%; display: flex; justify-content: space-around; align-items: center;">
                     <textarea name="new-description" id="new-description" cols="35" rows="11"
@@ -92,7 +98,7 @@
     </div>
     <div class="norme-container grid-item-categ">
         <div class="normes-title">
-
+            <button type="submit" id="cat-nor-relation" style="width: max-content;">Relier</button>
             <h1>Normes</h1>
             <img onclick="displayNormeForm()" src="../static/add_circle-24px.svg" alt="Créer une norme"
                 title="Créer une norme">
@@ -102,7 +108,12 @@
             {% for index, fondement, texte_norme, date_debut, date_fin, id in normes %}
             <!-- onclick="document.getElementById('myModal').style.display = 'block'" -->
             <div class="norme-item-{{index}}">
-                <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":20"}}</span>
+                <div class="check-fondement"
+                    style="display: flex; justify-content: space-between; align-items: center; width: max-content;">
+                    <input type="checkbox" name="norme-checkbox-{{index}}" id="norme-checkbox-{{index}}"
+                        style="margin-right: 1vh;  cursor: pointer;">
+                    <span title="Fondement" class="norme-info-{{index}}">{{fondement|slice:":20"}}</span>
+                </div>
                 <span title="Texte de norme" class="norme-info-{{index}}">{{texte_norme|slice:":25"}}</span>
                 <span title="Date de début" class="norme-info-{{index}}">{{date_debut}}</span>
                 <span title="Date de fin" class="norme-info-{{index}}">{{date_fin}}</span>
