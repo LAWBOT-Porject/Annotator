@@ -22,17 +22,19 @@ class Juridiction(models.Model):
 
 ## TO DO : Add juridiction foreignKey
 class Decision(models.Model):
-    rg = models.CharField(max_length=20, )
+    rg = models.CharField(max_length=20, default='',)
     chambre = models.CharField(max_length=50, default='', )
+    date = models.CharField(max_length=100,default='',)
     # Position fields
     rg_position          = models.IntegerField(default=-1)
     chambre_position     = models.IntegerField(default=-1)
     juridiction_position = models.IntegerField(default=-1)
     zip_code_position    = models.IntegerField(default=-1)
+    date_position    = models.IntegerField(default=-1)
     
     texte_decision = models.TextField(default='')
-    decision_original_path = models.TextField(default='', null=True)
-    decision_treated_path = models.TextField(default='', null=True)
+    decision_original_path = models.TextField(default='')
+    decision_treated_path = models.TextField(default='')
     corbeille = models.BooleanField(default=False)
     # 0 => did not be opened yet, 1 => opened but not completed yet, 2 => completely annotated
     annotation_state = models.IntegerField(default=0)
@@ -52,18 +54,18 @@ class Decision(models.Model):
         return self.rg
 
 class Personne(models.Model):
-    titre = models.CharField(max_length=20, default='', null=True)
+    titre = models.CharField(max_length=20, default='',)
     # nom field can be filled with person or entreprise name
-    nom = models.TextField(default='', null=True)
-    prenom = models.TextField(default='', null=True)
-    birth_date = models.DateField(null=True)
+    nom = models.TextField(default='')
+    prenom = models.TextField(default='')
+    birth_date = models.CharField(max_length=100, default='')
     zip_code = models.ForeignKey(Ville,
                                 on_delete=models.SET_NULL, null=True,)
-    adresse = models.TextField(default='', null=True)
-    siret = models.TextField(default='', null=True)
-    naf = models.TextField(default='', null=True)
+    adresse = models.TextField(default='')
+    siret = models.TextField(default='')
+    naf = models.TextField(default='')
     # If true so physical person, else it's an entreprise
-    physique = models.BooleanField(default=True, null=True)
+    physique = models.BooleanField(default=True)
     # Position fields
     titre_position = models.IntegerField(default=-1)
     nom_position = models.IntegerField(default=-1)

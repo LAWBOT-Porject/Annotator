@@ -211,6 +211,7 @@ const displyTextFile = (evt) => {
       document.getElementById("ville").value = parsed.city;
       document.getElementById("juridiction").value = parsed.juridiction;
       p_decision.value = parsed.file;
+      document.getElementById('file-content').value = parsed.file;
       p_decision.style.fontSize = "20px";
       p_decision.style["overflow-y"] = "scroll";
       p_decision.style["overflow-x"] = "hidden";
@@ -831,7 +832,7 @@ function addPerson() {
   infr1.appendChild(prenom);
 
   let ddn = htmlToElement(
-    '<input placeholder="Date de naissance" type="date" value="" name="partie-'+index_parties+'-dob">'
+    '<input placeholder="Date de naissance" type="text" size="25" value="" name="partie-'+index_parties+'-dob">'
   );
   let adr1 = htmlToElement(
     '<input placeholder="Adresse" type="text" size="45" value="" name="partie-'+index_parties+'-adr">'

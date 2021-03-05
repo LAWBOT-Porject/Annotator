@@ -832,7 +832,7 @@ function addPerson() {
   infr1.appendChild(prenom);
 
   let ddn = htmlToElement(
-    '<input placeholder="Date de naissance" type="date" value="" name="partie-'+index_parties+'-dob">'
+    '<input placeholder="Date de naissance" type="text" size="25" value="" name="partie-'+index_parties+'-dob">'
   );
   let adr1 = htmlToElement(
     '<input placeholder="Adresse" type="text" size="45" value="" name="partie-'+index_parties+'-adr">'

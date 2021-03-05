@@ -83,6 +83,35 @@ def annotate_view(request, directory=None, *args, **kwargs):
             DecisionPersonne.objects.create(decision_id= current_decision,
                                             person_id = new_juge,
                                             fonction = 'juge')
+        
+        for i in range(int(data['parties-number'])):
+            titre_j = data['partie-'+str(i+1)+'-titre']
+            nom_j = data['partie-'+str(i+1)+'-nom']
+            prenom_j = data['partie-'+str(i+1)+'-prenom']
+            dob_j = data['partie-'+str(i+1)+'-dob']
+            adr_j = data['partie-'+str(i+1)+'-adr']
+            nom_entreprise_j = data['partie-'+str(i+1)+'-nom-entreprise']
+            siret_j = data['partie-'+str(i+1)+'-siret']
+            naf_j = data['partie-'+str(i+1)+'-naf']
+            adr_entreprise_j = data['partie-'+str(i+1)+'-adr-entreprise']
+            physique = True
+
+            if nom_j and nom_j != '':
+                nom_position_j = decision_text.find(nom_j)
+            else:
+                nom_position_j = -1
+            if prenom_j and prenom_j != '':
+                prenom_position_j = decision_text.find(prenom_j)
+                if titre_j and titre_j != '' and prenom_position_j != -1:
+                    titre_position_j = decision_text[prenom_position_j-20:prenom_position_j].find(titre_j)
+                else:
+                    titre_position_j = -1
+            else:
+                titre_position_j = -1
+                prenom_position_j = -1
+            if dob_j and dob_j != '':
+                dob_position_j = decision_text.find(dob_j)
+            
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )
