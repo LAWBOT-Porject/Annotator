@@ -90,7 +90,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
                                             )
             DecisionPersonne.objects.create(decision_id= current_decision,
                                             person_id = new_juge,
-                                            fonction = 'juge'+str(i+1))
+                                            fonction = 'juge-'+str(i+1))
         
         for i in range(int(data['parties-number'])):
             
