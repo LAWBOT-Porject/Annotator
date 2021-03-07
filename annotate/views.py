@@ -55,23 +55,31 @@ def annotate_view(request, directory=None, *args, **kwargs):
         except Decision.DoesNotExist:
             print('Decision exception')
         decision_text = getattr(current_decision, 'texte_decision')
+        
         for i in range(int(data['juges-number'])):
             titre_j = data['juge-'+str(i+1)+'-titre']
             nom_j = data['juge-'+str(i+1)+'-nom']
             prenom_j = data['juge-'+str(i+1)+'-prenom']
+            
             if nom_j and nom_j != '':
                 nom_position_j = decision_text.find(nom_j)
             else:
                 nom_position_j = -1
+
             if prenom_j and prenom_j != '':
                 prenom_position_j = decision_text.find(prenom_j)
-                if titre_j and titre_j != '' and prenom_position_j != -1:
-                    titre_position_j = decision_text[prenom_position_j-20:prenom_position_j].find(titre_j)
+            else:
+                prenom_position_j = -1
+
+            if titre_j and titre_j != '':
+                if nom_position_j != -1:
+                    titre_position_j = decision_text[nom_position_j-50:nom_position_j].find(titre_j)
+                elif prenom_position_j != -1:
+                    titre_position_j = decision_text[prenom_position_j-50:prenom_position_j].find(titre_j)
                 else:
-                    titre_position_j = -1
+                    titre_position_j = decision_text.find(titre_j)
             else:
                 titre_position_j = -1
-                prenom_position_j = -1
 
             new_juge = Personne.objects.create(titre= titre_j,
                                                 nom= nom_j,
@@ -82,36 +90,113 @@ def annotate_view(request, directory=None, *args, **kwargs):
                                             )
             DecisionPersonne.objects.create(decision_id= current_decision,
                                             person_id = new_juge,
-                                            fonction = 'juge')
+                                            fonction = 'juge'+str(i+1))
         
         for i in range(int(data['parties-number'])):
-            titre_j = data['partie-'+str(i+1)+'-titre']
-            nom_j = data['partie-'+str(i+1)+'-nom']
-            prenom_j = data['partie-'+str(i+1)+'-prenom']
-            dob_j = data['partie-'+str(i+1)+'-dob']
-            adr_j = data['partie-'+str(i+1)+'-adr']
-            nom_entreprise_j = data['partie-'+str(i+1)+'-nom-entreprise']
-            siret_j = data['partie-'+str(i+1)+'-siret']
-            naf_j = data['partie-'+str(i+1)+'-naf']
-            adr_entreprise_j = data['partie-'+str(i+1)+'-adr-entreprise']
-            physique = True
+            
+            try:
+                titre_j = data['partie-'+str(i+1)+'-titre']
+                nom_j = data['partie-'+str(i+1)+'-nom']
+                prenom_j = data['partie-'+str(i+1)+'-prenom']
+                dob_j = data['partie-'+str(i+1)+'-dob']
+                adr_j = data['partie-'+str(i+1)+'-adr']
+            except Exception as e:
+                print(e)
+            
+            try:    
+                nom_entreprise_j = data['partie-'+str(i+1)+'-nom-entreprise']
+                siret_j = data['partie-'+str(i+1)+'-siret']
+                naf_j = data['partie-'+str(i+1)+'-naf']
+                adr_entreprise_j = data['partie-'+str(i+1)+'-adr-entreprise']
+            except Exception as e:
+                print(e)
+            
+            if nom_entreprise_j != '' or siret_j != '' or naf_j != '' or adr_entreprise_j != '':
+                
+                if nom_entreprise_j and nom_entreprise_j != '':
+                    nom_entreprise_position_j = decision_text.find(nom_entreprise_j)
+                else:
+                    nom_entreprise_position_j = -1
+                
+                if siret_j and siret_j != '':
+                    siret_position_j = decision_text.find(siret_j)
+                else:
+                    siret_position_j = -1
+                
+                if naf_j and naf_j != '':
+                    naf_position_j = decision_text.find(naf_j)
+                else:
+                    naf_position_j = -1
 
-            if nom_j and nom_j != '':
-                nom_position_j = decision_text.find(nom_j)
-            else:
-                nom_position_j = -1
-            if prenom_j and prenom_j != '':
-                prenom_position_j = decision_text.find(prenom_j)
-                if titre_j and titre_j != '' and prenom_position_j != -1:
-                    titre_position_j = decision_text[prenom_position_j-20:prenom_position_j].find(titre_j)
+                if adr_entreprise_j and adr_entreprise_j != '':
+                    adr_entreprise_position_j = decision_text.find(adr_entreprise_j)
+                else:
+                    adr_entreprise_position_j = -1
+                
+                new_personne_morale = Personne.objects.create(  nom = nom_entreprise_j,
+                                                                adresse= adr_entreprise_j,
+                                                                siret = siret_j,
+                                                                naf = naf_j,
+                                                                physique= False,
+                                                                nom_position = nom_position_j,
+                                                                adresse_position = adr_entreprise_position_j,
+                                                                naf_position = naf_position_j,
+                                                                siret_position = siret_position_j
+                                                            )
+                
+                DecisionPersonne.objects.create(person_id = new_personne_morale, 
+                                                decision_id= current_decision,
+                                                fonction= 'partie-'+str(i+1))
+
+            else :
+                
+                if nom_j and nom_j != '':
+                    nom_position_j = decision_text.find(nom_j)
+                else:
+                    nom_position_j = -1
+
+                if prenom_j and prenom_j != '':
+                    prenom_position_j = decision_text.find(prenom_j)
+                else:
+                    prenom_position_j = -1
+
+                if titre_j and titre_j != '':
+                    if nom_position_j != -1:
+                        titre_position_j = decision_text[nom_position_j-50:nom_position_j].find(titre_j)
+                    elif prenom_position_j != -1:
+                        titre_position_j = decision_text[prenom_position_j-50:prenom_position_j].find(titre_j)
+                    else:
+                        titre_position_j = decision_text.find(titre_j)
                 else:
                     titre_position_j = -1
-            else:
-                titre_position_j = -1
-                prenom_position_j = -1
-            if dob_j and dob_j != '':
-                dob_position_j = decision_text.find(dob_j)
-            
+
+                if dob_j and dob_j != '':
+                    dob_position_j = decision_text.find(dob_j)
+                else:
+                    dob_position_j = -1
+                
+                if adr_j and adr_j != '':
+                    adr_position_j = decision_text.find(adr_j)
+                else:
+                    adr_position_j = -1
+                
+                new_personne_physique = Personne.objects.create(  
+                                                                  titre = titre_j,
+                                                                  nom = nom_j,
+                                                                  prenom = prenom_j,
+                                                                  birth_date = dob_j,
+                                                                  adresse= adr_j,
+                                                                  titre_position = titre_position_j,
+                                                                  nom_position = nom_position_j,
+                                                                  prenom_position = prenom_position_j,
+                                                                  birth_date_position = dob_position_j,
+                                                                  adresse_position = adr_position_j
+                                                            )
+                
+                DecisionPersonne.objects.create(person_id = new_personne_physique, 
+                                                decision_id= current_decision,
+                                                fonction= 'partie-'+str(i+1))
+        
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )

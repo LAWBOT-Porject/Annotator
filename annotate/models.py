@@ -98,7 +98,7 @@ class DecisionPersonne(models.Model):
     barreau = models.TextField(default='', null=True)
     
     # Position fields
-    fonction_position = models.IntegerField(default=-1)
+    # fonction_position = models.IntegerField(default=-1)
     barreau_position = models.IntegerField(default=-1)
     
     def __str__(self):
