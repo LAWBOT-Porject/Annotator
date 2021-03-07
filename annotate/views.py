@@ -92,6 +92,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
                                             person_id = new_juge,
                                             fonction = 'juge-'+str(i+1))
         
+        parties = []
         for i in range(int(data['parties-number'])):
             
             try:
@@ -143,11 +144,10 @@ def annotate_view(request, directory=None, *args, **kwargs):
                                                                 naf_position = naf_position_j,
                                                                 siret_position = siret_position_j
                                                             )
-                
+                parties.append(new_personne_morale)
                 DecisionPersonne.objects.create(person_id = new_personne_morale, 
                                                 decision_id= current_decision,
                                                 fonction= 'partie-'+str(i+1))
-
             else :
                 
                 if nom_j and nom_j != '':
@@ -192,11 +192,62 @@ def annotate_view(request, directory=None, *args, **kwargs):
                                                                   birth_date_position = dob_position_j,
                                                                   adresse_position = adr_position_j
                                                             )
-                
+                parties.append(new_personne_physique)
                 DecisionPersonne.objects.create(person_id = new_personne_physique, 
                                                 decision_id= current_decision,
                                                 fonction= 'partie-'+str(i+1))
         
+        for i in range(int(data['avocats-number'])):
+            titre_j = data['avocat-'+str(i+1)+'-titre']
+            nom_j = data['avocat-'+str(i+1)+'-nom']
+            prenom_j = data['avocat-'+str(i+1)+'-prenom']
+            bareau_j = data['avocat-'+str(i+1)+'-bareau']
+
+            if nom_j and nom_j != '':
+                nom_position_j = decision_text.find(nom_j)
+            else:
+                nom_position_j = -1
+
+            if prenom_j and prenom_j != '':
+                prenom_position_j = decision_text.find(prenom_j)
+            else:
+                prenom_position_j = -1
+
+            if titre_j and titre_j != '':
+                if nom_position_j != -1:
+                    titre_position_j = decision_text[nom_position_j-50:nom_position_j].find(titre_j)
+                elif prenom_position_j != -1:
+                    titre_position_j = decision_text[prenom_position_j-50:prenom_position_j].find(titre_j)
+                else:
+                    titre_position_j = decision_text.find(titre_j)
+            else:
+                titre_position_j = -1
+
+            if bareau_j and bareau_j != '':
+                bareau_position_j = decision_text.find(bareau_j)
+            else:
+                bareau_position_j = -1
+
+            new_avocat = Personne.objects.create(titre= titre_j,
+                                                nom= nom_j,
+                                                prenom= prenom_j,
+                                                titre_position= titre_position_j,
+                                                nom_position= nom_position_j,
+                                                prenom_position= prenom_position_j
+                                            )
+            avocat_person = DecisionPersonne.objects.create(decision_id= current_decision,
+                                            person_id = new_avocat,
+                                            fonction = 'avocat-'+str(i+1),
+                                            barreau=bareau_j,
+                                            barreau_position= bareau_position_j )
+            for j in range(len(parties)):
+                try:
+                    if(data['avocat-'+str(i+1)+'-partie-'+str(j+1)]):
+                        print(data['avocat-'+str(i+1)+'-partie-'+str(j+1)])
+                        avocat_person.person2_id.add(parties[j])
+                except Exception as e:
+                    print(e)
+            
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )

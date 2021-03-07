@@ -90,12 +90,12 @@ class DecisionPersonne(models.Model):
     person_id = models.ForeignKey(Personne,
                                 on_delete=models.CASCADE, related_name='%(class)s_person')
     # Person function in this decision
-    fonction = models.TextField(default='', null=True)
-    # Partie id in case of avocat function
-    person2_id = models.ForeignKey(Personne,
-                                on_delete=models.SET_NULL, null=True, related_name='%(class)s_person2')
+    fonction = models.TextField(default='')
+    # Partie id in case of avocat function (add all party ids who are associated to this avocat)
+    person2_id = models.ManyToManyField(Personne,
+                                null=True, related_name='%(class)s_person2')
     # In case of avocat function                            
-    barreau = models.TextField(default='', null=True)
+    barreau = models.TextField(default='')
     
     # Position fields
     # fonction_position = models.IntegerField(default=-1)
