@@ -46,6 +46,7 @@ if(localStorage.getItem("defaultNPPAC") != null){
   defaultCategDescript = localStorage.getItem("defaultCategDescript");
   if(selected_tab_index != 0 ){
     document.getElementById("nppac-demand-"+selected_tab_index).value = localStorage.getItem("defaultNPPAC");
+    document.getElementById("hidden-nppac-demand-"+selected_tab_index).value = localStorage.getItem("defaultNPPAC");
     document.getElementById("descriptionCategorie-"+selected_tab_index).value = localStorage.getItem("defaultCategDescript");
   }
   defaultCategoryNoPPAC.value = defaultNPPAC;
@@ -59,6 +60,7 @@ defaultCategoryNoPPAC.addEventListener('change', (evt) => {
     defaultCategDescript = "";
     if(selected_tab_index != 0 ){
       document.getElementById("nppac-demand-"+selected_tab_index).value = "";
+      document.getElementById("hidden-nppac-demand-"+selected_tab_index).value = "";
       document.getElementById("descriptionCategorie-"+selected_tab_index).value = "";
     }
     return;
@@ -85,6 +87,7 @@ defaultCategoryNoPPAC.addEventListener('change', (evt) => {
     localStorage.setItem("defaultCategDescript", defaultCategDescript);
     if(selected_tab_index != 0 ){
       document.getElementById("nppac-demand-"+selected_tab_index).value = defaultNPPAC;
+      document.getElementById("hidden-nppac-demand-"+selected_tab_index).value = defaultNPPAC;
       document.getElementById("descriptionCategorie-"+selected_tab_index).value = defaultCategDescript;
     }
       return {"ppac": data["nppac"], "description": defaultCategDescript};
@@ -396,7 +399,10 @@ const addDemande = () => {
   let demandePPAC = htmlToElement('<input style="background-color: #CCCCCC;" '+
   'placeholder="NPPAC de demande" size="22" disabled id="nppac-demand-'+idx+
   '" value="'+defaultNPPAC+'" name="nppac-demand-'+idx+'">');
+  let demandePPACHidden = htmlToElement('<input type="hidden" id="hidden-nppac-demand-'+idx+
+  '" value="'+defaultNPPAC+'" name="hidden-nppac-demand-'+idx+'">');
   infos1.appendChild(demandePPAC);
+  infos1.appendChild(demandePPACHidden);
   decisionForm.appendChild(infos1);
 
   infos1 = htmlToElement('<div class="infos-row"> </div>');
@@ -432,7 +438,7 @@ const addDemande = () => {
   // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantDemande = htmlToElement(
-    '<input type="number" value="" name="montant-demande-'+idx+'" id="montant-demande-' +
+    '<input type="text" size="20" value="" name="montant-demande-'+idx+'" id="montant-demande-' +
       idx +
       '" placeholder="Montant demandé">'
   );
@@ -478,7 +484,7 @@ const addDemande = () => {
   // Montant resultat
   infos1 = htmlToElement('<div class="infos-row"> </div>');
   let montantResultat = htmlToElement(
-    '<input type="number" value="" name="montant-resultat-'+idx+'" id="montant-resultat-' +
+    '<input type="text" size="20" value="" name="montant-resultat-'+idx+'" id="montant-resultat-' +
       idx +
       '" placeholder="Montant Résultat">'
   );
@@ -637,6 +643,10 @@ const removeDemande = () => {
       let nppac = content_nodes[i].querySelector('input[id^="nppac-demand-"]');
       nppac.id = "nppac-demand-"+i;
       nppac.name = "nppac-demand-"+i;
+
+      nppac = content_nodes[i].querySelector('input[id^="hidden-ppac-demand-"]');
+      nppac.id = "hidden-nppac-demand-"+i;
+      nppac.name = "hidden-nppac-demand-"+i;
       
       let description = content_nodes[i].querySelector('textarea[id^="descriptionCategorie-"]');
       description.id = "descriptionCategorie-"+i;

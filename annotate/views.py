@@ -50,6 +50,11 @@ def annotate_view(request, directory=None, *args, **kwargs):
         data = request.POST
         current_decision = ''
         current_decision_id = ''
+        """ print('######################')
+        for k in data:
+            if(k != 'file-content'):
+                print(f'{k}: #{data[k]}#')
+        print('######################') """
         try:
             ##TODO : specify the user id to get the decision annotated by the current user
             current_decision = Decision.objects.filter(decision_treated_path__contains= data['file-name'])[0] #.get(annotator_id=current_user)
@@ -245,7 +250,6 @@ def annotate_view(request, directory=None, *args, **kwargs):
             for j in range(len(parties)):
                 try:
                     if(data['avocat-'+str(i+1)+'-partie-'+str(j+1)]):
-                        print(data['avocat-'+str(i+1)+'-partie-'+str(j+1)])
                         avocat_person.person2_id.add(parties[j])
                 except Exception as e:
                     print(e)
@@ -262,6 +266,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
             current_decision.date = data['decision-date']
             current_decision.date_position = decision_text.find(data['decision-date'])
 
+        # Corbeille
         try:
             if(data['corbeille']):
                 current_decision.corbeille = True
@@ -308,6 +313,95 @@ def annotate_view(request, directory=None, *args, **kwargs):
 
         current_decision.annotation_state = 2
         current_decision.annotator_id = request.user
+
+        for i in range(int(data['demandes-number'])):
+            print('begin loop')
+            try:
+                if(data['hidden-nppac-demand-'+str(i+1)] != ''):
+                    try:
+                        print('begin nppac if')
+                        current_categorie = Categorie.objects.get(noppac = data['hidden-nppac-demand-'+str(i+1)])
+                        print('categorie found')
+                        new_demand = Demande.objects.create(categorie_id=current_categorie, decision_id= current_decision)
+                    except Categorie.DoesNotExist as e :
+                        print(e)
+                        print('categorie not found 1')
+                        new_demand = Demande.objects.create( decision_id= current_decision)
+                else :
+                    print('categorie not found 2')
+                    new_demand = Demande.objects.create( decision_id= current_decision)
+            except Exception as e:
+                print(e)
+                new_demand = Demande.objects.create( decision_id= current_decision)
+            print('categorie terminated')
+            if (data['montant-demande-'+str(i+1)] != ''):
+                new_demand.montant_demande = data['montant-demande-'+str(i+1)]
+                new_demand.montant_demande_position = decision_text.find(data['montant-demande-'+str(i+1)])
+            print('montant1 terminated')
+            if (data['unite-demande-'+str(i+1)] != ''):
+                new_demand.unite_demande = data['unite-demande-'+str(i+1)]
+                new_demand.unite_demande_position = decision_text.find(data['unite-demande-'+str(i+1)])
+            print('unite1 terminated')
+            if (data['quantite-demande-'+str(i+1)] != ''):
+                new_demand.quantite_demande = data['quantite-demande-'+str(i+1)]
+                new_demand.quantite_demande_position = decision_text.find(data['quantite-demande-'+str(i+1)])
+            print('quantite1 terminated')
+            if (data['montant-resultat-'+str(i+1)] != ''):
+                new_demand.montant_resultat = data['montant-resultat-'+str(i+1)]
+                new_demand.montant_resultat_position = decision_text.find(data['montant-resultat-'+str(i+1)])
+            print('montant2 terminated')
+            if (data['unite-resultat-'+str(i+1)] != ''):
+                new_demand.unite_resultat = data['unite-resultat-'+str(i+1)]
+                new_demand.unite_resultat_position = decision_text.find(data['unite-resultat-'+str(i+1)])
+            print('unite2 terminated')
+            if (data['quantite-resultat-'+str(i+1)] != ''):
+                new_demand.quantite_resultat = data['quantite-resultat-'+str(i+1)]
+                new_demand.quantite_resultat_position = decision_text.find(data['quantite-resultat-'+str(i+1)])
+            print('quantite2 terminated')
+            if (data['pretention-'+str(i+1)] != ''):
+                new_demand.pretention = data['pretention-'+str(i+1)]
+                new_demand.pretention_position = decision_text.find(data['pretention-'+str(i+1)])
+            print('pretention terminated')
+            if (data['motifs-'+str(i+1)] != ''):
+                new_demand.dispositifs = data['motifs-'+str(i+1)]
+                new_demand.dispositifs_position = decision_text.find(data['motifs-'+str(i+1)])
+            print('motif terminated')
+            if (data['dispositifs-'+str(i+1)] != ''):
+                new_demand.motifs = data['dispositifs-'+str(i+1)]
+                new_demand.motifs_position = decision_text.find(data['dispositifs-'+str(i+1)])
+            print('dispo terminated')
+            try:
+                if(data['accept-'+str(i+1)]):
+                    new_demand.resultat = True
+            except Exception as e:
+                print(e)
+            print('accept terminated')
+            try:
+                if(data['mauvaise-'+str(i+1)]):
+                    new_demand.mauvaise_categorie = True
+            except Exception as e:
+                print(e)
+            print('mauvaise terminated')
+            new_demand.save()
+            print('demand terminated')
+            
+            for j in range(len(parties)):
+                try:
+                    ##TODO : Verify if a party can both demander and defender
+                    # 'demande-1-partiedemandeur-1'
+                    # 'demande-1-partiedefendeur-1'
+                    if(data['demande-'+str(i+1)+'-partiedemandeur-'+str(j+1)]):
+                        # Demander.objects.create()
+                        Demander.objects.create(demande_id=new_demand, person_id=parties[j])
+                        print(data['demande-'+str(i+1)+'-partiedemandeur-'+str(j+1)])
+                    elif (data['demande-'+str(i+1)+'-partiedefendeur-'+str(j+1)]):
+                        Defender.objects.create(demande_id=new_demand, person_id=parties[j])
+                        print(data['demande-'+str(i+1)+'-partiedefendeur-'+str(j+1)])
+                    else:
+                        continue
+
+                except Exception as e:
+                    print(e)
 
         current_decision.save()
         

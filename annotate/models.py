@@ -119,10 +119,10 @@ class Demande(models.Model):
                                 on_delete=models.CASCADE,)
     categorie_id = models.ForeignKey(Categorie,
                                 on_delete=models.SET_NULL, null=True, related_name='%(class)s_categorie')
-    montant_demande = models.DecimalField(max_digits=10, decimal_places=3, default=-1)
+    montant_demande = models.CharField(max_length=25, default='', )
     unite_demande = models.CharField(max_length=20, default='', )
     quantite_demande = models.CharField(max_length=200, default='', )
-    montant_resultat = models.DecimalField(max_digits=10, decimal_places=3, default=-1)
+    montant_resultat = models.CharField(max_length=25, default='', )
     unite_resultat = models.CharField(max_length=20, default='', )
     quantite_resultat = models.CharField(max_length=200, default='', )
 
@@ -130,7 +130,7 @@ class Demande(models.Model):
     dispositifs = models.TextField(default='')
     motifs = models.TextField(default='')
     # Demand result accepted or refused 
-    resultat = models.BooleanField(default=True)
+    resultat = models.BooleanField(default=False)
     # Set by the juriste when composing dataset
     default_categorie_id = models.ForeignKey(Categorie,
                                 on_delete=models.SET_NULL, null=True, related_name='%(class)s_default_categorie')
