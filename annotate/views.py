@@ -4,6 +4,8 @@ from os.path import basename
 from django.http import HttpResponse
 from config.hparam import hparam as hp
 from django.shortcuts import render, redirect
+from fuzzywuzzy import fuzz
+from helpers.upload_utilities import transform_to_standard_chars as string_transform
 from annotate.models import (Juridiction as juridiction,
                             Ville as ville, 
                             Categorie,
@@ -247,7 +249,68 @@ def annotate_view(request, directory=None, *args, **kwargs):
                         avocat_person.person2_id.add(parties[j])
                 except Exception as e:
                     print(e)
-            
+
+        if(data['decision-rg'] != ''):
+            current_decision.rg = data['decision-rg']
+            current_decision.rg_position = decision_text.find(data['decision-rg'])
+
+        if(data['decision-chambre'] != ''):
+            current_decision.chambre = data['decision-chambre']
+            current_decision.chambre_position = decision_text.find(data['decision-chambre'])
+
+        if(data['decision-date'] != ''):
+            current_decision.date = data['decision-date']
+            current_decision.date_position = decision_text.find(data['decision-date'])
+
+        try:
+            if(data['corbeille']):
+                current_decision.corbeille = True
+        except Exception as e:
+            print(e)
+        
+        if(data['decision-ville'] != ''):
+            current_decision.zip_code_position = decision_text.find(data['decision-ville'])
+            try:
+                current_decision_ville = ville.objects.get(ville = data['decision-ville'])
+            except ville.DoesNotExist as e :
+                try:
+                    current_decision_ville = ville.objects.get(ville = data['decision-ville'].capitalize())
+                except ville.DoesNotExist:
+                    city_in_text = string_transform(data['decision-ville']).lower()
+                    all_villes = ville.objects.all()
+                    cities     = [city.ville for city in all_villes]
+                    biggest_ration = 0
+                    potential_city = ''
+                    for city in cities :
+                        cmp_city = string_transform(city).lower()
+                        temp_ratio = fuzz.ratio(cmp_city, city_in_text)
+                        position = city_in_text.find(cmp_city)
+                        if (temp_ratio >=95 or (position != -1)):
+                            try:
+                                current_decision_ville = ville.objects.get(ville = city)
+                                print(current_decision_ville)
+                                break
+                            except ville.DoesNotExist as e:
+                                print(e)
+                                new_ville = ville.objects.create(zip_code='9999', ville= data['decision-ville'].capitalize())
+
+        if(data['decision-juridiction'] != ''):
+            current_decision.juridiction_position = decision_text.find(data['decision-juridiction'])
+            if current_decision_ville:
+                try:
+                    current_decision.juridiction_id = juridiction.objects.filter(zip_code=current_decision_ville).get(type_juridiction= data['decision-juridiction'].capitalize())
+                except juridiction.DoesNotExist as e:
+                    print(e)
+                    current_decision.juridiction_id = juridiction.objects.create(zip_code=current_decision_ville, type_juridiction= data['decision-juridiction'].capitalize())
+            else:
+                if new_ville :
+                    current_decision.juridiction_id = juridiction.objects.create(zip_code=new_ville, type_juridiction= data['decision-juridiction'].capitalize())
+
+        current_decision.annotation_state = 2
+        current_decision.annotator_id = request.user
+
+        current_decision.save()
+        
         if default_dir != treated_files_folder:
             print('with folder')
             return redirect('/annotate/'+ default_dir )

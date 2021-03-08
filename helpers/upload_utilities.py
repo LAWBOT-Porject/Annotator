@@ -79,6 +79,24 @@ def transform_to_standard_chars(raw_text):
     raw_text = raw_text.replace('ï', 'i')
     raw_text = raw_text.replace('ü', 'u')
     raw_text = raw_text.replace('ÿ', 'y')
+    raw_text = raw_text.replace('À', 'a')
+    raw_text = raw_text.replace('Æ', 'ae')
+    raw_text = raw_text.replace('Ç', 'y')
+    raw_text = raw_text.replace('É', 'e')
+    raw_text = raw_text.replace('È', 'e')
+    raw_text = raw_text.replace('Œ', 'OE')
+    raw_text = raw_text.replace('Ù', 'u')
+    raw_text = raw_text.replace('Ü', 'u')
+    raw_text = raw_text.replace('Ö', 'o')
+    raw_text = raw_text.replace('Ï', 'y')
+    raw_text = raw_text.replace('Ë', 'e')
+    raw_text = raw_text.replace('Ä', 'a')
+    raw_text = raw_text.replace('Û', 'u')
+    raw_text = raw_text.replace('Ô', 'o')
+    raw_text = raw_text.replace('Î', 'i')
+    raw_text = raw_text.replace('Ê', 'e')
+    raw_text = raw_text.replace('Â', 'a')
+    
     return raw_text
 
 def search_city(raw_text):

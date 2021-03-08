@@ -944,12 +944,10 @@ function addAvocat() {
   for (let i = 0; i < parties; i++) {
     let partieContainer = htmlToElement('<div class="avocat-partie"></div>');
     let partieLbl = htmlToElement(
-      '<label for="partie-' + (i + 1) + '" style="cursor:pointer;">Partie ' + (i + 1) + "</label>"
+      '<label for="avocat-'+avocats+'-partie-' +(i + 1) +'" style="cursor:pointer;">Partie ' + (i + 1) + "</label>"
     );
     let partieChkbx = htmlToElement(
-      '<input type="checkbox" value="avocat-'+avocats+'-partie-' +(i + 1) +'" name="avocat-'+avocats+'-partie-' +(i + 1) +'" id="partie-' +
-        (i + 1) +
-        '" style="cursor:pointer;">'
+      '<input type="checkbox" value="avocat-'+avocats+'-partie-' +(i + 1) +'" name="avocat-'+avocats+'-partie-' +(i + 1) +'" id="avocat-'+avocats+'-partie-' +(i + 1) +'" style="cursor:pointer;">'
     );
     partieContainer.appendChild(partieLbl);
     partieContainer.appendChild(partieChkbx);
