@@ -215,6 +215,10 @@ const displyTextFile = (evt) => {
       document.getElementById("juridiction").value = parsed.juridiction;
       p_decision.value = parsed.file;
       document.getElementById('file-content').value = parsed.file;
+      p_decision.style.color = "black"; 
+      if(parsed.red == true){
+        p_decision.style.color = "red";
+       }
       p_decision.style.fontSize = "20px";
       p_decision.style["overflow-y"] = "scroll";
       p_decision.style["overflow-x"] = "hidden";

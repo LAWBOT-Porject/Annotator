@@ -423,12 +423,25 @@ from json import loads
 def read_file(request ):
     body_unicode = request.body.decode('utf-8')
     body = loads(body_unicode)
-    file = body['path']
+    # file = body['path']
     file_name = body['file_name']
-    f = open(file, 'r', encoding='utf-8')
+    """ f = open(file, 'r', encoding='utf-8')
     file_content = f.read()
-    f.close()
+    f.close() """
+    try:
+        current_decision = Decision.objects.get(decision_treated_path__contains=file_name)
+        if (getattr(current_decision, 'annotation_state') == 2):
+            file_content = 'Décision déjà annotée! Merci de choisir une autre'
+            red = True
+        else :
+            file_content = current_decision.texte_decision
+            red = False
+    except Decision.DoesNotExist as e:
+        print(e)
+        red = False
+        file_content = 'Décision n ' 'est pas trouvée!'
     file_name = file_name.split('.')[0].split('-')
+    rg = file_name[2]
     try:
         city = ville.objects.filter(zip_code=file_name[1])[0].ville
     except:
@@ -437,12 +450,13 @@ def read_file(request ):
         juridic = juridiction.objects.filter(abbreviation= file_name[0], zip_code__isnull=True)[0].type_juridiction
     except:
         juridic = ''
-    rg = file_name[2]
+    
     context = {
         'city': city,
         'juridiction': juridic,
         'rg': rg,
-        'file': file_content
+        'file': file_content,
+        'red': red
     }
     data = dumps(context)
     return HttpResponse(data, content_type='application/json')
