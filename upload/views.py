@@ -25,7 +25,6 @@ def upload_view(request, *args, **kwargs):
                 if verify_file_type(f.name):
                     # Save the file only if its extention is allowed
                     upload_path = handle_uploaded_file(f, f.name)
-                    print(f.name)
                     first_annotation = convert_to_txt(upload_path, f.name)
                     new_file_name =  first_annotation[0].split('-')
                     zip_code = new_file_name[1]

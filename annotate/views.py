@@ -419,7 +419,6 @@ def read_file(request ):
     body = loads(body_unicode)
     # file = body['path']
     file_name = body['file_name']
-    print(file_name)
     """ f = open(file, 'r', encoding='utf-8')
     file_content = f.read()
     f.close() """
