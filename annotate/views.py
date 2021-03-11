@@ -98,7 +98,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
             DecisionPersonne.objects.create(decision_id= current_decision,
                                             person_id = new_juge,
                                             fonction = 'juge-'+str(i+1))
-        
+        print('###################### 0')
         parties = []
         for i in range(int(data['parties-number'])):
             
@@ -203,7 +203,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
                 DecisionPersonne.objects.create(person_id = new_personne_physique, 
                                                 decision_id= current_decision,
                                                 fonction= 'partie-'+str(i+1))
-        
+        print('###################### 1')
         for i in range(int(data['avocats-number'])):
             titre_j = data['avocat-'+str(i+1)+'-titre']
             nom_j = data['avocat-'+str(i+1)+'-nom']
@@ -253,33 +253,34 @@ def annotate_view(request, directory=None, *args, **kwargs):
                         avocat_person.person2_id.add(parties[j])
                 except Exception as e:
                     print(e)
-
+        print('###################### 2')
         if(data['decision-rg'] != ''):
             current_decision.rg = data['decision-rg']
             current_decision.rg_position = decision_text.find(data['decision-rg'])
-
+        print('###################### 3')
         if(data['decision-chambre'] != ''):
             current_decision.chambre = data['decision-chambre']
             current_decision.chambre_position = decision_text.find(data['decision-chambre'])
-
+        print('###################### 4')
         if(data['decision-date'] != ''):
             current_decision.date = data['decision-date']
             current_decision.date_position = decision_text.find(data['decision-date'])
-
+        print('###################### 5')
         # Corbeille
         try:
             if(data['corbeille']):
                 current_decision.corbeille = True
         except Exception as e:
             print(e)
-        
+        print('###################### 6')
         if(data['decision-ville'] != ''):
             current_decision.zip_code_position = decision_text.find(data['decision-ville'])
+            print(decision_text.find(data['decision-ville']))
             try:
-                current_decision_ville = ville.objects.get(ville = data['decision-ville'])
-            except ville.DoesNotExist as e :
+                current_decision_ville = ville.objects.filter(ville = data['decision-ville'])[0]
+            except ville.DoesNotExist:
                 try:
-                    current_decision_ville = ville.objects.get(ville = data['decision-ville'].capitalize())
+                    current_decision_ville = ville.objects.filter(ville = data['decision-ville'].capitalize())[0]
                 except ville.DoesNotExist:
                     city_in_text = string_transform(data['decision-ville']).lower()
                     all_villes = ville.objects.all()
@@ -292,13 +293,13 @@ def annotate_view(request, directory=None, *args, **kwargs):
                         position = city_in_text.find(cmp_city)
                         if (temp_ratio >=95 or (position != -1)):
                             try:
-                                current_decision_ville = ville.objects.get(ville = city)
+                                current_decision_ville = ville.objects.filter(ville = city)[0]
                                 print(current_decision_ville)
                                 break
                             except ville.DoesNotExist as e:
                                 print(e)
                                 new_ville = ville.objects.create(zip_code='9999', ville= data['decision-ville'].capitalize())
-
+        print('###################### 7')
         if(data['decision-juridiction'] != ''):
             current_decision.juridiction_position = decision_text.find(data['decision-juridiction'])
             if current_decision_ville:
@@ -310,10 +311,10 @@ def annotate_view(request, directory=None, *args, **kwargs):
             else:
                 if new_ville :
                     current_decision.juridiction_id = juridiction.objects.create(zip_code=new_ville, type_juridiction= data['decision-juridiction'].capitalize())
-
+        print('###################### 8')
         current_decision.annotation_state = 2
         current_decision.annotator_id = request.user
-
+        print('###################### 9')
         for i in range(int(data['demandes-number'])):
             try:
                 if(data['hidden-nppac-demand-'+str(i+1)] != ''):
@@ -398,9 +399,9 @@ def annotate_view(request, directory=None, *args, **kwargs):
 
                 except Exception as e:
                     print(e)
-
+        print('###################### 10')
         current_decision.save()
-        
+        print('###################### 11')
         if default_dir != treated_files_folder:
             return redirect('/annotate/'+ default_dir )
         else:
