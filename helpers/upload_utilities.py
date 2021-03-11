@@ -23,7 +23,7 @@ def handle_uploaded_file(f, name):
         #     destination.write(str(chunk))
     # Create the folder path from the file hash
     md = md5(path)
-    new_path = '/'.join([hp.files.uploaded_files_folder, md[:1], md[:2], md[:3],''])
+    new_path = '/'.join([hp.files.uploaded_files_folder, md[:1], md[:2], md[:3], md,''])
     try:
         Path(new_path).mkdir(mode=755, parents=True, exist_ok=True)
     except: #FileNotFoundError or FileExistsError as e :
@@ -174,14 +174,20 @@ def search_reference(raw_text):
             reference = re.findall(r'[0-9]{8}', raw_text)[0]
             position = raw_text.find(reference)
         except:
-            try : # Case 3 : reference is 7 digits separated or not by forwarded slach '/'
-                reference = re.findall(r'[0-9]{2}[\/]?[0-9]{5}',raw_text)[0]
+            try : # Case 3 : reference is 8 digits separated or not by forwarded slach '/'
+                reference = re.findall(r'[0-9]{2}[\/]?[0-9]{6}',raw_text)[0]
                 position = raw_text.find(reference)
-                return [''.join(reference.split('/'))[:7], position]
-            except : return ['', -1]
+                return [''.join(reference.split('/'))[:8], position]
+            except :
+                try : # Case 4 : reference is 7 digits separated or not by forwarded slach '/'
+                    reference = re.findall(r'[0-9]{2}[\/]?[0-9]{5}',raw_text)[0]
+                    position = raw_text.find(reference)
+                    return [''.join(reference.split('/'))[:7], position]
+                except : return ['', -1]
     return [reference, position]
 
 def convert_to_txt(file_path, file_name):
+    import uuid
     if ('.' + file_name.split('.')[-1] != hp.files.standard_file_type):
         try:
             text = textract.process(file_path, encoding= 'utf-8', errors="ignore")
@@ -202,26 +208,22 @@ def convert_to_txt(file_path, file_name):
                     text = str(text)
         # text = text.decode("latin-1")
         search_text = text[500] #str(text)#[:170] no limit is better => case 2000042485 : too space created after convertion
-        # print(search_text)
-        juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
-                                                    #  + hp.files.juridictions_file_name)
+        juridiction = search_juridiction(search_text[:200]) 
         juridiction_pos = juridiction[1]
         juridiction = juridiction[0]
-        city = search_city(search_text) #, hp.files.static_data_folder 
-        city_position = city[1]                             #            + hp.files.cities_file_name)
+        city = search_city(search_text[:200]) 
+        city_position = city[1]
         city = city[0]
-        reference = search_reference(search_text)
+        reference = search_reference(search_text[:180])
         rg_position = reference[1]
         reference = reference[0]
         if (reference == ''):
             reference = search_reference(file_name)[0]
-        if (reference == ''):
-            import uuid
-            reference = str(uuid.uuid1().int)[5:15]
+        # if (reference == ''):
+        reference += '-' + str(uuid.uuid1().int)[5:15]
 
         new_file_name = '-'.join([juridiction, city, reference ])
         new_file_name += hp.files.standard_file_type
-        # print(new_file_name)
         file = open(hp.files.treated_files_folder + '/'+
                     #file_name.split('.')[0] +
                     new_file_name , "w")
@@ -231,25 +233,27 @@ def convert_to_txt(file_path, file_name):
         city_position, juridiction_pos, text,
         hp.files.treated_files_folder + '/'+ new_file_name]
     else :
+        # from mimetypes import guess_type
         with open(file_path, encoding='utf-8') as file:
-            decision_texte = file.read()
+        # with open(file_path, encoding='Windows-1252') as file:
+            # f_content = ''
+            # for line in file:
+            #     f_content += line
+            decision_texte = file.read()#f_content
             search_text = decision_texte[:500]
-            #search_text = str(search_text)[:200] #str(text)[:200]
-            #print(search_text)#.decode('utf-8'))
-            #print(str('\é\î\à\ç ') + str(search_text[:500].encode(encoding='utf-8').decode()))
-            juridiction = search_juridiction(search_text) #, hp.files.static_data_folder 
+            juridiction = search_juridiction(search_text[:200]) 
             juridiction_pos = juridiction[1]
             juridiction = juridiction[0]
-            #print('###### ', juridiction)                                            #+ hp.files.juridictions_file_name)
-            city = search_city(search_text) #, hp.files.static_data_folder 
-            city_position = city[1]                           #            + hp.files.cities_file_name)
+            city = search_city(search_text[:200]) 
+            city_position = city[1]
             city = city[0]
-            reference = search_reference(search_text)
+            reference = search_reference(search_text[:180])
             rg_position = reference[1]
             reference = reference[0]
+            
+            reference += '-'+ str(uuid.uuid1().int)[5:15]
             new_file_name = '-'.join([juridiction, city, reference ])
             new_file_name += hp.files.standard_file_type
-            #print('##### treated path #{0}#'.format(hp.files.treated_files_folder+ '/' + new_file_name))
             copyfile(file_path, hp.files.treated_files_folder + '/' + new_file_name)
             return [new_file_name, rg_position, 
             city_position, juridiction_pos,decision_texte,#str(text),

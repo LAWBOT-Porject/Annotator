@@ -25,6 +25,8 @@ class Decision(models.Model):
     rg = models.CharField(max_length=20, default='',)
     chambre = models.CharField(max_length=50, default='', )
     date = models.CharField(max_length=100,default='',)
+    uuid = models.CharField(max_length=30,default='',)
+
     # Position fields
     rg_position          = models.IntegerField(default=-1)
     chambre_position     = models.IntegerField(default=-1)

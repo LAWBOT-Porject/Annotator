@@ -315,75 +315,71 @@ def annotate_view(request, directory=None, *args, **kwargs):
         current_decision.annotator_id = request.user
 
         for i in range(int(data['demandes-number'])):
-            print('begin loop')
             try:
                 if(data['hidden-nppac-demand-'+str(i+1)] != ''):
                     try:
-                        print('begin nppac if')
                         current_categorie = Categorie.objects.get(noppac = data['hidden-nppac-demand-'+str(i+1)])
-                        print('categorie found')
                         new_demand = Demande.objects.create(categorie_id=current_categorie, decision_id= current_decision)
                     except Categorie.DoesNotExist as e :
                         print(e)
-                        print('categorie not found 1')
                         new_demand = Demande.objects.create( decision_id= current_decision)
                 else :
-                    print('categorie not found 2')
+
                     new_demand = Demande.objects.create( decision_id= current_decision)
             except Exception as e:
                 print(e)
                 new_demand = Demande.objects.create( decision_id= current_decision)
-            print('categorie terminated')
+
             if (data['montant-demande-'+str(i+1)] != ''):
                 new_demand.montant_demande = data['montant-demande-'+str(i+1)]
                 new_demand.montant_demande_position = decision_text.find(data['montant-demande-'+str(i+1)])
-            print('montant1 terminated')
+
             if (data['unite-demande-'+str(i+1)] != ''):
                 new_demand.unite_demande = data['unite-demande-'+str(i+1)]
                 new_demand.unite_demande_position = decision_text.find(data['unite-demande-'+str(i+1)])
-            print('unite1 terminated')
+
             if (data['quantite-demande-'+str(i+1)] != ''):
                 new_demand.quantite_demande = data['quantite-demande-'+str(i+1)]
                 new_demand.quantite_demande_position = decision_text.find(data['quantite-demande-'+str(i+1)])
-            print('quantite1 terminated')
+
             if (data['montant-resultat-'+str(i+1)] != ''):
                 new_demand.montant_resultat = data['montant-resultat-'+str(i+1)]
                 new_demand.montant_resultat_position = decision_text.find(data['montant-resultat-'+str(i+1)])
-            print('montant2 terminated')
+
             if (data['unite-resultat-'+str(i+1)] != ''):
                 new_demand.unite_resultat = data['unite-resultat-'+str(i+1)]
                 new_demand.unite_resultat_position = decision_text.find(data['unite-resultat-'+str(i+1)])
-            print('unite2 terminated')
+
             if (data['quantite-resultat-'+str(i+1)] != ''):
                 new_demand.quantite_resultat = data['quantite-resultat-'+str(i+1)]
                 new_demand.quantite_resultat_position = decision_text.find(data['quantite-resultat-'+str(i+1)])
-            print('quantite2 terminated')
+
             if (data['pretention-'+str(i+1)] != ''):
                 new_demand.pretention = data['pretention-'+str(i+1)]
                 new_demand.pretention_position = decision_text.find(data['pretention-'+str(i+1)])
-            print('pretention terminated')
+
             if (data['motifs-'+str(i+1)] != ''):
                 new_demand.dispositifs = data['motifs-'+str(i+1)]
                 new_demand.dispositifs_position = decision_text.find(data['motifs-'+str(i+1)])
-            print('motif terminated')
+
             if (data['dispositifs-'+str(i+1)] != ''):
                 new_demand.motifs = data['dispositifs-'+str(i+1)]
                 new_demand.motifs_position = decision_text.find(data['dispositifs-'+str(i+1)])
-            print('dispo terminated')
+
             try:
                 if(data['accept-'+str(i+1)]):
                     new_demand.resultat = True
             except Exception as e:
                 print(e)
-            print('accept terminated')
+
             try:
                 if(data['mauvaise-'+str(i+1)]):
                     new_demand.mauvaise_categorie = True
             except Exception as e:
                 print(e)
-            print('mauvaise terminated')
+
             new_demand.save()
-            print('demand terminated')
+
             
             for j in range(len(parties)):
                 try:
@@ -406,10 +402,8 @@ def annotate_view(request, directory=None, *args, **kwargs):
         current_decision.save()
         
         if default_dir != treated_files_folder:
-            print('with folder')
             return redirect('/annotate/'+ default_dir )
         else:
-            print('without folder')
             return redirect('/annotate/' )
 
 ## Not used
@@ -425,11 +419,15 @@ def read_file(request ):
     body = loads(body_unicode)
     # file = body['path']
     file_name = body['file_name']
+    print(file_name)
     """ f = open(file, 'r', encoding='utf-8')
     file_content = f.read()
     f.close() """
+    file_name_splited = file_name.split('.')[0].split('-')
+    rg = file_name_splited[2]
+    uuid = file_name_splited[3]
     try:
-        current_decision = Decision.objects.get(decision_treated_path__contains=file_name)
+        current_decision = Decision.objects.filter(decision_treated_path__contains=body['file_name']).filter(annotation_state=0)[0]
         if (getattr(current_decision, 'annotation_state') == 2):
             file_content = 'Décision déjà annotée! Merci de choisir une autre'
             red = True
@@ -440,14 +438,13 @@ def read_file(request ):
         print(e)
         red = False
         file_content = 'Décision n ' 'est pas trouvée!'
-    file_name = file_name.split('.')[0].split('-')
-    rg = file_name[2]
+    
     try:
-        city = ville.objects.filter(zip_code=file_name[1])[0].ville
+        city = ville.objects.filter(zip_code=file_name_splited[1])[0].ville
     except:
         city = ''
     try:
-        juridic = juridiction.objects.filter(abbreviation= file_name[0], zip_code__isnull=True)[0].type_juridiction
+        juridic = juridiction.objects.filter(abbreviation= file_name_splited[0], zip_code__isnull=True)[0].type_juridiction
     except:
         juridic = ''
     

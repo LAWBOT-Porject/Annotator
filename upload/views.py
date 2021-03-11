@@ -2,6 +2,8 @@
 from .forms import UploadFileForm
 from django.shortcuts import render
 import time
+from os import walk
+from config.hparam import hparam as hp
 from annotate.models import Decision, Juridiction as juridiction
 from annotate.models import Ville as ville
 from helpers.upload_utilities import (
@@ -23,14 +25,19 @@ def upload_view(request, *args, **kwargs):
                 if verify_file_type(f.name):
                     # Save the file only if its extention is allowed
                     upload_path = handle_uploaded_file(f, f.name)
+                    print(f.name)
                     first_annotation = convert_to_txt(upload_path, f.name)
-                    new_file_name =  first_annotation[0]
-                    zip_code = new_file_name[5:10]
+                    new_file_name =  first_annotation[0].split('-')
+                    zip_code = new_file_name[1]
+                    juridiction_abr = new_file_name[0]
+                    # Slice just before '.txt'
+                    rg = new_file_name[2]
+                    uuid =  new_file_name[3]
+                    """ zip_code = new_file_name[5:10]
                     juridiction_abr = new_file_name[:4]
                     # Slice just before '.txt'
-                    rg = new_file_name[11:-4]
+                    rg = new_file_name[11:-4] """
                     current_user = request.user
-                    #print (current_user.id)
                     ## DONE : Treat the case of 00000 zipcode => Assign just the juridiction type without city
                     # If we know which city
                     if (zip_code != '00000'):
@@ -64,24 +71,28 @@ def upload_view(request, *args, **kwargs):
                             jurid = juridiction.objects.filter(abbreviation= juridiction_abr, zip_code__isnull=True)[0]
                         except IndexError:
                             jurid=None
+                            """ 
                     try:
                         # If there is no exception raised that means we already have this decision (Because .get raises Entry.DoesNotExist exception if there is no record found)
-                        all_decisions = Decision.objects.filter(rg=rg)
+                        all_decisions = Decision.objects.filter(rg=rg).filter(uuid=uuid)
                         decision_exists = all_decisions.get(juridiction_id=jurid)
-                    except Decision.DoesNotExist:
-                        new_decision = Decision(rg= rg, 
-                                                rg_position=first_annotation[1],
-                                                zip_code_position=first_annotation[2],
-                                                juridiction_position=first_annotation[3],
-                                                texte_decision=first_annotation[4],
-                                                decision_original_path=upload_path,
-                                                decision_treated_path=first_annotation[5],
-                                                # uploader_id=current_user,
-                                                juridiction_id=jurid,)
-                        new_decision.save()
+                    except Decision.DoesNotExist: """
+                    new_decision = Decision(rg= rg,
+                                            uuid= uuid,
+                                            rg_position=first_annotation[1],
+                                            zip_code_position=first_annotation[2],
+                                            juridiction_position=first_annotation[3],
+                                            texte_decision=first_annotation[4],
+                                            decision_original_path=upload_path,
+                                            decision_treated_path=first_annotation[5],
+                                            uploader_id=current_user,
+                                            juridiction_id=jurid,)
+                    new_decision.save()
                 else :
                     # Otherwise remove it from the uploaded files list
                     unallowed_files += 1
+        _, _, filesnames = next(walk(hp.files.uploaded_files_folder))
+        print('Mohamed', len(filesnames))
         return render(request, 'response.html', {
             'number_files': (len(files) - unallowed_files),
             })
