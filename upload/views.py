@@ -91,8 +91,6 @@ def upload_view(request, *args, **kwargs):
                 else :
                     # Otherwise remove it from the uploaded files list
                     unallowed_files += 1
-        _, _, filesnames = next(walk(hp.files.uploaded_files_folder))
-        print('Mohamed', len(filesnames))
         return render(request, 'response.html', {
             'number_files': (len(files) - unallowed_files),
             })
