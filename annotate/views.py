@@ -31,7 +31,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
         else:
             selected_dir = treated_files_folder
             default_dir = selected_dir
-        decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir).filter(annotation_state=0)
+        decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir).filter(annotation_state=0).order_by('rg')
         for item in decisions:
             tmp = []
             decision_path = item.decision_treated_path
