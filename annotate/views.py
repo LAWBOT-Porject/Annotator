@@ -31,7 +31,7 @@ def annotate_view(request, directory=None, *args, **kwargs):
         else:
             selected_dir = treated_files_folder
             default_dir = selected_dir
-        decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir)
+        decisions = Decision.objects.filter(decision_treated_path__contains = selected_dir).filter(annotation_state=0)
         for item in decisions:
             tmp = []
             decision_path = item.decision_treated_path
@@ -335,25 +335,25 @@ def annotate_view(request, directory=None, *args, **kwargs):
                 new_demand.montant_demande = data['montant-demande-'+str(i+1)]
                 new_demand.montant_demande_position = decision_text.find(data['montant-demande-'+str(i+1)])
 
-            if (data['unite-demande-'+str(i+1)] != ''):
-                new_demand.unite_demande = data['unite-demande-'+str(i+1)]
-                new_demand.unite_demande_position = decision_text.find(data['unite-demande-'+str(i+1)])
+            # if (data['unite-demande-'+str(i+1)] != ''):
+            #     new_demand.unite_demande = data['unite-demande-'+str(i+1)]
+            #     new_demand.unite_demande_position = decision_text.find(data['unite-demande-'+str(i+1)])
 
-            if (data['quantite-demande-'+str(i+1)] != ''):
-                new_demand.quantite_demande = data['quantite-demande-'+str(i+1)]
-                new_demand.quantite_demande_position = decision_text.find(data['quantite-demande-'+str(i+1)])
+            # if (data['quantite-demande-'+str(i+1)] != ''):
+            #     new_demand.quantite_demande = data['quantite-demande-'+str(i+1)]
+            #     new_demand.quantite_demande_position = decision_text.find(data['quantite-demande-'+str(i+1)])
 
             if (data['montant-resultat-'+str(i+1)] != ''):
                 new_demand.montant_resultat = data['montant-resultat-'+str(i+1)]
                 new_demand.montant_resultat_position = decision_text.find(data['montant-resultat-'+str(i+1)])
 
-            if (data['unite-resultat-'+str(i+1)] != ''):
-                new_demand.unite_resultat = data['unite-resultat-'+str(i+1)]
-                new_demand.unite_resultat_position = decision_text.find(data['unite-resultat-'+str(i+1)])
+            # if (data['unite-resultat-'+str(i+1)] != ''):
+            #     new_demand.unite_resultat = data['unite-resultat-'+str(i+1)]
+            #     new_demand.unite_resultat_position = decision_text.find(data['unite-resultat-'+str(i+1)])
 
-            if (data['quantite-resultat-'+str(i+1)] != ''):
-                new_demand.quantite_resultat = data['quantite-resultat-'+str(i+1)]
-                new_demand.quantite_resultat_position = decision_text.find(data['quantite-resultat-'+str(i+1)])
+            # if (data['quantite-resultat-'+str(i+1)] != ''):
+            #     new_demand.quantite_resultat = data['quantite-resultat-'+str(i+1)]
+            #     new_demand.quantite_resultat_position = decision_text.find(data['quantite-resultat-'+str(i+1)])
 
             if (data['pretention-'+str(i+1)] != ''):
                 new_demand.pretention = data['pretention-'+str(i+1)]

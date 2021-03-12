@@ -441,12 +441,12 @@ const addDemande = () => {
   //decisionForm.appendChild(infos);
   // Montant demande
   infos1 = htmlToElement('<div class="infos-row"> </div>');
-  let montantDemande = htmlToElement(
-    '<input type="text" size="20" value="" name="montant-demande-'+idx+'" id="montant-demande-' +
+  let montantDemande = htmlToElement( //size="20"
+    '<input type="text" size="60" value="" name="montant-demande-'+idx+'" id="montant-demande-' +
       idx +
       '" placeholder="Montant demandé">'
   );
-  let uniteDemande = htmlToElement(
+  /* let uniteDemande = htmlToElement(
     '<input placeholder="Unité" type="text" size="10" value="" name="unite-demande-'+idx+'" id="unite-demande-' +
       idx +
       '" >'
@@ -455,10 +455,10 @@ const addDemande = () => {
     '<input placeholder="Quantité Demande" type="text" size="30" value="" name="quantite-demande-'+idx+'" id="quantite-demande-' +
       idx +
       '" >'
-  );
+  ); */
   infos1.appendChild(montantDemande);
-  infos1.appendChild(uniteDemande);
-  infos1.appendChild(quantiteDemande);
+  // infos1.appendChild(uniteDemande);
+  // infos1.appendChild(quantiteDemande);
   decisionForm.appendChild(infos1);
   // Pretention, Motifs + Dispositifs
   infos1 = htmlToElement('<div class="demande-txtareas"> </div>');
@@ -487,12 +487,12 @@ const addDemande = () => {
   decisionForm.appendChild(infos1);
   // Montant resultat
   infos1 = htmlToElement('<div class="infos-row"> </div>');
-  let montantResultat = htmlToElement(
-    '<input type="text" size="20" value="" name="montant-resultat-'+idx+'" id="montant-resultat-' +
+  let montantResultat = htmlToElement(//size="20"
+    '<input type="text" size="60" value="" name="montant-resultat-'+idx+'" id="montant-resultat-' +
       idx +
       '" placeholder="Montant Résultat">'
   );
-  let uniteResultat = htmlToElement(
+  /* let uniteResultat = htmlToElement(
     '<input placeholder="Unité" type="text" value="" name="unite-resultat-'+idx+'" size="10" id="unite-resultat-' +
       idx +
       '" >'
@@ -501,10 +501,10 @@ const addDemande = () => {
     '<input placeholder="Quantité Résultat" type="text" value="" name="quantite-resultat-'+idx+'" size="30" id="quantite-resultat-' +
       idx +
       '" >'
-  );
+  ); */
   infos1.appendChild(montantResultat);
-  infos1.appendChild(uniteResultat);
-  infos1.appendChild(quantiteResultat);
+  // infos1.appendChild(uniteResultat);
+  // infos1.appendChild(quantiteResultat);
   decisionForm.appendChild(infos1);
   // Resultat
   let resultat = htmlToElement('<h3 class="infos-row-2">Résultat</h3>');
